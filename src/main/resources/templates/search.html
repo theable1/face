@@ -3,9 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" th:href="@{'/css/search.css'}">
     <script th:src="@{'/script/third/jquery-3.2.0.min.js'}"></script>
+    <script th:src="@{'/script/search.js'}"></script>
 </head>
 <body>
-
+<div id="upload">
+    <div class="search">
+        <input type="file">
+        <input type="button" value="搜索">
+    </div>
+</div>
+<div id="result" class="result">
+    <h4>搜索结果</h4>
+    <div th:if="${imageUrl!=null}">
+        <img th:src="${imageUrl}" width="400px" height="400px">
+    </div>
+</div>
 </body>
 </html>
