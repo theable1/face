@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>搜索页面</title>
     <link rel="stylesheet" th:href="@{'/css/search.css'}">
     <script th:src="@{'/script/third/jquery-3.2.0.min.js'}"></script>
     <script th:src="@{'/script/search.js'}"></script>
@@ -17,7 +17,7 @@
 <div id="result" class="result">
     <h4>搜索结果</h4>
     <div th:if="${imageUrl!=null}">
-        <img th:src="${imageUrl}" width="400px" height="400px">
+        <img th:src="${imageUrl}" width="400px" height="400px" accept="image/*">
     </div>
 </div>
 </body>
