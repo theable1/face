@@ -25,7 +25,7 @@ class FaceApplicationTests {
         header.set("Content-Type", "application/json; charset=utf-8");
         //设置请求参数，此处设置为json
         JSONObject object = new JSONObject();
-        object.put("image_id",1);
+        object.put("image_id","1");
         object.put("image_b64","/9j/4Q/cRXhpZgAATU");
         //entity为请求体，包含请求参数
 
