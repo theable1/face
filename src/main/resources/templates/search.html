@@ -8,10 +8,10 @@
     <script th:src="@{'/script/search.js'}"></script>
 </head>
 <body>
-<div id="upload">
+<div>
     <div class="search">
-        <input type="file">
-        <input type="button" value="搜索">
+        <input type="file" id="upload">
+        <input type="button" value="搜索" th:onclick="search()">
     </div>
 </div>
 <div id="result" class="result">
