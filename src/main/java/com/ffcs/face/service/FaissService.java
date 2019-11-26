@@ -1,6 +1,6 @@
-package com.ffcs.face;
+package com.ffcs.face.service;
 
-import java.util.ArrayList;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,6 +33,9 @@ public class FaissService {
 	 * @param dimension
 	 * @return
 	 */
+	public  void demo(){
+		System.out.println(baseUri);
+	}
 	public String addGroupByPost(String name,Integer dimension) {
 		try {
 			JSONObject json = new JSONObject();

@@ -25,3 +25,6 @@ mybatis:
 #  configuration:
 #    log-impl: org.apache.ibatis.logging.log4j2.Log4j2Impl
     #org.apache.ibatis.logging.stdout.StdOutImpl
+
+
+baseUri: http://localhost:10004/bvs/api/v1/
