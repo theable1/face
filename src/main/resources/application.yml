@@ -21,9 +21,7 @@ spring:
 
 
 mybatis:
-  mapper-locations: classpath:com/hxx/travel/*/dao/**/*Dao.xml
-  configuration:
-    log-impl: org.apache.ibatis.logging.log4j2.Log4j2Impl
+  mapper-locations: classpath:com/ffcs/face/*/dao/**/*Dao.xml
+#  configuration:
+#    log-impl: org.apache.ibatis.logging.log4j2.Log4j2Impl
     #org.apache.ibatis.logging.stdout.StdOutImpl
-logging:
-  config: classpath:log4j2.xml

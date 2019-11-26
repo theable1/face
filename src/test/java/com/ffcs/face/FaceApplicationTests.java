@@ -10,4 +10,12 @@ class FaceApplicationTests {
     void contextLoads() {
     }
 
+    @Test
+    void testHash(){
+        String msg = "23821379210";
+        for (int i = 0; i < 5; i++) {
+            int hashCode = msg.hashCode();
+            System.out.println(hashCode);
+        }
+    }
 }
