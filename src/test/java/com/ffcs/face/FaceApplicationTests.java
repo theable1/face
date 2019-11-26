@@ -17,14 +17,14 @@ class FaceApplicationTests {
     @Test
     void testHash() {
         //访问路径
-        String url="http://localhost:10004/bvs/api/v1/faceinfo/feature";
+        String url="http://localhost:5001/frs/api/v1/faceinfo/feature";
         //设置请求头,可根据接口文档要求设置
         HttpHeaders header = new HttpHeaders();
         header.set("Accept-Charset", "UTF-8");
         header.set("Content-Type", "application/json; charset=utf-8");
         //设置请求参数，此处设置为json
         JSONObject object = new JSONObject();
-        object.put("image_id","1");
+        object.put("image_id",1);
         object.put("image_b64","/9j/4Q/cRXhpZgAATU");
         //entity为请求体，包含请求参数
 
