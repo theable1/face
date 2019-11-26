@@ -33,9 +33,6 @@ public class FaissService {
 	 * @param dimension
 	 * @return
 	 */
-	public  void demo(){
-		System.out.println(baseUri);
-	}
 	public String addGroupByPost(String name,Integer dimension) {
 		try {
 			JSONObject json = new JSONObject();
