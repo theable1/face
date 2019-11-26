@@ -1,0 +1,32 @@
+spring:
+
+
+
+  devtools:
+    restart:
+      enabled: true
+      additional-paths: src/main/java
+
+  jackson:
+    serialization:
+      #保证@ResponseBody时，Date会自动转化为timeStamp的数值(毫秒数)
+      WRITE_DATES_AS_TIMESTAMPS : true
+    time-zone: GMT+8
+
+
+  thymeleaf:
+    cache: false
+    encoding: utf-8
+    mode: HTML5
+    prefix: classpath:/templates/
+    suffix: .html
+
+
+
+mybatis:
+  mapper-locations: classpath:com/hxx/travel/*/dao/**/*Dao.xml
+  configuration:
+    log-impl: org.apache.ibatis.logging.log4j2.Log4j2Impl
+    #org.apache.ibatis.logging.stdout.StdOutImpl
+logging:
+  config: classpath:log4j2.xml
