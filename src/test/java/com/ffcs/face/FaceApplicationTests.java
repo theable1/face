@@ -15,7 +15,7 @@ class FaceApplicationTests {
     FaissService faissService;
     @Test
     void contextLoads() {
-        
+
     }
 
 
