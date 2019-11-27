@@ -15,7 +15,7 @@
         <input type="button" value="搜索" th:onclick="search()">
     </div>
     <select class="select fl" id="group">
-        <option>人脸库</option>
+        <option th:each="name:${nameList}" th:text="${name}"></option>
     </select>
 </div>
 <div id="result" class="result">
