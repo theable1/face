@@ -10,44 +10,22 @@ function search() {
     var img = file.files[0];
     var selector = document.getElementById("group");
     if (judgeNull(file)) {
-        if (judgeType(img)) {
-            var reader=new FileReader();
-            reader.onload=function(e){
-                var b64 = e.target.result;//获取base64编码
-                // console.log(b64);
-                var image64 = b64.split(",")[1];
-                // console.log(image64);
-                // console.log(hex_md5(img));
-                var group = selector.options[selector.selectedIndex].value;
-                var data = {
-                    imageId: hex_md5(img),
-                    imageB64: image64,
-                    group: group
-                };
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            //获取base64编码
+            var b64 = e.target.result;
 
-                $.ajax({
-                    type: 'post',
-                    dataType: 'json',
-                    contentType: "application/json;charset=utf-8",
-                    url: '/search/process',
-                    data: JSON.stringify(data),
-                    success: function (data) {
-                        if (data == "success") {
-                            alert("上传成功");
-                            console.log("上传成功");
-                        } else {
-                            alert("上传失败");
-                            console.log("上传失败");
-                        }
-                    },
-                    error: function () {
-                        alert("上传失败");
-                        console.log("上传失败");
-                    }
-                });
-            }
-            reader.readAsDataURL(img);
+            //要传递的数据
+            var image64 = b64.split(",")[1];
+            var group = selector.options[selector.selectedIndex].value;
+            var imageInfo = {
+                imageId: hex_md5(img),
+                imageB64: image64,
+                group: group
+            };
+            sendData(imageInfo);
         }
+        reader.readAsDataURL(img);
     }
 }
 
@@ -61,13 +39,37 @@ function judgeNull(file) {
     }
 }
 
-function judgeType(file) {
-    //判断是否是图片类型
-    if (!/image\/\w+/.test(file.type)) {
-        alert("只能选择图片!!");
-        return false;
+function showImage(e) {
+    if (judgeNull(e)){
+        var img = e.files[0];
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            //获取base64编码
+            var b64 = e.target.result;
+            var imageOrigin = document.getElementById("image_origin");
+            imageOrigin.setAttribute("src",b64);
+        }
+        reader.readAsDataURL(img);
     }
-    return true;
 }
 
+function sendData(imageInfo) {
+    $.ajax({
+        type: 'post',
+        dataType: 'json',
+        contentType: "application/json;charset=utf-8",
+        url: '/search/process',
+        data: JSON.stringify(imageInfo),
+        success: function (data) {
+            console.log(data);
+            if (data == "success") {
+                var imageResult = document.getElementById("image_result");
 
+            } else {
+            }
+        },
+        error: function () {
+            alert("检索失败！")
+        }
+    });
+}
