@@ -16,8 +16,8 @@ function search() {
                 var b64 = e.target.result;//获取base64编码
                 // console.log(b64);
                 var image64 = b64.split(",")[1];
-                console.log(image64);
-                console.log(hex_md5(img));
+                // console.log(image64);
+                // console.log(hex_md5(img));
                 var group = selector.options[selector.selectedIndex].value;
                 var data = {
                     imageId: hex_md5(img),

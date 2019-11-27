@@ -27,55 +27,60 @@ public class SearchController {
     @Autowired
     FaissService faissService;
 
-    @RequestMapping("visit")
+    @RequestMapping("list")
     public ModelAndView visit(){
         ModelAndView modelAndView = new ModelAndView();
+        //查询所有人脸库
+//        modelAndView.addObject("faceArray",);
         modelAndView.setViewName("search");
         return modelAndView;
     }
 
     @RequestMapping("process")
     public ModelAndView process(@RequestBody ImageVo imageVo){
-        double similarity=0.6;
-        String url = null;
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("imageUrl",url );
-        modelAndView.setViewName("search");
+        String url = null;
+        double similarity=0.6;
+
         //获取特征值
-        String featureByPost = frsService.getFeatureByPost(imageVo.getImageId(), imageVo.getImageB64());
-        JSONObject jsonObject = JSON.parseObject(featureByPost);
-        String feature_b64 = jsonObject.getString("feature_b64");
+        String getFeatureResult = frsService.getFeatureByPost(imageVo.getImageId(), imageVo.getImageB64());
+        System.out.println("获取特征值结果：:"+getFeatureResult);
+        JSONObject jsonObject = JSON.parseObject(getFeatureResult);
+        String featureB64 = jsonObject.getString("feature_b64");
         List<String> features= new ArrayList<>();
-        features.add(feature_b64);
+        features.add(featureB64);
         //搜索相似图片
-        String featuresByPost = faissService.searchFeaturesByPost(imageVo.getGroup(), features, 3);
-        JSONObject jsonObject1 = JSON.parseObject(featuresByPost);
+        String searchFeaturesResult = faissService.searchFeaturesByPost(imageVo.getGroup(), features, 3);
+        System.out.println("搜索相似图片结果："+searchFeaturesResult);
+        JSONObject jsonObject1 = JSON.parseObject(searchFeaturesResult);
         JSONArray data = jsonObject1.getJSONArray("data");
         //distance最大值小于0.6,把图片增加到group中
         int size = data.size();
         double maxDistance = Double.parseDouble(data.getJSONObject(size-1).getString("distance"));
+        System.out.println("距离："+maxDistance);
         if(maxDistance<similarity){
             Map<String,String> featuresMap=new HashMap<>();
             featuresMap.put("image_id",imageVo.getImageId());
-            featuresMap.put("feature",feature_b64);
+            featuresMap.put("feature",featureB64);
             List<Map<String,String>> featuresMapList=new ArrayList<>();
             featuresMapList.add(featuresMap);
             faissService.addFeaturesByPost(imageVo.getGroup(),featuresMapList);
-        }
-        //最大值>0.6，把数组中distance所以大于0.6的图片返回
-        for(int i=size-1;i<=0;i--){
-            double distance = Double.parseDouble(data.getJSONObject(i).getString("distance"));
-            if(distance >similarity){
-                String id = data.getJSONObject(i).getString("id");
-            }else {
-                break;
+        }else {
+            //最大值>0.6，把数组中distance所以大于0.6的图片返回
+            for(int i=size-1;i<=0;i--) {
+                double distance = Double.parseDouble(data.getJSONObject(i).getString("distance"));
+                if (distance > similarity) {
+                    String id = data.getJSONObject(i).getString("id");
+                } else {
+                    break;
+                }
             }
+            url = "xxx";
+        }
 
-
-
+        modelAndView.addObject("imageUrl",url );
+        modelAndView.setViewName("search");
         return modelAndView;
     }
-
-
 
 }
