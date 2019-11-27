@@ -8,6 +8,7 @@ import com.ffcs.face.vo.ImageVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -27,12 +28,10 @@ public class SearchController {
         return modelAndView;
     }
 
-    @RequestMapping("process")
+    @RequestMapping(value = "process",method = RequestMethod.POST)
     public ModelAndView process(@RequestBody ImageVo imageVo){
-        String url = null;
+        System.out.println(imageVo.toString());
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("imageUrl",url );
-        modelAndView.setViewName("search");
         String featureByPost = frsService.getFeatureByPost(imageVo.getImageId(), imageVo.getImageB64());
         JSONObject jsonObject = JSON.parseObject(featureByPost);
         String feature_b64 = jsonObject.getString("feature_b64");
@@ -43,6 +42,8 @@ public class SearchController {
 
 
 
+        modelAndView.addObject("imageUrl","url");
+        modelAndView.setViewName("search");
         return modelAndView;
     }
 

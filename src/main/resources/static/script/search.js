@@ -12,15 +12,19 @@ function search() {
     if (judgeNull(file)) {
         if (judgeType(img)) {
             var group = selector.options[selector.selectedIndex].value;
+            // console.log(hex_md5(img));
+            // console.log(btoa(img));
+            var data = {
+                imageId: hex_md5(img),
+                imageB64: btoa(img),
+                group: group
+            };
             $.ajax({
                 type: 'post',
-                dataType: 'application/json',
+                dataType: 'json',
+                contentType: "application/json;charset=utf-8",
                 url: '/search/process',
-                data: {
-                    imageId: hex_md5(img),
-                    imageB64: toBase64(img),
-                    group: group
-                },
+                data: JSON.stringify(data),
                 success: function (data) {
                     if (data == "success") {
                         console.log("上传成功");
@@ -55,12 +59,3 @@ function judgeType(file) {
     return true;
 }
 
-function toBase64(file) {
-    var base64Data = null;
-    var reader = new FileReader()   //新建一个FileReader对象
-    reader.readAsDataURL(file)   //将读取的文件转换成base64格式
-    reader.onload = function (e) {
-        base64Data = e.target.result;
-    }
-    return base64Data;
-}
