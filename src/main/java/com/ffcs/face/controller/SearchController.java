@@ -32,12 +32,20 @@ public class SearchController {
         ModelAndView modelAndView = new ModelAndView();
         List nameList = new ArrayList();
         //查询所有人脸库
-        String groups = faissService.viewGroupByGet(null);
+        String groups = frsService.viewGroupByGet(null);
         JSONObject jsonObject = JSON.parseObject(groups);
         JSONArray groupArrary = jsonObject.getJSONArray("data");
+        System.out.println(groups);
+        Map<String,Object> groupMap=new HashMap<>();
         for(int i=0;i<groupArrary.size();i++){
+            int gid=groupArrary.getJSONObject(i).getInteger("gid");
             String name = groupArrary.getJSONObject(i).getString("name");
-            nameList.add(name);
+            groupMap.put("gid",gid);
+            groupMap.put("name",name);
+            if(name!=null){
+                nameList.add(groupMap);
+            }
+
         }
         modelAndView.addObject("nameList", nameList);
         modelAndView.setViewName("search");
@@ -76,7 +84,7 @@ public class SearchController {
                     faissService.addFeaturesByPost(imageVo.getGroup(),featuresMapList);
                 }else {
                     //最大值>0.6，把数组中distance所以大于0.6的图片返回
-                    for(int i=size-1;i<=0;i--) {
+                    for(int i=size-1;i>=0;i--) {
                         double distance = Double.parseDouble(data.getJSONObject(i).getString("distance"));
                         if (distance > similarity) {
                             String id = data.getJSONObject(i).getString("id");

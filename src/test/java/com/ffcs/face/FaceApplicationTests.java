@@ -22,13 +22,8 @@ class FaceApplicationTests {
 
     @Test
     void contextLoads() {
-        String groups = faissService.viewGroupByGet(null);
-        JSONObject jsonObject1 = JSON.parseObject(groups);
-        JSONArray groupArrary = jsonObject1.getJSONArray("data");
-        for(int i=0;i<groupArrary.size();i++){
-            String name = groupArrary.getJSONObject(i).getString("name");
-            System.out.println(name);
-        }
+        String groupByGet = frsService.viewGroupByGet(null);
+        System.out.println(groupByGet);
     }
 
 
