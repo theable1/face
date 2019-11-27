@@ -11,17 +11,21 @@
 <body>
 <div class="search_wrap clearfix">
     <div class="search fl">
-        <input type="file" id="upload">
+        <input type="file" id="upload" accept="image/*" onchange="showImage(this)">
         <input type="button" value="搜索" th:onclick="search()">
     </div>
     <select class="select fl" id="group">
-        <option th:each="name:${nameList}" th:text="${name}"></option>
+        <option th:each="name:${nameList}" th:text="${name}" selected="selected"></option>
     </select>
 </div>
-<div id="result" class="result">
-    <h4>搜索结果</h4>
-    <div th:if="${imageUrl!=null}">
-        <img id="image" th:src="${imageUrl}" width="400px" height="400px" accept="image/*">
+<div class="clearfix">
+    <div id="origin" class="origin fl">
+        <h4>上传图片</h4>
+        <img id="image_origin" width="100%">
+    </div>
+    <div id="result" class="result fl">
+        <h4>搜索结果</h4>
+        <img id="image_result" width="100%">
     </div>
 </div>
 </body>

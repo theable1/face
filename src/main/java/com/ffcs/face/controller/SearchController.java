@@ -95,7 +95,7 @@ public class SearchController {
         }
 
         modelAndView.addObject("imageUrl",url );
-        modelAndView.setViewName("search");
+        modelAndView.setViewName("process");
         return modelAndView;
     }
 
