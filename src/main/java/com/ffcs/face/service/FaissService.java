@@ -52,7 +52,6 @@ public class FaissService {
 	/**
 	 * 
 	 * @param name
-	 * @param dimension
 	 * @return
 	 */
 	public String viewGroupByGet(String name) {
@@ -122,8 +121,9 @@ public class FaissService {
 			JSONObject json = new JSONObject();
 			json.put("group", group);
 			json.put("features",features);
-			if(backNum!=null && backNum>0)
-			   json.put("topK",backNum);
+			if(backNum!=null && backNum>0) {
+				json.put("topK", backNum);
+			}
 			HttpHeaders headers = new HttpHeaders();
 		    headers.setContentType(MediaType.APPLICATION_JSON);
 			HttpEntity<String> request = new HttpEntity<>(json.toString(), headers);

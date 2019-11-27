@@ -1,5 +1,6 @@
 package com.ffcs.face;
 
+import com.ffcs.face.service.FrsService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -15,6 +16,10 @@ public class FaceApplication {
     @Bean
     public RestTemplate restTemplate(){
         return new RestTemplate();
+    }
+    @Bean
+    public FrsService frsService(){
+        return new FrsService();
     }
 
 }
