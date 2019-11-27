@@ -75,7 +75,7 @@ public class SearchController {
                 faissService.addFeaturesByPost(imageVo.getGroup(),featuresMapList);
             }else {
                 //最大值>0.6，把数组中distance所以大于0.6的图片返回
-                for(int i=size-1;i<=0;i--) {
+                for(int i=size-1;i>=0;i--) {
                     double distance = Double.parseDouble(data.getJSONObject(i).getString("distance"));
                     if (distance > similarity) {
                         String id = data.getJSONObject(i).getString("id");
