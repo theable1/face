@@ -38,5 +38,15 @@ public class FrsService {
         }
         return null;
     }
+    public String viewGroupByGet(){
+        try{
+            JSONObject json =new JSONObject();
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 
 }

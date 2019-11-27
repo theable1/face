@@ -3,7 +3,7 @@ package com.ffcs.face;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.ffcs.face.service.FaissService;
-import net.minidev.json.JSONObject;
+import com.ffcs.face.service.FrsService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
