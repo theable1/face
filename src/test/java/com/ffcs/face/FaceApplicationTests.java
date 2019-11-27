@@ -1,5 +1,7 @@
 package com.ffcs.face;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.ffcs.face.service.FaissService;
 import com.ffcs.face.service.FrsService;
@@ -20,7 +22,8 @@ class FaceApplicationTests {
 
     @Test
     void contextLoads() {
-
+        String groupByGet = frsService.viewGroupByGet(null);
+        System.out.println(groupByGet);
     }
 
 

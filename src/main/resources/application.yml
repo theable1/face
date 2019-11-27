@@ -28,4 +28,4 @@ mybatis:
 
 
 baseUri: http://localhost:10004/bvs/api/v1/
-frsBaseUri: http://localhost:5001/frs/api/v1/faceinfo/
+frsBaseUri: http://localhost:5001/frs/api/v1/
