@@ -1,6 +1,7 @@
 package com.ffcs.face;
 
 import com.ffcs.face.service.FaissService;
+import com.ffcs.face.service.FrsService;
 import net.minidev.json.JSONObject;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,10 +10,17 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 @SpringBootTest
 class FaceApplicationTests {
     @Autowired
     FaissService faissService;
+    @Autowired
+    FrsService frsService;
     @Test
     void contextLoads() {
 
@@ -21,25 +29,16 @@ class FaceApplicationTests {
 
     @Test
     void testHash() {
-        //访问路径
-        String url="http://localhost:5001/frs/api/v1/faceinfo/feature";
-        //设置请求头,可根据接口文档要求设置
-        HttpHeaders header = new HttpHeaders();
-        header.set("Accept-Charset", "UTF-8");
-        header.set("Content-Type", "application/json; charset=utf-8");
-        //设置请求参数，此处设置为json
-        JSONObject object = new JSONObject();
-        object.put("image_id","1");
-        object.put("image_b64","/9j/4Q/cRXhpZgAATU");
-        //entity为请求体，包含请求参数
-
-        HttpEntity entity = new HttpEntity(object.toJSONString(), header);
-        System.out.println(entity);
-        RestTemplate restTemplate = new RestTemplate();
-        //发送post请求
-        String res = restTemplate.postForObject(url, entity, String.class);
-        System.out.println(res);
-
+        Map<String,String> featuresMap=new HashMap<>();
+        featuresMap.put("image_id","1");
+        featuresMap.put("feature","2");
+        Map<String,String> featuresMap1=new HashMap<>();
+        featuresMap1.put("image_id","2");
+        featuresMap1.put("feature","3");
+        List<Map<String,String>> featuresMapList=new ArrayList<>();
+        featuresMapList.add(featuresMap);
+        featuresMapList.add(featuresMap1);
+        System.out.println(featuresMapList.get(0).get("image_id"));
     }
 
 }
