@@ -36,8 +36,9 @@ public class SearchController {
         JSONObject jsonObject = JSON.parseObject(groups);
         JSONArray groupArrary = jsonObject.getJSONArray("data");
         System.out.println(groups);
-        Map<String,Object> groupMap=new HashMap<>();
+
         for(int i=0;i<groupArrary.size();i++){
+            Map<String,Object> groupMap=new HashMap<>();
             int gid=groupArrary.getJSONObject(i).getInteger("gid");
             String name = groupArrary.getJSONObject(i).getString("name");
             groupMap.put("gid",gid);
@@ -47,6 +48,7 @@ public class SearchController {
             }
 
         }
+        System.out.println(nameList);
         modelAndView.addObject("nameList", nameList);
         modelAndView.setViewName("search");
         return modelAndView;
