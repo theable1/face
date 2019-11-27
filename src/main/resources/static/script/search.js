@@ -11,27 +11,42 @@ function search() {
     var selector = document.getElementById("group");
     if (judgeNull(file)) {
         if (judgeType(img)) {
-            var group = selector.options[selector.selectedIndex].value;
-            $.ajax({
-                type: 'post',
-                dataType: 'application/json',
-                url: '/search/process',
-                data: {
+            var reader=new FileReader();
+            reader.onload=function(e){
+                var b64 = e.target.result;//获取base64编码
+                // console.log(b64);
+                var image64 = b64.split(",")[1];
+                console.log(image64);
+                console.log(hex_md5(img));
+                var group = selector.options[selector.selectedIndex].value;
+                var data = {
                     imageId: hex_md5(img),
-                    imageB64: toBase64(img),
+                    imageB64: image64,
                     group: group
-                },
-                success: function (data) {
-                    if (data == "success") {
-                        console.log("上传成功");
-                    } else {
+                };
+
+                $.ajax({
+                    type: 'post',
+                    dataType: 'json',
+                    contentType: "application/json;charset=utf-8",
+                    url: '/search/process',
+                    data: JSON.stringify(data),
+                    success: function (data) {
+                        if (data == "success") {
+                            alert("上传成功");
+                            console.log("上传成功");
+                        } else {
+                            alert("上传失败");
+                            console.log("上传失败");
+                        }
+                    },
+                    error: function () {
+                        alert("上传失败");
                         console.log("上传失败");
                     }
-                },
-                error: function () {
-                    console.log("上传失败");
-                }
-            });
+                });
+            }
+            reader.readAsDataURL(img);
         }
     }
 }
@@ -55,12 +70,4 @@ function judgeType(file) {
     return true;
 }
 
-function toBase64(file) {
-    var base64Data = null;
-    var reader = new FileReader()   //新建一个FileReader对象
-    reader.readAsDataURL(file)   //将读取的文件转换成base64格式
-    reader.onload = function (e) {
-        base64Data = e.target.result;
-    }
-    return base64Data;
-}
+

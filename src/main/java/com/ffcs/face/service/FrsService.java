@@ -18,17 +18,18 @@ import org.springframework.web.client.RestTemplate;
 public class FrsService {
     @Value("${frsBaseUri}")
     private String frsBaseUrl;
+
     @Autowired
     private RestTemplate restTemplate;
-    public String getFeatureByPost(String imageID,String imageB64){
+
+    public String getFeatureByPost(String imageId,String imageB64){
         try {
             JSONObject json = new JSONObject();
-            json.put("image_id", imageID);
+            json.put("image_id", imageId);
             json.put("image_b64", imageB64);
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
             HttpEntity<String> request = new HttpEntity<>(json.toString(), headers);
-            String s = frsBaseUrl + "feature";
             ResponseEntity<String> response = this.restTemplate
                     .postForEntity(frsBaseUrl+"feature", request, String.class);
             return response.getBody();

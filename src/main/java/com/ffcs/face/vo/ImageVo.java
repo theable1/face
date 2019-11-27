@@ -39,4 +39,13 @@ public class ImageVo implements Serializable {
     public void setImageB64(String imageB64) {
         this.imageB64 = imageB64;
     }
+
+    @Override
+    public String toString() {
+        return "ImageVo{" +
+                "imageId='" + imageId + '\'' +
+                ", imageB64='" + imageB64 + '\'' +
+                ", group='" + group + '\'' +
+                '}';
+    }
 }
