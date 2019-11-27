@@ -20,7 +20,10 @@ import java.util.List;
 public class SearchController {
     @Autowired
     FrsService frsService;
+
+    @Autowired
     FaissService faissService;
+
     @RequestMapping("visit")
     public ModelAndView visit(){
         ModelAndView modelAndView = new ModelAndView();
@@ -32,14 +35,16 @@ public class SearchController {
     public ModelAndView process(@RequestBody ImageVo imageVo){
         System.out.println(imageVo.toString());
         ModelAndView modelAndView = new ModelAndView();
+        //1、获取图片特征值
         String featureByPost = frsService.getFeatureByPost(imageVo.getImageId(), imageVo.getImageB64());
         JSONObject jsonObject = JSON.parseObject(featureByPost);
-        String feature_b64 = jsonObject.getString("feature_b64");
-        String image_id = jsonObject.getString("image_id");
+        String featureB64 = jsonObject.getString("feature_b64");
+        String imageId = jsonObject.getString("image_id");
+        System.out.println("feature_b64；"+featureB64);
+        System.out.println("image_id；"+imageId);
         List<String> features= new ArrayList<>();
-        features.add(feature_b64);
+        features.add(featureB64);
         String featuresByPost = faissService.searchFeaturesByPost(imageVo.getGroup(), features, 3);
-
 
 
         modelAndView.addObject("imageUrl","url");

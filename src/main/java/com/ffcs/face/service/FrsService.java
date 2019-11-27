@@ -16,15 +16,17 @@ import org.springframework.web.client.RestTemplate;
  * @date 2019/11/26
  */
 public class FrsService {
-    @Value("$frsBaseUri")
+    @Value("${frsBaseUri}")
     private String frsBaseUrl;
+
     @Autowired
     private RestTemplate restTemplate;
-    public String getFeatureByPost(String image_id,String image_b64){
+
+    public String getFeatureByPost(String imageId,String imageB64){
         try {
             JSONObject json = new JSONObject();
-            json.put("image_id", image_id);
-            json.put("image_b64", image_b64);
+            json.put("image_id", imageId);
+            json.put("image_b64", imageB64);
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
             HttpEntity<String> request = new HttpEntity<>(json.toString(), headers);

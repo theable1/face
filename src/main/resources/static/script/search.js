@@ -11,34 +11,42 @@ function search() {
     var selector = document.getElementById("group");
     if (judgeNull(file)) {
         if (judgeType(img)) {
-            var group = selector.options[selector.selectedIndex].value;
-            // console.log(hex_md5(img));
-            // console.log(btoa(img));
-            var data = {
-                imageId: hex_md5(img),
-                imageB64: btoa(img),
-                group: group
-            };
-            $.ajax({
-                type: 'post',
-                dataType: 'json',
-                contentType: "application/json;charset=utf-8",
-                url: '/search/process',
-                data: JSON.stringify(data),
-                success: function (data) {
-                    if (data == "success") {
-                        alert("上传成功");
-                        console.log("上传成功");
-                    } else {
+            var reader=new FileReader();
+            reader.onload=function(e){
+                var b64 = e.target.result;//获取base64编码
+                // console.log(b64);
+                var image64 = b64.split(",")[1];
+                console.log(image64);
+                console.log(hex_md5(img));
+                var group = selector.options[selector.selectedIndex].value;
+                var data = {
+                    imageId: hex_md5(img),
+                    imageB64: image64,
+                    group: group
+                };
+
+                $.ajax({
+                    type: 'post',
+                    dataType: 'json',
+                    contentType: "application/json;charset=utf-8",
+                    url: '/search/process',
+                    data: JSON.stringify(data),
+                    success: function (data) {
+                        if (data == "success") {
+                            alert("上传成功");
+                            console.log("上传成功");
+                        } else {
+                            alert("上传失败");
+                            console.log("上传失败");
+                        }
+                    },
+                    error: function () {
                         alert("上传失败");
                         console.log("上传失败");
                     }
-                },
-                error: function () {
-                    alert("上传失败");
-                    console.log("上传失败");
-                }
-            });
+                });
+            }
+            reader.readAsDataURL(img);
         }
     }
 }
@@ -61,4 +69,5 @@ function judgeType(file) {
     }
     return true;
 }
+
 
