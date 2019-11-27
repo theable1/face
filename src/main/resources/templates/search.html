@@ -5,14 +5,18 @@
     <title>搜索页面</title>
     <link rel="stylesheet" th:href="@{'/css/search.css'}">
     <script th:src="@{'/script/third/jquery-3.2.0.min.js'}"></script>
+    <script th:src="@{'/script/third/MD5.js'}"></script>
     <script th:src="@{'/script/search.js'}"></script>
 </head>
 <body>
-<div>
-    <div class="search">
+<div class="search_wrap clearfix">
+    <div class="search fl">
         <input type="file" id="upload">
         <input type="button" value="搜索" th:onclick="search()">
     </div>
+    <select class="select fl" id="group">
+        <option>人脸库</option>
+    </select>
 </div>
 <div id="result" class="result">
     <h4>搜索结果</h4>
