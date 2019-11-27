@@ -31,7 +31,7 @@ public class SearchController {
     public ModelAndView visit(){
         ModelAndView modelAndView = new ModelAndView();
         //查询所有人脸库
-        String groups = faissService.viewGroupByGet();
+        String groups = faissService.viewGroupByGet(null);
         JSONObject jsonObject1 = JSON.parseObject(groups);
         JSONArray groupArrary = jsonObject1.getJSONArray("data");
         for(int i=0;i<groupArrary.size();i++){

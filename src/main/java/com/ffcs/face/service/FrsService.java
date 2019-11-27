@@ -29,6 +29,7 @@ public class FrsService {
             json.put("image_b64", imageB64);
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
+            headers.set("Content-Type", "application/json; charset=utf-8");
             HttpEntity<String> request = new HttpEntity<>(json.toString(), headers);
             ResponseEntity<String> response = this.restTemplate
                     .postForEntity(frsBaseUrl+"feature", request, String.class);
@@ -38,15 +39,7 @@ public class FrsService {
         }
         return null;
     }
-    public String viewGroupByGet(){
-        try{
-            JSONObject json =new JSONObject();
-
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return null;
-    }
+    //public String viewFaceinfoByGet()
 
 
 }
