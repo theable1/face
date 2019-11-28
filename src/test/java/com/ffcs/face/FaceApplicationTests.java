@@ -1,18 +1,18 @@
 package com.ffcs.face;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
+
 import com.alibaba.fastjson.JSONObject;
 import com.ffcs.face.service.FaissService;
 import com.ffcs.face.service.FrsService;
+import com.ffcs.face.util.JsonUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.client.RestTemplate;
-
-import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 
 @SpringBootTest
@@ -21,7 +21,16 @@ class FaceApplicationTests {
     FaissService faissService;
     @Autowired
     FrsService frsService;
+    @Test
+    void testJsonUtils(){
+        Map<String,String> featureMap = new HashMap<>();
+        featureMap.put("a","1");
+        featureMap.put("b","22");
+        featureMap.put("c","333");
+        featureMap.put("d","4444");
 
+        System.out.println(JsonUtils.getMapsList(featureMap));
+    }
     @Test
     void contextLoads() {
         String groupByGet = frsService.viewGroupByGet(null);
