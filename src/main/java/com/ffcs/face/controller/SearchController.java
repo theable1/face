@@ -34,15 +34,15 @@ public class SearchController {
         ModelAndView modelAndView = new ModelAndView();
         List groupList = new ArrayList();
         //查询所有人脸库
-        String groups = frsService.viewGroupByGet(null);
+        String groups = faissService.viewGroupByGet(null);
         JSONObject jsonObject = JSON.parseObject(groups);
         JSONArray groupArrary = jsonObject.getJSONArray("data");
 
         for (int i = 0; i < groupArrary.size(); i++) {
             Map<String, Object> groupMap = new HashMap<>();
-            int gid = groupArrary.getJSONObject(i).getInteger("gid");
+//            int gid = groupArrary.getJSONObject(i).getInteger("gid");
             String name = groupArrary.getJSONObject(i).getString("name");
-            groupMap.put("gid", gid);
+//            groupMap.put("gid", gid);
             groupMap.put("name", name);
             if (name != null) {
                 groupList.add(groupMap);
@@ -64,57 +64,49 @@ public class SearchController {
         JSONObject jsonObject = JSON.parseObject(getFeatureResult);
         String featureB64 = jsonObject.getString("feature_b64");
         if (featureB64 != null) {
-            List<Integer> groupList = new ArrayList<>();
-            groupList.add(imageVo.getGroupId());
+            List<String> features = new ArrayList<>();
+            features.add(featureB64);
             //搜索相似图片
-            try {
-                String searchFeaturesResult = frsService.searchFeaturesByPost(ImageUtils.base64ToFile(imageVo.getImageB64(), imageVo.getFileName()), groupList, null, null);
-                System.out.println("搜索相似图片结果：" + searchFeaturesResult);
-                JSONObject jsonObject1 = JSON.parseObject(searchFeaturesResult);
-                JSONArray data = jsonObject1.getJSONArray("data");
-                //distance最大值小于0.6,把图片增加到group中
-                int size = data.size();
-                if (size != 0) {
-                    double maxDistance = Double.parseDouble(data.getJSONObject(0).getString("distance"));
-                    if (maxDistance < similarity) {
-                        Map<String, String> featuresMap = new HashMap<>();
-                        featuresMap.put("image_id", imageVo.getImageId());
-                        featuresMap.put("feature", featureB64);
-                        List<Map<String, String>> featuresMapList = new ArrayList<>();
-                        featuresMapList.add(featuresMap);
-//                        faissService.addFeaturesByPost(imageVo.getGroupName(), featuresMapList);
-                        JSONObject resultJson1 = new JSONObject();
-                        resultJson1.put("message", "未找到相似图片！");
-                        return resultJson1.toString();
-                    } else {
-                        //最大值>0.6，把数组中distance所以大于0.6的图片返回
-                        for (int i = size - 1; i >= 0; i--) {
-                            double distance = Double.parseDouble(data.getJSONObject(i).getString("distance"));
-                            if (distance > similarity) {
-                                String id = data.getJSONObject(i).getString("id");
-                                //根据特征码ID获取
-                            } else {
-                                break;
-                            }
-                        }
-                    }
-                } else {
+            String searchFeaturesResult = faissService.searchFeaturesByPost(imageVo.getGroupName(), features, null);
+            System.out.println("搜索相似图片结果：" + searchFeaturesResult);
+            JSONObject jsonObject1 = JSON.parseObject(searchFeaturesResult);
+            JSONArray data = jsonObject1.getJSONArray("data");
+            //distance最大值小于0.6,把图片增加到group中
+            int size = data.size();
+            if (size != 0) {
+                double maxDistance = Double.parseDouble(data.getJSONObject(0).getString("distance"));
+                if (maxDistance < similarity) {
                     Map<String, String> featuresMap = new HashMap<>();
                     featuresMap.put("image_id", imageVo.getImageId());
                     featuresMap.put("feature", featureB64);
                     List<Map<String, String>> featuresMapList = new ArrayList<>();
                     featuresMapList.add(featuresMap);
-//                faissService.addFeaturesByPost(imageVo.getGroupId(),featuresMapList);
-                    JSONObject resultJson2 = new JSONObject();
-                    resultJson2.put("message", "未找到相似图片！");
-                    return resultJson2.toString();
+                    faissService.addFeaturesByPost(imageVo.getGroupName(), featuresMapList);
+                    JSONObject resultJson1 = new JSONObject();
+                    resultJson1.put("message", "未找到相似图片！");
+                    return resultJson1.toString();
+                } else {
+                    //最大值>0.6，把数组中distance所以大于0.6的图片返回
+                    for (int i = size - 1; i >= 0; i--) {
+                        double distance = Double.parseDouble(data.getJSONObject(i).getString("distance"));
+                        if (distance > similarity) {
+                            String id = data.getJSONObject(i).getString("id");
+                            //根据特征码ID获取
+                        } else {
+                            break;
+                        }
+                    }
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
-                System.out.println("图片Base64转File出现异常");
-                JSONObject resultJson3 = new JSONObject();
-                resultJson3.put("message", "图片Base64转File出现异常！");
-                return resultJson3.toString();
+            } else {
+                Map<String, String> featuresMap = new HashMap<>();
+                featuresMap.put("image_id", imageVo.getImageId());
+                featuresMap.put("feature", featureB64);
+                List<Map<String, String>> featuresMapList = new ArrayList<>();
+                featuresMapList.add(featuresMap);
+                faissService.addFeaturesByPost(imageVo.getGroupName(), featuresMapList);
+                JSONObject resultJson2 = new JSONObject();
+                resultJson2.put("message", "未找到相似图片！");
+                return resultJson2.toString();
             }
         } else {
             return getFeatureResult;

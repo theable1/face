@@ -3,20 +3,15 @@ package com.ffcs.face.service;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -68,33 +63,6 @@ public class FrsService {
 
     //public String viewFaceinfoByGet()
 
-    public String searchFeaturesByPost(File image,List<Integer> gid, Float threshold, Integer top) {
-        try {
-            // 文件必须封装成FileSystemResource这个类型后端才能收到附件
-            FileSystemResource fileSystemResource = new FileSystemResource(image);
-            System.out.println(fileSystemResource);
-            //设置请求体，注意是LinkedMultiValueMap
-            MultiValueMap<String, Object> form = new LinkedMultiValueMap<>();
-            form.add("gid",gid);
-            form.add("image", fileSystemResource);
-            if(threshold!=null && threshold>0) {
-                form.add("threshold",threshold);
-            }
-            if(top!=null && top>0) {
-                form.add("top", top);
-            }
-            System.out.println(form);
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.MULTIPART_FORM_DATA);
-            HttpEntity<MultiValueMap<String, Object>> request = new HttpEntity<>(form, headers);
-            ResponseEntity<String> response = this.restTemplate
-                    .postForEntity(frsBaseUri+"facerec/search", request, String.class);
-            return response.getBody();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
 
 
 }
