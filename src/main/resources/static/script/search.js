@@ -1,6 +1,8 @@
-// $(document).ready(function(){
-//
-// });
+$(document).ready(function(){
+
+    //图片轮播
+    $('#owlCarousel').owlCarousel();
+});
 
 function search() {
     //1、判断用户是否选择图片
@@ -35,7 +37,7 @@ function search() {
 function judgeNull(file) {
     //判断用户是否上传图片
     if (file.value == "") {
-        alert("未选择图片！！");
+        swal.fire("未选择图片！", "", "warning");
         return false;
     } else {
         return true;
@@ -43,13 +45,13 @@ function judgeNull(file) {
 }
 
 function showImage(e) {
-    if (judgeNull(e)){
+    if (judgeNull(e)) {
         var img = e.files[0];
         var reader = new FileReader();
         reader.onload = function (e) {
             var dataUrl = e.target.result;
-            var imageOrigin = document.getElementById("image_origin");
-            imageOrigin.setAttribute("src",dataUrl);
+            var imageOrigin = document.getElementById("imageOrigin");
+            imageOrigin.setAttribute("src", dataUrl);
         }
         reader.readAsDataURL(img);
     }
@@ -63,16 +65,16 @@ function sendData(imageInfo) {
         url: '/search/process',
         data: JSON.stringify(imageInfo),
         success: function (data) {
-            if (data.code!=null) {
-                alert(data.message);
-            }else {
-                if (data.message!=null){
-                    alert(data.message);
-                }
+            if (data.code == null && data.message != null) {
+                swal.fire(data.message, "", "warning");
+            } else {
+                // var imageContent = document.getElementById("result_image");
+
+
             }
         },
         error: function () {
-            alert("检索失败！")
+            swal.fire("检索失败！", "", "error");
         }
     });
 }

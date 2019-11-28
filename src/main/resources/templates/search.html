@@ -4,9 +4,12 @@
     <meta charset="UTF-8">
     <title>搜索页面</title>
     <link rel="stylesheet" th:href="@{'/css/search.css'}">
+    <link rel="stylesheet" th:href="@{'/owlcarousel/owl.carousel.min.css'}">
+    <link rel="stylesheet" th:href="@{'/owlcarousel/owl.theme.default.min.css'}">
     <script th:src="@{'/script/third/jquery-3.2.0.min.js'}"></script>
     <script th:src="@{'/script/third/MD5.js'}"></script>
-    <script th:src="@{'/script/third/sweetalert.min.js'}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/8.11.8/sweetalert2.all.js"></script>
+    <script th:src="@{'/owlcarousel/owl.carousel.min.js'}"></script>
     <script th:src="@{'/script/search.js'}"></script>
 </head>
 <body>
@@ -22,11 +25,13 @@
 <div class="clearfix">
     <div id="origin" class="origin fl">
         <h4>上传图片</h4>
-        <img id="image_origin" width="100%">
+        <img id="imageOrigin" width="100%">
     </div>
     <div id="result" class="result fl">
         <h4>搜索结果</h4>
-        <img id="image_result" width="100%">
+        <div id="owlCarousel" class="owl-carousel owl-theme">
+            <div class="owl-item"><img id="item"></div>
+        </div>
     </div>
 </div>
 </body>

@@ -5,16 +5,13 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.ffcs.face.service.FaissService;
 import com.ffcs.face.service.FrsService;
-import com.ffcs.face.util.ImageUtils;
 import com.ffcs.face.vo.ImageVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -40,14 +37,11 @@ public class SearchController {
 
         for (int i = 0; i < groupArrary.size(); i++) {
             Map<String, Object> groupMap = new HashMap<>();
-//            int gid = groupArrary.getJSONObject(i).getInteger("gid");
             String name = groupArrary.getJSONObject(i).getString("name");
-//            groupMap.put("gid", gid);
             groupMap.put("name", name);
             if (name != null) {
                 groupList.add(groupMap);
             }
-
         }
         modelAndView.addObject("groupList", groupList);
         modelAndView.setViewName("search");
@@ -75,6 +69,7 @@ public class SearchController {
             int size = data.size();
             if (size != 0) {
                 double maxDistance = Double.parseDouble(data.getJSONObject(0).getString("distance"));
+                System.out.println("最大相似度为："+maxDistance);
                 if (maxDistance < similarity) {
                     Map<String, String> featuresMap = new HashMap<>();
                     featuresMap.put("image_id", imageVo.getImageId());
