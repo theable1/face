@@ -4,9 +4,12 @@
     <meta charset="UTF-8">
     <title>搜索页面</title>
     <link rel="stylesheet" th:href="@{'/css/search.css'}">
+    <link rel="stylesheet" th:href="@{'/owlcarousel/owl.carousel.min.css'}">
+    <link rel="stylesheet" th:href="@{'/owlcarousel/owl.theme.default.min.css'}">
     <script th:src="@{'/script/third/jquery-3.2.0.min.js'}"></script>
     <script th:src="@{'/script/third/MD5.js'}"></script>
-    <script th:src="@{'/script/third/sweetalert.min.js'}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/8.11.8/sweetalert2.all.js"></script>
+    <script th:src="@{'/owlcarousel/owl.carousel.min.js'}"></script>
     <script th:src="@{'/script/search.js'}"></script>
 </head>
 <body>
@@ -22,11 +25,26 @@
 <div class="clearfix">
     <div id="origin" class="origin fl">
         <h4>上传图片</h4>
-        <img id="image_origin" width="100%">
+        <img id="imageOrigin" width="460px">
     </div>
     <div id="result" class="result fl">
         <h4>搜索结果</h4>
-        <img id="image_result" width="100%">
+        <div id="owlCarousel" class="owl-carousel owl-theme owl-loaded">
+            <div class="owl-stage-outer">
+                <div class="owl-stage">
+                    <div class="owl-item">
+                        <h3>相似度：</h3>
+                        <img src="/image/2016_08_13_15_53_IMG_2958.JPG">
+                    </div>
+                    <div class="owl-item">
+                        <h3>相似度：</h3>
+                        <img src="/image/add.jpg">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="noResult" class="noResult">空空如也</div>
     </div>
 </div>
 </body>

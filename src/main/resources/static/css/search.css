@@ -19,18 +19,45 @@
 
 .origin,
 .result{
-    padding: 10px;
+    padding: 20px;
     width: 500px;
     height: 500px;
-    border: 1px solid #000000;
+    border: 3px solid #869791;
     text-align: center;
+    color: dimgray;
 }
 
 .origin{
-    margin-left: 200px;
+    margin-left: 150px;
     margin-right: 100px;
+    background: url("/image/add.jpg") no-repeat center;
+    background-size: 150px 150px;
 }
 
+.result h4{
+    margin-bottom: 0;
+}
+
+.noResult{
+    text-align: center;
+    line-height: 400px;
+    color: darkgrey;
+    height: 100%;
+    font-size: 40px;
+}
+
+h4{
+    padding-bottom: 10px;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-top: 10px;
+    border-bottom: 2px solid #869791;
+}
+#owlCarousel{
+    display: none;
+    width: 70%;
+    margin: 0 auto;
+}
 
 /*清除浮动：after内部最后的位置*/
 .clearfix:after{
@@ -47,4 +74,8 @@
 
 .fr{
     float: right;
+}
+
+.no_image{
+    margin-top: 150px;
 }
