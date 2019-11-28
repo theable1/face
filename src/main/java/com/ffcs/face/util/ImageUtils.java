@@ -1,7 +1,5 @@
 package com.ffcs.face.util;
 
-import org.springframework.beans.factory.annotation.Value;
-import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
 
 import java.io.*;
@@ -9,21 +7,7 @@ import java.util.Base64;
 
 public class ImageUtils {
 
-    public static String getImageb64Str(String imgFile) {
-        InputStream inputStream = null;
-        byte[] data = null;
-        try {
-            inputStream = new FileInputStream(imgFile);
-            data = new byte[inputStream.available()];
-            inputStream.read(data);
-            inputStream.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        // 加密
-        BASE64Encoder encoder = new BASE64Encoder();
-        return encoder.encode(data);
-    }
+
 
     public static File base64ToFile(String base64,String fileName) throws IOException {
         File file = null;
