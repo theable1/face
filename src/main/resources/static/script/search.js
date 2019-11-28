@@ -13,15 +13,18 @@ function search() {
         var reader = new FileReader();
         reader.onload = function (e) {
             //获取base64编码
-            var b64 = e.target.result;
-
+            var dataUrl = e.target.result;
+            var fileName = img.name;
+            var b64 = dataUrl.split(",")[1];
             //要传递的数据
-            var image64 = b64.split(",")[1];
-            var group = selector.options[selector.selectedIndex].value;
+            var groupId = selector.options[selector.selectedIndex].value;
+            var groupName = selector.options[selector.selectedIndex].text;
             var imageInfo = {
                 imageId: hex_md5(img),
-                imageB64: image64,
-                group: group
+                imageB64: b64,
+                groupId: groupId,
+                groupName: groupName,
+                fileName: fileName
             };
             sendData(imageInfo);
         }
@@ -44,10 +47,9 @@ function showImage(e) {
         var img = e.files[0];
         var reader = new FileReader();
         reader.onload = function (e) {
-            //获取base64编码
-            var b64 = e.target.result;
+            var dataUrl = e.target.result;
             var imageOrigin = document.getElementById("image_origin");
-            imageOrigin.setAttribute("src",b64);
+            imageOrigin.setAttribute("src",dataUrl);
         }
         reader.readAsDataURL(img);
     }
@@ -61,11 +63,12 @@ function sendData(imageInfo) {
         url: '/search/process',
         data: JSON.stringify(imageInfo),
         success: function (data) {
-            console.log(data);
-            if (data == "success") {
-                var imageResult = document.getElementById("image_result");
-
-            } else {
+            if (data.code!=null) {
+                alert(data.message);
+            }else {
+                if (data.message!=null){
+                    alert(data.message);
+                }
             }
         },
         error: function () {

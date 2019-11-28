@@ -17,9 +17,5 @@ public class FaceApplication {
     public RestTemplate restTemplate(){
         return new RestTemplate();
     }
-    @Bean
-    public FrsService frsService(){
-        return new FrsService();
-    }
 
 }

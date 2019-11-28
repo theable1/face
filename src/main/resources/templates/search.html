@@ -15,7 +15,7 @@
         <input type="button" value="搜索" th:onclick="search()">
     </div>
     <select class="select fl" id="group">
-        <option th:each="name:${nameList}" th:text="${name}" selected="selected"></option>
+        <option th:each="group:${groupList}" th:value="${group['gid']}" th:text="${group['name']}" selected="selected"></option>
     </select>
 </div>
 <div class="clearfix">

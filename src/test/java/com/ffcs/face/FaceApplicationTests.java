@@ -12,6 +12,8 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.File;
+
 
 @SpringBootTest
 class FaceApplicationTests {
