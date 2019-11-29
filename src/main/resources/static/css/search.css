@@ -12,11 +12,6 @@
     white-space: nowrap;
 }
 
-.select{
-    width: 100px;
-    margin-top: 5px;
-}
-
 .origin,
 .result{
     padding: 20px;
@@ -34,16 +29,28 @@
     background-size: 150px 150px;
 }
 
+input[type=button]{
+    cursor: pointer;
+}
+
+#imageOrigin{
+    max-width: 460px;
+    max-height: 420px;
+    margin-top: 5px;
+}
+
 .result h4{
     margin-bottom: 0;
 }
 
+
 .noResult{
     text-align: center;
-    line-height: 400px;
+    line-height: 380px;
     color: darkgrey;
     height: 100%;
     font-size: 40px;
+    /*display: none;*/
 }
 
 h4{
@@ -53,11 +60,15 @@ h4{
     margin-top: 10px;
     border-bottom: 2px solid #869791;
 }
-#owlCarousel{
-    display: none;
-    width: 70%;
-    margin: 0 auto;
+.image_box{
+    border: 2px solid #869791;
+    margin: 20px 20px;
+    width: 420px;
+    height: 380px;
+    overflow: auto;
+    padding: 20px;
 }
+
 
 /*清除浮动：after内部最后的位置*/
 .clearfix:after{
@@ -89,12 +100,11 @@ input[type=file]{
 
 .select {
     display: inline-block;
-    width: 100px;
+    width: 150px;
     height: 25px;
     position: relative;
     vertical-align: middle;
     padding: 0;
-    overflow: hidden;
     background-color: #fff;
     color: #555;
     border: 1px solid #aaa;
@@ -118,14 +128,14 @@ input[type=file]{
     height: 0;
     border: 10px solid transparent;
     border-top-color: #ccc;
-    top: 14px;
+    top: 10px;
     right: 10px;
     cursor: pointer;
     z-index: -2;
 }
 .select select {
     cursor: pointer;
-    padding: 10px;
+    padding-left: 10px;
     width: 100%;
     border: none;
     background: transparent;
@@ -136,4 +146,22 @@ input[type=file]{
 
 .select select:focus {
     outline: none;
+}
+
+ul{
+    list-style: none;
+    padding: 0;
+}
+
+li{
+    float:left;
+    width: 175px;
+    height: 175px;
+    margin: 12px;
+}
+
+ul img{
+    max-width: 175px;
+    max-height: 175px;
+    margin: auto auto;
 }
