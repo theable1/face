@@ -1,7 +1,7 @@
 $(document).ready(function () {
     $('.upImage').zoomify();
 
-
+    // $('.img').initViewer();
 
     $('#onSearch').on('click', function () {
         //1、判断用户是否选择图片
@@ -86,7 +86,6 @@ $(document).ready(function () {
                         );
                     }
                 }
-                // $('.zoomify').renderViewer();
             },
             error: function () {
                 swal.fire("检索失败！", "", "error");
