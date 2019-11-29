@@ -18,6 +18,7 @@
         <input type="file" id="upload" accept="image/*" onchange="showImage(this)">
         <input type="button" value="搜索" th:onclick="search()">
     </div>
+    <div class="fl face">人脸库：</div>
     <select class="select fl" id="group">
         <option th:each="group:${groupList}" th:value="${group['gid']}" th:text="${group['name']}" selected="selected"></option>
     </select>
@@ -35,10 +36,6 @@
                     <div class="owl-item">
                         <h3>相似度：</h3>
                         <img src="/image/2016_08_13_15_53_IMG_2958.JPG">
-                    </div>
-                    <div class="owl-item">
-                        <h3>相似度：</h3>
-                        <img src="/image/add.jpg">
                     </div>
                 </div>
             </div>

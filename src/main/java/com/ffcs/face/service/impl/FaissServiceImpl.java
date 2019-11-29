@@ -1,10 +1,11 @@
-package com.ffcs.face.service;
+package com.ffcs.face.service.impl;
 
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.ffcs.face.service.IFaissService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -22,7 +23,7 @@ import com.alibaba.fastjson.JSONObject;
  *
  */
 @Service
-public class FaissService {
+public class FaissServiceImpl implements IFaissService {
 	@Value("${baseUri}")
 	private String baseUri;
 	@Autowired
@@ -33,7 +34,8 @@ public class FaissService {
 	 * @param dimension
 	 * @return
 	 */
-	public String addGroupByPost(String name,Integer dimension) {
+	@Override
+	public String addGroupByPost(String name, Integer dimension) {
 		try {
 			JSONObject json = new JSONObject();
 			json.put("name", name);
@@ -54,6 +56,7 @@ public class FaissService {
 	 * @param name
 	 * @return
 	 */
+	@Override
 	public String viewGroupByGet(String name) {
 		try {
 			Map<String, String> params = new HashMap<>();
@@ -74,6 +77,7 @@ public class FaissService {
 	 * @param name
 	 * @return
 	 */
+	@Override
 	public String deleteGroupByDelete(String name) {
 		try {
 			Map<String, String> params = new HashMap<>();
@@ -94,7 +98,8 @@ public class FaissService {
 	 * @param features
 	 * @return
 	 */
-	public String addFeaturesByPost(String group,List<Map<String,String>> features) {
+	@Override
+	public String addFeaturesByPost(String group, List<Map<String,String>> features) {
 		try {
 			JSONObject json = new JSONObject();
 			json.put("group", group);
@@ -117,7 +122,8 @@ public class FaissService {
 	 * @param backNum
 	 * @return
 	 */
-	public String searchFeaturesByPost(String group,List<String> features,Integer backNum) {
+	@Override
+	public String searchFeaturesByPost(String group, List<String> features, Integer backNum) {
 		try {
 			JSONObject json = new JSONObject();
 			json.put("group", group);
