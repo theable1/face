@@ -4,6 +4,11 @@ spring:
       enabled: true
       additional-paths: src/main/java
 
+  datasource:
+    url: jdbc:mysql://192.168.50.10:3307/vision_bigdata_v1
+    username: ivm
+    password: ivm@ffcs123#
+
   jackson:
     serialization:
       #保证@ResponseBody时，Date会自动转化为timeStamp的数值(毫秒数)

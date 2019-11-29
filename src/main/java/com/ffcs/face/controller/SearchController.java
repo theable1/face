@@ -8,6 +8,8 @@ import com.ffcs.face.service.FrsService;
 import com.ffcs.face.util.ImageUtils;
 import com.ffcs.face.util.JsonUtils;
 import com.ffcs.face.vo.ImageVO;
+import com.ffcs.visionbigdata.mysql.bean.UploadImageInfo;
+import com.ffcs.visionbigdata.mysql.service.UploadImageInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,6 +30,8 @@ public class SearchController {
     FrsService frsService;
     @Autowired
     FaissService faissService;
+    @Autowired
+    private UploadImageInfoService uploadImageInfoService;
     @RequestMapping("list")
     public ModelAndView visit() {
         ModelAndView modelAndView = new ModelAndView();
@@ -72,6 +76,10 @@ public class SearchController {
             //distance最大值小于0.6,把图片增加到group中
             int size = data.size();
             if (size != 0) {
+                for(int i=0;i<size;i++)
+                {
+
+                }
                 double maxDistance = Double.parseDouble(data.getJSONObject(0).getString("distance"));
                 if (maxDistance < similarity) {
 //                    Map<String, String> featuresMap = new HashMap<>();
@@ -88,15 +96,25 @@ public class SearchController {
                     return resultJson1.toString();
                 } else {
                     //最大值>0.6，把数组中distance所以大于0.6的图片返回
-                    for (int i = 0; i < size; i--) {
+                    JSONObject resultJson1 = new JSONObject();
+                    Long[] intArray0 = new Long[size];
+                    for (int i = 0; i < size; i++) {
                         double distance = Double.parseDouble(data.getJSONObject(i).getString("distance"));
                         if (distance > similarity) {
-                            String id = data.getJSONObject(i).getString("id");
-                            //根据特征码ID获取图片ID
-                            //由图片ID得到图片URL
+                            long id = data.getJSONObject(i).getLongValue("id");
+                            intArray0[i] = id;
+                            //根据特征码ID获取图片展示路径
+
                         } else {
                             break;
                         }
+                    }
+                    List<UploadImageInfo> images = this.uploadImageInfoService.getImages(null,null,intArray0);
+                    if(images!=null && images.size()>0) {
+                        String imageShowPath = images.get(0).getImageShowPath();
+                        resultJson1.put("imageShowPath", imageShowPath);
+                        System.out.println(resultJson1.toString());
+                        return resultJson1.toString();
                     }
                 }
             } else {
