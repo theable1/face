@@ -4,43 +4,43 @@
     <meta charset="UTF-8">
     <title>搜索页面</title>
     <link rel="stylesheet" th:href="@{'/css/search.css'}">
-    <link rel="stylesheet" th:href="@{'/owlcarousel/owl.carousel.min.css'}">
-    <link rel="stylesheet" th:href="@{'/owlcarousel/owl.theme.default.min.css'}">
+    <link rel="stylesheet" th:href="@{'/css/third/viewer.min.css'}">
+    <link rel="stylesheet" th:href="@{'/css/third/zoomify.min.css'}">
     <script th:src="@{'/script/third/jquery-3.2.0.min.js'}"></script>
     <script th:src="@{'/script/third/MD5.js'}"></script>
+    <script th:src="@{'/script/third/zoomify.min.js'}"></script>
+    <script th:src="@{'/script/third/viewer.min.js'}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/8.11.8/sweetalert2.all.js"></script>
-    <script th:src="@{'/owlcarousel/owl.carousel.min.js'}"></script>
     <script th:src="@{'/script/search.js'}"></script>
 </head>
 <body>
 <div class="search_wrap clearfix">
     <div class="search fl">
-        <input type="file" id="upload" accept="image/*" onchange="showImage(this)">
-        <input type="button" value="搜索" th:onclick="search()">
+        <input type="file" id="upload" accept="image/*" >
+        <input type="button" value="搜索"  id="onSearch">
     </div>
     <div class="fl face">人脸库：</div>
-    <select class="select fl" id="group">
-        <option th:each="group:${groupList}" th:value="${group['gid']}" th:text="${group['name']}" selected="selected"></option>
-    </select>
+    <div class="select fl">
+        <select id="group">
+            <option th:each="group:${groupList}" th:value="${group['gid']}" th:text="${group['name']}" selected="selected"></option>
+        </select>
+    </div>
 </div>
 <div class="clearfix">
     <div id="origin" class="origin fl">
         <h4>上传图片</h4>
-        <img id="imageOrigin" height="50%">
+        <img id="imageOrigin" class="upImage">
     </div>
     <div id="result" class="result fl">
         <h4>搜索结果</h4>
-        <div id="owlCarousel" class="owl-carousel owl-theme owl-loaded">
-            <div class="owl-stage-outer">
-                <div class="owl-stage">
-                    <div class="owl-item">
-
-                    </div>
-                </div>
-            </div>
+        <div id="imageBox" class="image_box">
+            <ul id="showBox" class="clearfix">
+                <li><img src="/image/2016_08_13_15_53_IMG_2958.JPG"></li>
+                <li><img src="/image/2016_08_13_15_53_IMG_2958.JPG"></li>
+                <li><img src="/image/2016_08_13_15_53_IMG_2958.JPG"></li>
+            </ul>
+            <div id="noResult" class="noResult">空空如也</div>
         </div>
-
-        <div id="noResult" class="noResult">空空如也</div>
     </div>
 </div>
 </body>
