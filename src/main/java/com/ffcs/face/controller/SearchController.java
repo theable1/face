@@ -29,6 +29,7 @@ public class SearchController {
     IFaissService faissService;
     @Autowired
     private UploadImageInfoService uploadImageInfoService;
+
     @RequestMapping("list")
     public ModelAndView visit() {
         ModelAndView modelAndView = new ModelAndView();

@@ -1,6 +1,5 @@
 package com.ffcs.face;
 
-import com.ffcs.face.service.FrsService;
 import com.ffcs.visionbigdata.mysql.service.UploadImageInfoService;
 import com.ffcs.visionbigdata.mysql.service.impl.UploadImageInfoServiceImpl;
 import org.springframework.boot.SpringApplication;
