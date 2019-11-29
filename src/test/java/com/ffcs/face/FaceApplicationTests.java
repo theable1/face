@@ -2,8 +2,8 @@ package com.ffcs.face;
 
 
 import com.alibaba.fastjson.JSONObject;
-import com.ffcs.face.service.FaissService;
-import com.ffcs.face.service.FrsService;
+import com.ffcs.face.service.IFaissService;
+import com.ffcs.face.service.IFrsService;
 import com.ffcs.face.util.JsonUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +18,9 @@ import java.util.Map;
 @SpringBootTest
 class FaceApplicationTests {
     @Autowired
-    FaissService faissService;
+    IFaissService faissService;
     @Autowired
-    FrsService frsService;
+    IFrsService frsService;
     @Test
     void testJsonUtils(){
         Map<String,String> featureMap = new HashMap<>();

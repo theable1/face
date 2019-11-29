@@ -1,6 +1,7 @@
-package com.ffcs.face.service;
+package com.ffcs.face.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.ffcs.face.service.IFrsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
@@ -23,14 +24,15 @@ import java.util.Map;
  * @date 2019/11/26
  */
 @Service
-public class FrsService {
+public class FrsServiceImpl implements IFrsService {
     @Value("${frsBaseUri}")
     private String frsBaseUri;
 
     @Autowired
     private RestTemplate restTemplate;
 
-    public String getFeatureByPost(String imageId,String imageB64){
+    @Override
+    public String getFeatureByPost(String imageId, String imageB64){
         try {
             JSONObject json = new JSONObject();
             json.put("image_id", imageId);
@@ -46,6 +48,7 @@ public class FrsService {
         }
         return null;
     }
+    @Override
     public String viewGroupByGet(Integer gId){
         try {
             Map<String, Integer> params = new HashMap<>();

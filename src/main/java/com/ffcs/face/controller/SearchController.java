@@ -3,19 +3,16 @@ package com.ffcs.face.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.ffcs.face.service.FaissService;
-import com.ffcs.face.service.FrsService;
-import com.ffcs.face.util.ImageUtils;
+import com.ffcs.face.service.IFaissService;
+import com.ffcs.face.service.IFrsService;
 import com.ffcs.face.util.JsonUtils;
 import com.ffcs.face.vo.ImageVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -25,9 +22,9 @@ import java.util.Map;
 @RequestMapping("/search/")
 public class SearchController {
     @Autowired
-    FrsService frsService;
+    IFrsService frsService;
     @Autowired
-    FaissService faissService;
+    IFaissService faissService;
     @RequestMapping("list")
     public ModelAndView visit() {
         ModelAndView modelAndView = new ModelAndView();
@@ -35,13 +32,9 @@ public class SearchController {
         //查询所有人脸库
         String groups = faissService.viewGroupByGet(null);
         JSONArray  groupArrary= JsonUtils.getJsonValueArray(groups, "data");
-//      JSONObject jsonObject = JSON.parseObject(groups);
-//      JSONArray groupArrary = jsonObject.getJSONArray("data");
         for (int i = 0; i < groupArrary.size(); i++) {
             Map<String, Object> groupMap = new HashMap<>();
-//            int gid = groupArrary.getJSONObject(i).getInteger("gid");
             String name = groupArrary.getJSONObject(i).getString("name");
-//            groupMap.put("gid", gid);
             groupMap.put("name", name);
             if (name != null) {
                 groupList.add(groupMap);
@@ -66,8 +59,6 @@ public class SearchController {
             //搜索相似图片
             String searchFeaturesResult = faissService.searchFeaturesByPost(imageVo.getGroupName(), features, null);
             System.out.println("搜索相似图片结果：" + searchFeaturesResult);
-//          JSONObject jsonObject1 = JSON.parseObject(searchFeaturesResult);
-//          JSONArray data = jsonObject1.getJSONArray("data");
             JSONArray data= JsonUtils.getJsonValueArray(searchFeaturesResult, "data");
             //distance最大值小于0.6,把图片增加到group中
             int size = data.size();
