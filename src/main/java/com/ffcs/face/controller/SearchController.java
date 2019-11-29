@@ -87,15 +87,18 @@ public class SearchController {
                         featureIdLong.add(data.getJSONObject(i).getLongValue("id"));
                     }
                 }
-                Long[] a1 = new Long[featureIdLong.size()];
-                List<UploadImageInfo> images = this.uploadImageInfoService.getImages(null,null,featureIdLong.toArray(a1));
-                if(images!=null && images.size()>0) {
+                if(featureIdLong.size()!=0){
+                    Long[] a1 = new Long[featureIdLong.size()];
+                    List<UploadImageInfo> images = this.uploadImageInfoService.getImages(null,null,featureIdLong.toArray(a1));
+                    if(images!=null && images.size()>0) {
 
-                    for(int j=0;j<images.size();j++){
-                        imageShowPathList.add(images.get(j).getImageShowPath());
+                        for(int j=0;j<images.size();j++){
+                            imageShowPathList.add(images.get(j).getImageShowPath());
+                        }
+                        System.out.println(imageShowPathList);
                     }
-                    System.out.println(imageShowPathList);
                 }
+
 //                if (maxDistance < similarity) {
 //                    Map<String,String> featureMap = new HashMap<>();
 //                    featureMap.put(imageVo.getImageId(),imageVo.getImageB64());
@@ -153,6 +156,7 @@ public class SearchController {
                     resultJson2.put("message", "当前库中没有图片，此图片已保存到当前库中！");
                     return resultJson2;
                 }
+                System.out.println(imageShowPathList);
                 return imageShowPathList;
             }
 
