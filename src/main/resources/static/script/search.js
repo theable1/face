@@ -22,7 +22,7 @@ $(document).ready(function () {
                 var groupId = selector.options[selector.selectedIndex].value;
                 var groupName = selector.options[selector.selectedIndex].text;
                 var imageInfo = {
-                    imageId: hex_md5(img),
+                    imageId: hex_md5(b64),
                     imageB64: b64,
                     groupId: groupId,
                     groupName: groupName,
