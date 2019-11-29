@@ -29,8 +29,17 @@
         </dependency>
         <dependency>
             <groupId>com.ffcs</groupId>
+            <artifactId>vision-bigdata-message</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.ffcs</groupId>
             <artifactId>vision-bigdata-message-mysql</artifactId>
             <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-amqp</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
