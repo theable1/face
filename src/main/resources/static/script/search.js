@@ -4,6 +4,7 @@ $(document).ready(function () {
     // $('.img').initViewer();
 
     $('#onSearch').on('click', function () {
+        document.getElementById("showBox").innerHTML = "";
         //1、判断用户是否选择图片
         //2、判断用户选择文件是否为图片类型
         //3、已选择再ajax将图片发送到后端
@@ -21,7 +22,7 @@ $(document).ready(function () {
                 var groupId = selector.options[selector.selectedIndex].value;
                 var groupName = selector.options[selector.selectedIndex].text;
                 var imageInfo = {
-                    imageId: hex_md5(img),
+                    imageId: hex_md5(b64),
                     imageB64: b64,
                     groupId: groupId,
                     groupName: groupName,

@@ -3,6 +3,7 @@ package com.ffcs.face.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.ffcs.common.tools.FileAccessUtil;
 import com.ffcs.face.service.IFaissService;
 import com.ffcs.face.service.IFrsService;
 import com.ffcs.face.util.JsonUtils;
@@ -88,8 +89,10 @@ public class SearchController {
                     }
                 }
                 if(featureIdLong.size()!=0){
+
                     Long[] a1 = new Long[featureIdLong.size()];
                     List<UploadImageInfo> images = this.uploadImageInfoService.getImages(null,null,featureIdLong.toArray(a1));
+                    System.out.println(images.size()+"00000000000000000000");
                     if(images!=null && images.size()>0) {
 
                         for(int j=0;j<images.size();j++){
@@ -149,14 +152,18 @@ public class SearchController {
 //                String s= faissService.addFeaturesByPost(imageVo.getGroupName(), featuresMapList);
                 Simple simple = new Simple();
                 simple.setBase64(imageVo.getImageB64());
-                simple.setHashCode(imageVo.getImageId());
+                simple.setHashCode(FileAccessUtil.getHashCode(imageVo.getImageB64().getBytes()));
                 sender.apply(simple);
                 if(maxFlag == false){
                     JSONObject resultJson2 = new JSONObject();
-                    resultJson2.put("message", "当前库中没有图片，此图片已保存到当前库中！");
+                    resultJson2.put("message", "找不到相似图片，此图片已保存到当前库中！");
                     return resultJson2;
+                }else{
+                    System.out.println(imageShowPathList);
+                    return imageShowPathList;
                 }
-                System.out.println(imageShowPathList);
+
+            }else{
                 return imageShowPathList;
             }
 
@@ -164,6 +171,5 @@ public class SearchController {
 
             return getFeatureResult;
         }
-        return null;
     }
 }
