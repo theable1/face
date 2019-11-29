@@ -4,6 +4,7 @@ $(document).ready(function () {
     // $('.img').initViewer();
 
     $('#onSearch').on('click', function () {
+        document.getElementById("showBox").innerHTML = "";
         //1、判断用户是否选择图片
         //2、判断用户选择文件是否为图片类型
         //3、已选择再ajax将图片发送到后端
