@@ -79,14 +79,14 @@ $(document).ready(function () {
                     //隐藏空空如也的div
                     document.getElementById("noResult").style.display = "none";
                     //将查询结果图片放入div
-                    var box = $('#showBox');
+                    var box = document.getElementById("showBox");
                     box.style.display = "block";
                     for (var i = 0; i < data.length; i++) {
                         box.append(
                             '<li>' +
-                            '<img src="' + data[i] + '" id="image' + i + '">' +
+                            '<img src="' + data[i].imageShowPath + '" id="image' + i + '">' +
                             '<div class="image_info clearfix">' +
-                            '<div class="fl similarity">相似度：' + 100 % +'</div>' +
+                            '<div class="fl similarity">相似度：' + data[i].diastance*100+"%"+'</div>' +
                             '<div class="search_again_button"><button class="btn btn-primary" onclick="searchAgainClick(this)">继续搜索</button></div>' +
                             '</div>' +
                             '</li>'
@@ -128,6 +128,8 @@ $(document).ready(function () {
 
     //去掉上传图片，恢复初始状态
     function clearUpImageBox() {
+        //去掉input file选择的图片
+        document.getElementById("upload").value = "";
         //去掉图片
         document.getElementById("imageOrigin").style.display = "none";
         //去掉closeicon
