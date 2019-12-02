@@ -74,17 +74,21 @@ public class SearchController {
             int size = data.size();
             boolean saveImage = false;
             boolean maxFlag =false;
-            List<String> imageShowPathList = new ArrayList<>();
+            List<Map<String,Object>> imageMessageList = new ArrayList<>();
             if (size != 0) {
-                double maxDistance = Double.parseDouble(data.getJSONObject(0).getString("distance"));
+                double maxDistance = data.getJSONObject(0).getDouble("distance");
                 saveImage = maxDistance==1.0? false : true;
                 maxFlag = maxDistance>0.6?true:false;
                 System.out.println("是否保存"+saveImage);
-                List<Long> featureIdLong = new ArrayList<Long>();
+                List<Long> featureIdLong = new ArrayList<>();
+                int[] flag = new int[10];
+                int num=0;
                 for(int i=0;i<size;i++){
-                    if( Double.parseDouble(data.getJSONObject(i).getString("distance"))<similarity){
+                    if( data.getJSONObject(i).getDouble("distance")<similarity){
                         break;
                     }else{
+                        flag[num]=i;
+                        num++;
                         featureIdLong.add(data.getJSONObject(i).getLongValue("id"));
                     }
                 }
@@ -92,64 +96,21 @@ public class SearchController {
 
                     Long[] a1 = new Long[featureIdLong.size()];
                     List<UploadImageInfo> images = this.uploadImageInfoService.getImages(null,null,featureIdLong.toArray(a1));
-                    System.out.println(images.size()+"00000000000000000000");
                     if(images!=null && images.size()>0) {
 
                         for(int j=0;j<images.size();j++){
-                            imageShowPathList.add(images.get(j).getImageShowPath());
+                            Map<String,Object> imageMessageMap = new HashMap<>();
+                            imageMessageMap.put("diastance",data.getJSONObject(flag[j]).getDouble("distance"));
+                            imageMessageMap.put("imageShowPath",images.get(j).getImageShowPath());
+                            imageMessageList.add(imageMessageMap);
                         }
-                        System.out.println(imageShowPathList);
+                        System.out.println(imageMessageList);
                     }
                 }
-
-//                if (maxDistance < similarity) {
-//                    Map<String,String> featureMap = new HashMap<>();
-//                    featureMap.put(imageVo.getImageId(),imageVo.getImageB64());
-//                    List<Map<String, String>> featuresMapList = JsonUtils.getMapsList(featureMap);
-//                    faissService.addFeaturesByPost(imageVo.getGroupName(), featuresMapList);
-//                    JSONObject resultJson1 = new JSONObject();
-//                    resultJson1.put("message", "未找到相似图片，此图片已保存到当前库中！");
-//                    return resultJson1;
-//
-//                } else {
-//                    //最大值>0.6，把数组中distance所以大于0.6的图片返回
-//                    JSONObject resultJson1 = new JSONObject();
-//                    Long[] intArray0 = new Long[size];
-//                    for (int i = 0; i < size; i++) {
-//                        double distance = Double.parseDouble(data.getJSONObject(i).getString("distance"));
-//                        if (distance > similarity) {
-//                            long id = data.getJSONObject(i).getLongValue("id");
-//                            intArray0[i] = id;
-//                            //根据特征码ID获取图片展示路径
-//                        } else {
-//                            break;
-//                        }
-//                    }
-//                    List<UploadImageInfo> images = this.uploadImageInfoService.getImages(null,null,intArray0);
-//                    if(images!=null && images.size()>0) {
-//                        List<String> imageShowPathList = new ArrayList<>();
-//                        for(int i=0;i<images.size();i++){
-//                            imageShowPathList.add(images.get(i).getImageShowPath());
-//                        }
-//                        System.out.println(imageShowPathList);
-//                        return imageShowPathList;
-//                    }
-//                }
             } else {
                 saveImage = true;
-//                Map<String,String> featureMap = new HashMap<>();
-//                featureMap.put(imageVo.getImageId(),imageVo.getImageB64());
-//                List<Map<String, String>> featuresMapList = JsonUtils.getMapsList(featureMap);
-//                faissService.addFeaturesByPost(imageVo.getGroupName(), featuresMapList);
-//                JSONObject resultJson2 = new JSONObject();
-//                resultJson2.put("message", "当前库中没有图片，此图片已保存到当前库中！");
-//                return resultJson2;
             }
             if(saveImage == true){
-//                Map<String,String> featureMap = new HashMap<>();
-//                featureMap.put(imageVo.getImageId(),imageVo.getImageB64());
-//                List<Map<String, String>> featuresMapList = JsonUtils.getMapsList(featureMap);
-//                String s= faissService.addFeaturesByPost(imageVo.getGroupName(), featuresMapList);
                 Simple simple = new Simple();
                 simple.setBase64(imageVo.getImageB64());
                 simple.setHashCode(FileAccessUtil.getHashCode(imageVo.getImageB64().getBytes()));
@@ -159,12 +120,12 @@ public class SearchController {
                     resultJson2.put("message", "找不到相似图片，此图片已保存到当前库中！");
                     return resultJson2;
                 }else{
-                    System.out.println(imageShowPathList);
-                    return imageShowPathList;
+                    System.out.println(imageMessageList);
+                    return imageMessageList;
                 }
 
             }else{
-                return imageShowPathList;
+                return imageMessageList;
             }
 
         } else {
