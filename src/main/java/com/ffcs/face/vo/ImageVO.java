@@ -8,15 +8,6 @@ public class ImageVO implements Serializable {
     private String imageB64;
     private Integer groupId;
     private String groupName;
-    private String fileName;
-
-    public String getFileName() {
-        return fileName;
-    }
-
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
-    }
 
     public String getGroupName() {
         return groupName;
@@ -57,7 +48,6 @@ public class ImageVO implements Serializable {
                 ", imageB64='" + imageB64 + '\'' +
                 ", groupId=" + groupId +
                 ", groupName='" + groupName + '\'' +
-                ", fileName='" + fileName + '\'' +
                 '}';
     }
 }
