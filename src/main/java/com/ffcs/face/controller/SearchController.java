@@ -95,7 +95,6 @@ public class SearchController {
                 }
                 System.out.println("featureIdLong:"+featureIdLong);
                 if(featureIdLong.size()!=0){
-
                     Long[] a1 = new Long[featureIdLong.size()];
                     List<UploadImageInfo> images = this.uploadImageInfoService.getImages(null,null,featureIdLong.toArray(a1));
                     System.out.println("images:"+images);
