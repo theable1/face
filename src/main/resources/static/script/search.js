@@ -1,3 +1,4 @@
+var searchAgainClick;
 $(document).ready(function () {
     // $('#imageOrigin').zoomify();
 
@@ -18,6 +19,7 @@ $(document).ready(function () {
                 var dataUrl = e.target.result;
                 var fileName = img.name;
                 var b64 = dataUrl.split(",")[1];
+                // console.log(b64);
                 //要传递的数据
                 var groupId = selector.options[selector.selectedIndex].value;
                 var groupName = selector.options[selector.selectedIndex].text;
@@ -64,7 +66,6 @@ $(document).ready(function () {
         clearUpImageBox();
     });
 
-
     function sendData(imageInfo) {
         $.ajax({
             type: 'post',
@@ -79,14 +80,14 @@ $(document).ready(function () {
                     //隐藏空空如也的div
                     document.getElementById("noResult").style.display = "none";
                     //将查询结果图片放入div
-                    var box = document.getElementById("showBox");
-                    box.style.display = "block";
+                    var box = $("#showBox");
+                    box.css('display', 'block');
                     for (var i = 0; i < data.length; i++) {
                         box.append(
                             '<li>' +
                             '<img src="' + data[i].imageShowPath + '" id="image' + i + '">' +
                             '<div class="image_info clearfix">' +
-                            '<div class="fl similarity">相似度：' + data[i].diastance*100+"%"+'</div>' +
+                            '<div class="fl similarity">' + '相似度：' + (data[i].diastance.toFixed(2)) * 100 + '%' + '</div>' +
                             '<div class="search_again_button"><button class="btn btn-primary" onclick="searchAgainClick(this)">继续搜索</button></div>' +
                             '</div>' +
                             '</li>'
@@ -147,55 +148,50 @@ $(document).ready(function () {
     }
 
     //再次搜索按钮
-    function searchAgainClick(e) {
+    searchAgainClick = function (e) {
         //检索图片放到上传图片框，搜索结果清空
         var url = e.parentElement.parentElement.previousElementSibling.getAttribute("src");
         showUpImage(url);
         clearResultBox();
         //ajax发送图片数据到后台
-        getBase64(url)
-            .then(function (base64) {
-                var b64 = base64.split(",")[1];
-                var selector = document.getElementById("group");
-                var groupId = selector.options[selector.selectedIndex].value;
-                var groupName = selector.options[selector.selectedIndex].text;
-                var imageInfo = {
-                    imageId: hex_md5(b64),
-                    imageB64: b64,
-                    groupId: groupId,
-                    groupName: groupName
-                };
-                //发送
-                sendData(imageInfo);
-            }, function (err) {
-                console.log(err);//打印异常信息
-            });
+         var img = document.createElement("img");
+         img.crossOrigin = "*";
+         img.src = url;
+         img.onload = function () {
+             getBase64Image(img);
+         }
+        //     getBase64(url)
+        //         .then(function (base64) {
+        //             var b64 = base64.split(",")[1];
+        //             var selector = document.getElementById("group");
+        //             var groupId = selector.options[selector.selectedIndex].value;
+        //             var groupName = selector.options[selector.selectedIndex].text;
+        //             var imageInfo = {
+        //                 imageId: hex_md5(b64),
+        //                 imageB64: b64,
+        //                 groupId: groupId,
+        //                 groupName: groupName
+        //             };
+        //             //发送
+        //             sendData(imageInfo);
+        //         }, function (err) {
+        //             swal.fire("获取图片失败！", "", "error");
+        //             console.log(err);//打印异常信息
+        //         });
     }
 
-    //传入图片路径，返回base64
-    function getBase64(img) {
-        function getBase64Image(img, width, height) {//width、height调用时传入具体像素值，控制大小 ,不传则默认图像大小
-            var canvas = document.createElement("canvas");
-            canvas.width = width ? width : img.width;
-            canvas.height = height ? height : img.height;
-
-            var ctx = canvas.getContext("2d");
-            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-            var dataURL = canvas.toDataURL();
-            return dataURL;
-        }
-
-        var image = new Image();
-        image.crossOrigin = '';
-        image.src = img;
-        var deferred = $.Deferred();
-        if (img) {
-            image.onload = function () {
-                deferred.resolve(getBase64Image(image));//将base64传给done上传处理
-            };
-            return deferred.promise();//问题要让onload完成后再return sessionStorage['imgTest']
-        }
-    };
-
+    ///获取图片base64
+    function getBase64Image(img) {
+        var canvas = document.createElement("canvas");
+        canvas.width = img.width;
+        canvas.height = img.height;
+        var ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0, img.width, img.height);
+        var dataURL = canvas.toDataURL("image/png"); // 可选其他值 image/jpeg
+        return dataURL;
+    }
 });
+
+
+
 

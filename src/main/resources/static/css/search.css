@@ -6,10 +6,14 @@ body{
 }
 
 button,
-input[type=button],
+input,
 .add_icon,
 img{
     cursor: pointer;
+}
+
+button{
+    outline: 0;
 }
 
 .search_wrap{
@@ -33,6 +37,7 @@ img{
 
 .search input{
     display: inline-block;
+    outline: none;
 }
 
 .info{

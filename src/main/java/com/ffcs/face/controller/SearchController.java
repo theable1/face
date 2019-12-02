@@ -60,6 +60,7 @@ public class SearchController {
         double similarity = 0.6;
         //获取特征值
         String getFeatureResult = frsService.getFeatureByPost(imageVo.getImageId(), imageVo.getImageB64());
+        System.out.println("imageVO:"+imageVo);
         System.out.println("获取特征值结果：:" + getFeatureResult);
         JSONObject jsonObject = JSON.parseObject(getFeatureResult);
         String featureB64 = jsonObject.getString("feature_b64");
@@ -92,12 +93,13 @@ public class SearchController {
                         featureIdLong.add(data.getJSONObject(i).getLongValue("id"));
                     }
                 }
+                System.out.println("featureIdLong:"+featureIdLong);
                 if(featureIdLong.size()!=0){
 
                     Long[] a1 = new Long[featureIdLong.size()];
                     List<UploadImageInfo> images = this.uploadImageInfoService.getImages(null,null,featureIdLong.toArray(a1));
+                    System.out.println("images:"+images);
                     if(images!=null && images.size()>0) {
-
                         for(int j=0;j<images.size();j++){
                             Map<String,Object> imageMessageMap = new HashMap<>();
                             imageMessageMap.put("diastance",data.getJSONObject(flag[j]).getDouble("distance"));
@@ -113,7 +115,7 @@ public class SearchController {
             if(saveImage == true){
                 Simple simple = new Simple();
                 simple.setBase64(imageVo.getImageB64());
-                simple.setHashCode(FileAccessUtil.getHashCode(imageVo.getImageB64().getBytes()));
+                simple.setHashCode(imageVo.getImageId());
                 sender.apply(simple);
                 if(maxFlag == false){
                     JSONObject resultJson2 = new JSONObject();
@@ -123,7 +125,6 @@ public class SearchController {
                     System.out.println(imageMessageList);
                     return imageMessageList;
                 }
-
             }else{
                 return imageMessageList;
             }
