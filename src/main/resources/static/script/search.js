@@ -154,42 +154,23 @@ $(document).ready(function () {
         showUpImage(url);
         clearResultBox();
         //ajax发送图片数据到后台
-         var img = document.createElement("img");
-         img.crossOrigin = "*";
-         img.src = url;
-         img.onload = function () {
-             getBase64Image(img);
-         }
-        //     getBase64(url)
-        //         .then(function (base64) {
-        //             var b64 = base64.split(",")[1];
-        //             var selector = document.getElementById("group");
-        //             var groupId = selector.options[selector.selectedIndex].value;
-        //             var groupName = selector.options[selector.selectedIndex].text;
-        //             var imageInfo = {
-        //                 imageId: hex_md5(b64),
-        //                 imageB64: b64,
-        //                 groupId: groupId,
-        //                 groupName: groupName
-        //             };
-        //             //发送
-        //             sendData(imageInfo);
-        //         }, function (err) {
-        //             swal.fire("获取图片失败！", "", "error");
-        //             console.log(err);//打印异常信息
-        //         });
-    }
+        var imageInfo = {
+            url: url
+        };
+        //发送
+        sendData(imageInfo);
+    };
 
     ///获取图片base64
-    function getBase64Image(img) {
-        var canvas = document.createElement("canvas");
-        canvas.width = img.width;
-        canvas.height = img.height;
-        var ctx = canvas.getContext("2d");
-        ctx.drawImage(img, 0, 0, img.width, img.height);
-        var dataURL = canvas.toDataURL("image/png"); // 可选其他值 image/jpeg
-        return dataURL;
-    }
+    // function getBase64Image(img) {
+    //     var canvas = document.createElement("canvas");
+    //     canvas.width = img.width;
+    //     canvas.height = img.height;
+    //     var ctx = canvas.getContext("2d");
+    //     ctx.drawImage(img, 0, 0, img.width, img.height);
+    //     var dataURL = canvas.toDataURL("image/png"); // 可选其他值 image/jpeg
+    //     return dataURL;
+    // }
 });
 
 
