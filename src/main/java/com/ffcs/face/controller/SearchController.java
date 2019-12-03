@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.ffcs.common.tools.FileAccessUtil;
-import com.ffcs.common.tools.MD5Util;
 import com.ffcs.face.service.IFaissService;
 import com.ffcs.face.service.IFrsService;
 import com.ffcs.face.util.JsonUtils;
@@ -15,7 +14,6 @@ import com.ffcs.visionbigdata.fastdfs.FastdfsDownload;
 import com.ffcs.visionbigdata.mysql.bean.UploadImageInfo;
 import com.ffcs.visionbigdata.mysql.service.UploadImageInfoService;
 import com.ffcs.visionbigdata.rabbitmq.Sender;
-import org.csource.common.IniFileReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -116,11 +114,25 @@ public class SearchController {
                     List<UploadImageInfo> images = this.uploadImageInfoService.getImages(null,null,featureIdLong.toArray(a1));
                     System.out.println("images:"+images);
                     if(images!=null && images.size()>0) {
-                        for(int j=0;j<images.size();j++){
-                            Map<String,Object> imageMessageMap = new HashMap<>();
-                            imageMessageMap.put("distance",data.getJSONObject(flag[j]).getDouble("distance"));
-                            imageMessageMap.put("imageShowPath",images.get(j).getImageShowPath());
-                            imageMessageList.add(imageMessageMap);
+//                        for(int i=0;i<images.size();i++){
+//                            for(int j=0;j<data.size();j++){
+//                                if(Long.parseLong(images.get(i).getFaissFeatureId()) == data.getJSONObject(j).getLongValue("id")){
+//                                    Map<String,Object> imageMessageMap = new HashMap<>();
+//                                    imageMessageMap.put("distance",data.getJSONObject(j).getDouble("distance"));
+//                                    imageMessageMap.put("imageShowPath",images.get(i).getImageShowPath());
+//                                    imageMessageList.add(imageMessageMap);
+//                                }
+//                            }
+//                        }
+                        for(int i=0;i<data.size();i++){
+                            for(int j=0;j<images.size();j++){
+                                if(data.getJSONObject(i).getLongValue("id") == Long.parseLong(images.get(j).getFaissFeatureId())){
+                                    Map<String,Object> imageMessageMap = new HashMap<>();
+                                    imageMessageMap.put("diastance",data.getJSONObject(i).getDouble("distance"));
+                                    imageMessageMap.put("imageShowPath",images.get(j).getImageShowPath());
+                                    imageMessageList.add(imageMessageMap);
+                                }
+                            }
                         }
                         System.out.println(imageMessageList);
                     }
