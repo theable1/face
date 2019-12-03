@@ -113,7 +113,7 @@ public class SearchController {
                             for(int j=0;j<images.size();j++){
                                 if(data.getJSONObject(i).getLongValue("id") == Long.parseLong(images.get(j).getFaissFeatureId())){
                                     Map<String,Object> imageMessageMap = new HashMap<>();
-                                    imageMessageMap.put("diastance",data.getJSONObject(i).getDouble("distance"));
+                                    imageMessageMap.put("distance",data.getJSONObject(i).getDouble("distance"));
                                     imageMessageMap.put("imageShowPath",images.get(j).getImageShowPath());
                                     imageMessageList.add(imageMessageMap);
                                 }
