@@ -64,6 +64,8 @@ $(document).ready(function () {
 
     $('#upImageBox').on('click', '#closeIcon', function () {
         clearUpImageBox();
+        //清除搜索结果框
+        clearResultBox();
     });
 
     function sendData(imageInfo) {
@@ -77,6 +79,7 @@ $(document).ready(function () {
                 if (data.code != null || data.message != null) {
                     swal.fire(data.message, "", "warning");
                 } else {
+                    // console.log("查询结果");
                     //隐藏空空如也的div
                     document.getElementById("noResult").style.display = "none";
                     //将查询结果图片放入div
@@ -157,7 +160,7 @@ $(document).ready(function () {
         var selector = document.getElementById("group");
         var groupName = selector.options[selector.selectedIndex].text;
         var imageInfo = {
-            url: url,
+            imageUrl: url,
             groupName: groupName
         };
         //发送
