@@ -9,6 +9,15 @@ public class ImageVO implements Serializable {
     private Integer groupId;
     private String groupName;
     private String imageUrl;
+    private String imageNum;
+
+    public String getImageNum() {
+        return imageNum;
+    }
+
+    public void setImageNum(String imageNum) {
+        this.imageNum = imageNum;
+    }
 
     public String getImageUrl() {
         return imageUrl;
@@ -58,6 +67,7 @@ public class ImageVO implements Serializable {
                 ", groupId=" + groupId +
                 ", groupName='" + groupName + '\'' +
                 ", imageUrl='" + imageUrl + '\'' +
+                ", imageNum='" + imageNum + '\'' +
                 '}';
     }
 }

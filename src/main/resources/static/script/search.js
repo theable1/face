@@ -1,8 +1,15 @@
 var searchAgainClick;
 $(document).ready(function () {
-    // $('#imageOrigin').zoomify();
-
-    // $('.img').initViewer();
+    //loading
+    function loading() {
+        $("#imageBox").mLoading({
+            text: "加载中...",//加载文字，默认值：加载中...
+            icon: "",//加载图标，默认值：一个小型的base64的gif图片
+            html: false,//设置加载内容是否是html格式，默认值是false
+            content: "",//忽略icon和text的值，直接在加载框中显示此值
+            mask: false//是否显示遮罩效果，默认显示
+        });
+    }
 
     //搜索按钮
     $('#onSearch').on('click', function () {
@@ -11,7 +18,8 @@ $(document).ready(function () {
         //获取图片
         var file = document.getElementById("upload");
         var img = file.files[0];
-        var selector = document.getElementById("group");
+        var groupSelector = document.getElementById("group");
+        var numberSelector = document.getElementById("number");
         if (judgeNull(file)) {
             var reader = new FileReader();
             reader.onload = function (e) {
@@ -21,13 +29,15 @@ $(document).ready(function () {
                 var b64 = dataUrl.split(",")[1];
                 // console.log(b64);
                 //要传递的数据
-                var groupId = selector.options[selector.selectedIndex].value;
-                var groupName = selector.options[selector.selectedIndex].text;
+                var groupId = groupSelector.options[groupSelector.selectedIndex].value;
+                var groupName = groupSelector.options[groupSelector.selectedIndex].text;
+                var number = numberSelector.options[numberSelector.selectedIndex].text;
                 var imageInfo = {
                     imageId: hex_md5(b64),
                     imageB64: b64,
                     groupId: groupId,
-                    groupName: groupName
+                    groupName: groupName,
+                    imageNum: number
                 };
                 //发送
                 sendData(imageInfo);
@@ -69,6 +79,7 @@ $(document).ready(function () {
     });
 
     function sendData(imageInfo) {
+        loading();
         $.ajax({
             type: 'post',
             dataType: 'json',
@@ -79,7 +90,6 @@ $(document).ready(function () {
                 if (data.code != null || data.message != null) {
                     swal.fire(data.message, "", "warning");
                 } else {
-                    // console.log("查询结果");
                     //隐藏空空如也的div
                     document.getElementById("noResult").style.display = "none";
                     //将查询结果图片放入div
@@ -97,6 +107,8 @@ $(document).ready(function () {
                         );
                         new Viewer(document.getElementById("image" + i));
                     }
+                    //结束loading
+                    $("#imageBox").mLoading("hide");
                 }
             },
             error: function () {
@@ -124,10 +136,11 @@ $(document).ready(function () {
         imageOrigin.setAttribute("src", url);
         new Viewer(imageOrigin);
         //显示closeicon
-        var close = document.createElement("i");
-        close.setAttribute("id", "closeIcon");
-        close.className = "fa fa-close fa-2x close_icon";
-        document.getElementById("upImageBox").appendChild(close);
+        var close = document.getElementById("closeIcon");
+        close.classList.add("fa");
+        close.classList.add("fa-close");
+        close.classList.add("fa-2x");
+        close.style.display = "inline-block";
     }
 
     //去掉上传图片，恢复初始状态
@@ -137,7 +150,11 @@ $(document).ready(function () {
         //去掉图片
         document.getElementById("imageOrigin").style.display = "none";
         //去掉closeicon
-        document.getElementById("closeIcon").remove();
+        var close = document.getElementById("closeIcon");
+        close.classList.remove("fa");
+        close.classList.remove("fa-close");
+        close.classList.remove("fa-2x");
+        close.style.display = "none";
         //显示icon
         document.getElementById("addIcon").style.display = "block";
     }
@@ -157,11 +174,14 @@ $(document).ready(function () {
         showUpImage(url);
         clearResultBox();
         //ajax发送图片数据到后台
-        var selector = document.getElementById("group");
-        var groupName = selector.options[selector.selectedIndex].text;
+        var groupSelector = document.getElementById("group");
+        var groupName = groupSelector.options[groupSelector.selectedIndex].text;
+        var numberSelector = document.getElementById("number");
+        var number = numberSelector.options[numberSelector.selectedIndex].text;
         var imageInfo = {
             imageUrl: url,
-            groupName: groupName
+            groupName: groupName,
+            imageNum: number
         };
         //发送
         sendData(imageInfo);

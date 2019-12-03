@@ -38,8 +38,8 @@ public class SearchController {
     private UploadImageInfoService uploadImageInfoService;
     @Autowired
     private Sender sender;
-    @Autowired
-    private StorageClient storageClient;
+//    @Autowired
+//    private StorageClient storageClient;
 
     @RequestMapping("list")
     public ModelAndView visit() {
@@ -63,19 +63,19 @@ public class SearchController {
 
     @RequestMapping("process")
     public Object process(@RequestBody ImageVO imageVo) throws Exception {
-        System.out.println("imageVO:" + imageVo);
         String imageId;
         String imageB64;
         double similarity = 0.6;
         //再次搜索前端只传groupName、url,本地上传图片搜索url为null
         if (imageVo.getImageUrl() != null) {
-            System.out.println("group:" + StringUtils.getGroup(imageVo.getImageUrl()));
-            System.out.println("dir:" + StringUtils.getDir(imageVo.getImageUrl()));
-            byte[] imageB64Bytes = storageClient.download_file(StringUtils.getGroup(imageVo.getImageUrl()), StringUtils.getDir(imageVo.getImageUrl()));
-            BASE64Encoder encoder = new BASE64Encoder();
-            imageB64 =  encoder.encode(imageB64Bytes);
-//            System.out.println("再次搜索图片的base64:" + imageB64);
-            imageId = FileAccessUtil.getHashCode(imageB64Bytes);
+//            System.out.println("group:" + StringUtils.getGroup(imageVo.getImageUrl()));
+//            System.out.println("dir:" + StringUtils.getDir(imageVo.getImageUrl()));
+//            byte[] imageB64Bytes = storageClient.download_file(StringUtils.getGroup(imageVo.getImageUrl()), StringUtils.getDir(imageVo.getImageUrl()));
+//            BASE64Encoder encoder = new BASE64Encoder();
+//            imageB64 =  encoder.encode(imageB64Bytes);
+//            imageId = FileAccessUtil.getHashCode(imageB64Bytes);
+            imageId = "";
+            imageB64 = "";
         } else {
             imageId = imageVo.getImageId();
             imageB64 = imageVo.getImageB64();

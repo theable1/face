@@ -3,13 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <title>搜索页面</title>
-    <link rel="stylesheet" th:href="@{'/css/search.css'}">
     <link rel="stylesheet" th:href="@{'/css/third/viewer.min.css'}">
     <link rel="stylesheet" th:href="@{'/css/third/font-awesome-4.7.0/css/font-awesome.min.css'}">
     <link rel="stylesheet" th:href="@{'/css/third/bootstrap.min.css'}">
+    <link rel="stylesheet" th:href="@{'/css/third/jquery.mloading.css'}">
+    <link rel="stylesheet" th:href="@{'/css/search.css'}">
     <script th:src="@{'/script/third/jquery-3.2.0.min.js'}"></script>
     <script th:src="@{'/script/third/MD5.js'}"></script>
     <script th:src="@{'/script/third/viewer.min.js'}"></script>
+    <script th:src="@{'/script/third/jquery.mloading.js'}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/8.11.8/sweetalert2.all.js"></script>
     <script th:src="@{'/script/third/bootstrap.min.js'}"></script>
     <script th:src="@{'/script/search.js'}"></script>
@@ -19,10 +21,18 @@
     <div class="search">
         <input type="file" id="upload" accept="image/*" >
     </div>
-    <div class="face">人脸库：</div>
+    <div class="select_name">人脸库：</div>
     <div class="select">
         <select id="group">
             <option th:each="group:${groupList}" th:value="${group['gid']}" th:text="${group['name']}" selected="selected"></option>
+        </select>
+    </div>
+    <div class="select_name">返回结果数：</div>
+    <div class="select number_select">
+        <select id="number">
+            <option selected="selected">10</option>
+            <option>50</option>
+            <option>100</option>
         </select>
     </div>
 </div>
@@ -30,6 +40,7 @@
     <div id="origin" class="origin">
         <h4>上传图片</h4>
         <div id="upImageBox" class="image_box up_image_box">
+            <i id="closeIcon" class="close_icon"></i>
             <img id="imageOrigin" class="up_image">
             <i id="addIcon" class="fa fa-plus-circle fa-5x add_icon"></i>
         </div>
