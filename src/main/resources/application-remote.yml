@@ -1,0 +1,43 @@
+spring:
+  devtools:
+    restart:
+      enabled: true
+      additional-paths: src/main/java
+  rabbitmq:
+    host: 172.16.6.113
+    username: guest
+    password: guest
+  datasource:
+    url: jdbc:mysql://172.16.6.134:3306/vision_bigdata
+    username: root
+    password: vision@bigdata
+
+  jackson:
+    serialization:
+      #保证@ResponseBody时，Date会自动转化为timeStamp的数值(毫秒数)
+      WRITE_DATES_AS_TIMESTAMPS : true
+    time-zone: GMT+8
+
+
+  thymeleaf:
+    cache: false
+    encoding: utf-8
+    mode: HTML5
+    prefix: classpath:/templates/
+    suffix: .html
+
+
+
+mybatis:
+  mapper-locations: classpath:com/ffcs/face/*/dao/**/*Dao.xml
+#  configuration:
+#    log-impl: org.apache.ibatis.logging.log4j2.Log4j2Impl
+    #org.apache.ibatis.logging.stdout.StdOutImpl
+
+
+baseUri: http://172.16.6.123:10004/bvs/api/v1/
+frsBaseUri: http://172.16.6.128:5001/frs/api/v1/
+rabbitmq:
+  exchange:
+    queue: tut.fanout
+
