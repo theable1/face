@@ -85,11 +85,12 @@ public class SearchController {
         System.out.println("获取特征值结果：:" + getFeatureResult);
         JSONObject jsonObject = JSON.parseObject(getFeatureResult);
         String featureB64 = jsonObject.getString("feature_b64");
+        System.out.println("featureB64"+featureB64);
         if (featureB64 != null) {
             List<String> features = new ArrayList<>();
             features.add(featureB64);
             //搜索相似图片
-            String searchFeaturesResult = faissService.searchFeaturesByPost(imageVo.getGroupName(), features, null);
+            String searchFeaturesResult = faissService.searchFeaturesByPost(imageVo.getGroupName(), features, imageVo.get);
             System.out.println("搜索相似图片结果：" + searchFeaturesResult);
             JSONArray data = JsonUtils.getJsonValueArray(searchFeaturesResult, "data");
             //distance最大值小于0.6,把图片增加到group中
