@@ -4,14 +4,18 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.ffcs.common.tools.FileAccessUtil;
+import com.ffcs.common.tools.MD5Util;
 import com.ffcs.face.service.IFaissService;
 import com.ffcs.face.service.IFrsService;
 import com.ffcs.face.util.JsonUtils;
+import com.ffcs.face.util.StringUtils;
 import com.ffcs.face.vo.ImageVO;
 import com.ffcs.image.Simple;
+import com.ffcs.visionbigdata.fastdfs.FastdfsDownload;
 import com.ffcs.visionbigdata.mysql.bean.UploadImageInfo;
 import com.ffcs.visionbigdata.mysql.service.UploadImageInfoService;
 import com.ffcs.visionbigdata.rabbitmq.Sender;
+import org.csource.common.IniFileReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,6 +39,8 @@ public class SearchController {
     private UploadImageInfoService uploadImageInfoService;
     @Autowired
     private Sender sender;
+    @Autowired
+    private FastdfsDownload fastdfsDownload;
     @RequestMapping("list")
     public ModelAndView visit() {
         ModelAndView modelAndView = new ModelAndView();
@@ -57,9 +63,20 @@ public class SearchController {
 
     @RequestMapping("process")
     public Object process(@RequestBody ImageVO imageVo) throws Exception{
+        String imageId;
+        String imageB64;
         double similarity = 0.6;
+        //再次搜索前端只传groupName、url,本地上传图片搜索url为null
+        if (imageVo.getImageUrl()!=null){
+            imageB64 = fastdfsDownload.download(StringUtils.getGroup(imageVo.getImageUrl()), StringUtils.getDir(imageVo.getImageUrl()));
+            System.out.println("再次搜索图片的base64:"+imageB64);
+            imageId = FileAccessUtil.getHashCode(imageB64.getBytes());
+        }else {
+            imageId = imageVo.getImageId();
+            imageB64 = imageVo.getImageB64();
+        }
         //获取特征值
-        String getFeatureResult = frsService.getFeatureByPost(imageVo.getImageId(), imageVo.getImageB64());
+        String getFeatureResult = frsService.getFeatureByPost(imageId, imageB64);
         System.out.println("imageVO:"+imageVo);
         System.out.println("获取特征值结果：:" + getFeatureResult);
         JSONObject jsonObject = JSON.parseObject(getFeatureResult);
@@ -101,7 +118,7 @@ public class SearchController {
                     if(images!=null && images.size()>0) {
                         for(int j=0;j<images.size();j++){
                             Map<String,Object> imageMessageMap = new HashMap<>();
-                            imageMessageMap.put("diastance",data.getJSONObject(flag[j]).getDouble("distance"));
+                            imageMessageMap.put("distance",data.getJSONObject(flag[j]).getDouble("distance"));
                             imageMessageMap.put("imageShowPath",images.get(j).getImageShowPath());
                             imageMessageList.add(imageMessageMap);
                         }
@@ -113,8 +130,8 @@ public class SearchController {
             }
             if(saveImage == true){
                 Simple simple = new Simple();
-                simple.setBase64(imageVo.getImageB64());
-                simple.setHashCode(imageVo.getImageId());
+                simple.setBase64(imageB64);
+                simple.setHashCode(imageId);
                 sender.apply(simple);
                 if(maxFlag == false){
                     JSONObject resultJson2 = new JSONObject();

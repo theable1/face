@@ -40,3 +40,4 @@ frsBaseUri: http://localhost:5001/frs/api/v1/
 rabbitmq:
   exchange:
     queue: tut.fanout
+

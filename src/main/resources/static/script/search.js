@@ -87,7 +87,7 @@ $(document).ready(function () {
                             '<li>' +
                             '<img src="' + data[i].imageShowPath + '" id="image' + i + '">' +
                             '<div class="image_info clearfix">' +
-                            '<div class="fl similarity">' + '相似度：' + (data[i].diastance.toFixed(2)) * 100 + '%' + '</div>' +
+                            '<div class="fl similarity">' + '相似度：' + (data[i].distance.toFixed(2)) * 100 + '%' + '</div>' +
                             '<div class="search_again_button"><button class="btn btn-primary" onclick="searchAgainClick(this)">继续搜索</button></div>' +
                             '</div>' +
                             '</li>'
@@ -154,23 +154,16 @@ $(document).ready(function () {
         showUpImage(url);
         clearResultBox();
         //ajax发送图片数据到后台
+        var selector = document.getElementById("group");
+        var groupName = selector.options[selector.selectedIndex].text;
         var imageInfo = {
-            url: url
+            url: url,
+            groupName: groupName
         };
         //发送
         sendData(imageInfo);
-    };
+    }
 
-    ///获取图片base64
-    // function getBase64Image(img) {
-    //     var canvas = document.createElement("canvas");
-    //     canvas.width = img.width;
-    //     canvas.height = img.height;
-    //     var ctx = canvas.getContext("2d");
-    //     ctx.drawImage(img, 0, 0, img.width, img.height);
-    //     var dataURL = canvas.toDataURL("image/png"); // 可选其他值 image/jpeg
-    //     return dataURL;
-    // }
 });
 
 
