@@ -1,6 +1,8 @@
 package com.ffcs.face;
 
 
+import com.ffcs.face.service.IFaissService;
+import com.ffcs.face.service.impl.FaissServiceImpl;
 import com.ffcs.visionbigdata.fastdfs.FastdfsDownload;
 import com.ffcs.visionbigdata.mysql.service.UploadImageInfoService;
 import com.ffcs.visionbigdata.mysql.service.impl.UploadImageInfoServiceImpl;
@@ -33,7 +35,10 @@ public class FaceApplication {
     public Sender getSender(){
         return  new Sender();
     }
-
+//    @Bean
+//    public IFaissService getService(){
+//        return  new FaissServiceImpl();
+//    }
 //    @Bean
 //    public StorageClient getStorageClient() throws IOException, MyException {
 //        ClientGlobal.init(CONF_NAME);
