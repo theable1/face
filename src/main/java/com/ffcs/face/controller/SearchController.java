@@ -3,29 +3,21 @@ package com.ffcs.face.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.ffcs.common.tools.FileAccessUtil;
 import com.ffcs.face.service.IFaissService;
 import com.ffcs.face.service.IFrsService;
 import com.ffcs.face.util.JsonUtils;
-import com.ffcs.face.util.StringUtils;
 import com.ffcs.face.vo.ImageVO;
 import com.ffcs.image.Simple;
-import com.ffcs.visionbigdata.fastdfs.FastdfsDownload;
 import com.ffcs.visionbigdata.mysql.bean.UploadImageInfo;
 import com.ffcs.visionbigdata.mysql.service.UploadImageInfoService;
 import com.ffcs.visionbigdata.rabbitmq.Sender;
-import org.csource.fastdfs.StorageClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
-import sun.misc.BASE64Encoder;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping("/search/")
@@ -71,12 +63,6 @@ public class SearchController {
         {
             //再次搜索前端只传groupName、url,本地上传图片搜索url为null
             if (imageVOList.get(k).getImageUrl() != null) {
-//            System.out.println("group:" + StringUtils.getGroup(imageVo.getImageUrl()));
-//            System.out.println("dir:" + StringUtils.getDir(imageVo.getImageUrl()));
-//            byte[] imageB64Bytes = storageClient.download_file(StringUtils.getGroup(imageVo.getImageUrl()), StringUtils.getDir(imageVo.getImageUrl()));
-//            BASE64Encoder encoder = new BASE64Encoder();
-//            imageB64 =  encoder.encode(imageB64Bytes);
-//            imageId = FileAccessUtil.getHashCode(imageB64Bytes);
                 imageId = "";
                 imageB64 = "";
             } else {
@@ -143,6 +129,7 @@ public class SearchController {
                     Simple simple = new Simple();
                     simple.setBase64(imageB64);
                     simple.setHashCode(imageId);
+                    simple.setImageTime(new Date());
                     sender.apply(simple);
                     if (maxFlag == false) {
                         JSONObject resultJson2 = new JSONObject();
@@ -155,7 +142,6 @@ public class SearchController {
                 } else {
                     imageMessageListMax.add(imageMessageList);
                 }
-
             } else {
                 imageMessageListMax.add(getFeatureResult);
             }

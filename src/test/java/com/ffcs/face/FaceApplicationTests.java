@@ -45,6 +45,7 @@ public class FaceApplicationTests {
         System.out.println(features);
         String searchFeaturesResult = faissService.searchFeaturesByPost("fortest", features, 10);
         System.out.println("搜索相似图片结果：" + searchFeaturesResult);
+        System.out.println(new Date());
     }
 //    @Test
     void testJsonUtils(){
