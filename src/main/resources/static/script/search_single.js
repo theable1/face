@@ -21,7 +21,6 @@ $(document).ready(function () {
         var file = document.getElementById("upload");
         var img = file.files[0];
         var groupSelector = document.getElementById("group");
-        var numberSelector = document.getElementById("number");
         if (judgeNull(file)) {
             var reader = new FileReader();
             reader.onload = function (e) {
@@ -31,16 +30,15 @@ $(document).ready(function () {
                 var b64 = dataUrl.split(",")[1];
                 // console.log(b64);
                 //要传递的数据
-                var groupId = groupSelector.options[groupSelector.selectedIndex].value;
+                // var groupId = groupSelector.options[groupSelector.selectedIndex].value;
                 var groupName = groupSelector.options[groupSelector.selectedIndex].text;
-                var number = numberSelector.options[numberSelector.selectedIndex].text;
-                var imageInfo = {
-                    imageId: hex_md5(b64),
-                    imageB64: b64,
-                    groupId: groupId,
-                    groupName: groupName,
-                    imageNum: number
-                };
+                var number = $('#number').val();
+                var imageInfo = {};
+                imageInfo.imageId = hex_md5(b64);
+                imageInfo.imageB64 = b64;search_single.html
+                // imageInfo.groupId = groupId;
+                imageInfo.groupName = groupName;
+                imageInfo.imageNum = number;
                 //发送
                 sendData(imageInfo);
             };
@@ -50,7 +48,7 @@ $(document).ready(function () {
         }
     });
 
-    //选择文件更新图片
+//选择文件更新图片
     $('#upload').on('change', function () {
         var element = document.getElementById("upload");
         if (judgeNull(element)) {
@@ -82,12 +80,16 @@ $(document).ready(function () {
 
     function sendData(imageInfo) {
         loading();
+        //数据放入数组
+        var imageVOList = [];
+        imageVOList.push(imageInfo);
+
         $.ajax({
             type: 'post',
             dataType: 'json',
             contentType: "application/json;charset=utf-8",
             url: '/search/process',
-            data: JSON.stringify(imageInfo),
+            data: JSON.stringify(imageVOList),
             success: function (data) {
                 if (data.code != null || data.message != null) {
                     swal.fire(data.message, "", "warning");
@@ -120,7 +122,7 @@ $(document).ready(function () {
         });
     }
 
-    //判断用户是否上传图片
+//判断用户是否上传图片
     function judgeNull(file) {
         if (file.value == "") {
             return false;
@@ -129,7 +131,7 @@ $(document).ready(function () {
         }
     }
 
-    //上传图片icon去掉，展示图片
+//上传图片icon去掉，展示图片
     function showUpImage(url) {
         //icon去掉
         document.getElementById("addIcon").style.display = "none";
@@ -146,7 +148,7 @@ $(document).ready(function () {
         close.style.display = "inline-block";
     }
 
-    //去掉上传图片，恢复初始状态
+//去掉上传图片，恢复初始状态
     function clearUpImageBox() {
         //去掉input file选择的图片
         document.getElementById("upload").value = "";
@@ -162,7 +164,7 @@ $(document).ready(function () {
         document.getElementById("addIcon").style.display = "block";
     }
 
-    //清除检索结果，显示空空如也
+//清除检索结果，显示空空如也
     function clearResultBox() {
         document.getElementById("noResult").style.display = "block";
         var showBox = document.getElementById("showBox");
@@ -170,7 +172,7 @@ $(document).ready(function () {
         showBox.innerHTML = "";
     }
 
-    //再次搜索按钮
+//再次搜索按钮
     searchAgainClick = function (e) {
         //检索图片放到上传图片框，搜索结果清空
         var url = e.parentElement.parentElement.previousElementSibling.getAttribute("src");
@@ -179,13 +181,11 @@ $(document).ready(function () {
         //ajax发送图片数据到后台
         var groupSelector = document.getElementById("group");
         var groupName = groupSelector.options[groupSelector.selectedIndex].text;
-        var numberSelector = document.getElementById("number");
-        var number = numberSelector.options[numberSelector.selectedIndex].text;
-        var imageInfo = {
-            imageUrl: url,
-            groupName: groupName,
-            imageNum: number
-        };
+        var number = $('#number').val();
+        var imageInfo = {};
+        imageInfo.imageUrl = url;
+        imageInfo.groupName = groupName;
+        imageInfo.imageNum = number;
         //发送
         sendData(imageInfo);
     };
@@ -210,7 +210,7 @@ $(document).ready(function () {
         }
     });
 
-    //查询可选择的人脸库
+//查询可选择的人脸库
     function listGroup() {
         $.ajax({
             type: 'post',
@@ -231,7 +231,8 @@ $(document).ready(function () {
         });
     }
 
-});
+})
+;
 
 
 

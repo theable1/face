@@ -51,11 +51,19 @@ input[type=file]:active{
     margin: 0 50px;
     padding: 20px 20px 30px 20px;
     width: 520px;
-    height: 540px;
+    height: 570px;
     border: 3px solid #869791;
     color: dimgray;
     display: inline-block;
     border-radius: 15px;
+}
+
+.origin{
+    width: 420px;
+}
+
+.result{
+    width: 680px;
 }
 
 .result h4,
@@ -64,40 +72,58 @@ input[type=file]:active{
 }
 
 .image_box{
-    position: relative;
     border: 2px solid #869791;
     margin: 20px 20px;
-    width: 435px;
-    height: 410px;
+    width: 94%;
+    height: 86%;
     overflow: auto;
     padding: 20px;
     border-radius: 10px;
     text-align: center;
 }
 
-.up_image{
-    margin: auto auto;
-    max-width: 350px;
-    max-height: 365px;
-    display: none;
-}
-
 .up_image_box{
-    display: flex;
-    justify-content: center;/*在主轴上的对齐*/
-    align-items: center;/*在交叉轴上中心点的对齐*/
+    width: 90%;
 }
 
-.close_icon{
+.up_image{
+    position: relative;
+    margin: 0 auto 10px auto;
+    border: 2px solid #869791;
+    border-radius: 5px;
+    width: 90%;
+    height: 172px;
+    padding: 15px 25px 15px 15px;
+    vertical-align: middle;
+}
+
+.up_image_img{
+    float: right;
+    width: 75%;
+    height: 100%;
+}
+
+.up_image img{
+    margin: 0 auto;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.up_image_title{
+    float: left;
+    margin: 63px 0 0 0;
+    font-weight: bold;
+}
+
+.up_image i{
     position: absolute;
     top: 10px;
     right: 10px;
     cursor: pointer;
-    display: none;
 }
 
 .add_icon:hover,
-.close_icon:hover{
+.up_image i:hover{
     color: #555555;
 }
 
@@ -115,8 +141,9 @@ h4{
     border-bottom: 2px solid #869791;
 }
 
-.no_image{
-    margin-top: 150px;
+.no_image,
+.add_icon{
+    margin-top: 53%;
 }
 
 input[type=file]{

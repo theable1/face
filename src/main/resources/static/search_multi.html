@@ -7,19 +7,19 @@
     <link rel="stylesheet" href="css/third/font-awesome-4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="css/third/bootstrap.min.css">
     <link rel="stylesheet" href="css/third/jquery.mloading.css">
-    <link rel="stylesheet" href="css/search_single.css">
+    <link rel="stylesheet" href="css/search_multi.css">
     <script src="script/third/jquery-3.2.0.min.js"></script>
     <script src="script/third/MD5.js"></script>
     <script src="script/third/viewer.min.js"></script>
     <script src="script/third/jquery.mloading.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/8.11.8/sweetalert2.all.js"></script>
     <script src="script/third/bootstrap.min.js"></script>
-    <script src="script/search_single.js"></script>
+    <script src="script/search_multi.js"></script>
 </head>
 <body>
 <div class="search_wrap">
     <div class="search">
-        <input type="file" id="upload" accept="image/*" >
+        <input type="file" id="upload" accept="image/*" multiple="multiple">
     </div>
     <div class="select_name">人脸库：</div>
     <div class="select">
@@ -35,8 +35,6 @@
     <div id="origin" class="origin">
         <h4>上传图片</h4>
         <div id="upImageBox" class="image_box up_image_box">
-            <i id="closeIcon" class="close_icon"></i>
-            <img id="imageOrigin" class="up_image">
             <i id="addIcon" class="fa fa-plus-circle fa-5x add_icon"></i>
         </div>
     </div>

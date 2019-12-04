@@ -9,13 +9,13 @@ public class ImageVO implements Serializable {
     private Integer groupId;
     private String groupName;
     private String imageUrl;
-    private int imageNum;
+    private Integer imageNum;
 
-    public int getImageNum() {
+    public Integer getImageNum() {
         return imageNum;
     }
 
-    public void setImageNum(int imageNum) {
+    public void setImageNum(Integer imageNum) {
         this.imageNum = imageNum;
     }
 
