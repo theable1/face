@@ -1,0 +1,254 @@
+body{
+    margin: 0 auto;
+    position: relative;
+    text-align: center;
+    background-color: rgba(250,250,250,0.8);
+}
+
+button,
+input,
+.add_icon,
+img{
+    cursor: pointer;
+}
+
+button:visited,
+input[type=file]:active{
+    outline: none;
+}
+
+.search_wrap{
+    display: inline-block;
+    margin: 50px auto;
+}
+
+.select_name{
+    font-family: "Arial Black";
+    display: inline-block;
+}
+
+.search{
+    display: inline-block;
+    margin-right: 50px;
+    border: 1px solid #869791;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.search input{
+    display: inline-block;
+    outline: none;
+}
+
+.info{
+    margin: 0 auto;
+}
+
+.origin,
+.result{
+    vertical-align: middle;
+    text-align: center;
+    margin: 0 50px;
+    padding: 20px 20px 30px 20px;
+    width: 520px;
+    height: 540px;
+    border: 3px solid #869791;
+    color: dimgray;
+    display: inline-block;
+    border-radius: 15px;
+}
+
+.result h4,
+.origin h4{
+    margin-bottom: 0;
+}
+
+.image_box{
+    position: relative;
+    border: 2px solid #869791;
+    margin: 20px 20px;
+    width: 435px;
+    height: 410px;
+    overflow: auto;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.up_image{
+    margin: auto auto;
+    max-width: 350px;
+    max-height: 365px;
+    display: none;
+}
+
+.up_image_box{
+    display: flex;
+    justify-content: center;/*在主轴上的对齐*/
+    align-items: center;/*在交叉轴上中心点的对齐*/
+}
+
+.close_icon{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    display: none;
+}
+
+.add_icon:hover,
+.close_icon:hover{
+    color: #555555;
+}
+
+.no_result{
+    color: darkgrey;
+    font-size: 40px;
+    margin-top: 150px;
+}
+
+h4{
+    padding-bottom: 10px;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-top: 10px;
+    border-bottom: 2px solid #869791;
+}
+
+.no_image{
+    margin-top: 150px;
+}
+
+input[type=file]{
+    outline: none;
+}
+
+.select {
+    display: inline-block;
+    width: 110px;
+    height: 25px;
+    position: relative;
+    vertical-align: middle;
+    padding: 2px 0 0 0;
+    background-color: #fff;
+    color: #555;
+    border: 1px solid #aaa;
+    text-shadow: none;
+    border-radius: 4px;
+    transition: box-shadow 0.25s ease;
+    z-index: 2;
+    margin-top: 0;
+    font-size: 15px;
+    margin-right: 50px;
+}
+
+.select:hover {
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+}
+
+.select:before {
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 0;
+    border: 10px solid transparent;
+    border-top-color: #ccc;
+    top: 7px;
+    right: 7px;
+    cursor: pointer;
+    z-index: -2;
+}
+.select select {
+    cursor: pointer;
+    padding-left: 10px;
+    width: 100%;
+    border: none;
+    background: transparent;
+    background-image: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+
+.select select:focus {
+    outline: none;
+}
+
+.show_box{
+    list-style: none;
+    padding: 0;
+    margin: 0 auto;
+    /*display: none;*/
+}
+
+.show_box li{
+    position: relative;
+    width: 175px;
+    height: 175px;
+    margin: 5px 7px 20px 5px;
+    border: 1px solid #869791;
+    float: left;
+}
+
+.show_box img{
+    max-width: 170px;
+    max-height: 170px;
+    margin: auto auto;
+}
+
+.image_info{
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 20%;
+    background-color:rgba(255,255,255,0.8);
+    z-index: 999;
+}
+
+.similarity{
+    float: left;
+    margin-left: 7px;
+    margin-top: 8px;
+    font-size: 13px;
+    font-family: "SimSun-ExtB";
+    font-weight: bold;
+    color: #000000;
+}
+
+.search_again_button{
+    margin-top: 4px;
+    float: right;
+    margin-right: 7px;
+}
+
+.search_again_button button{
+    font-size: 12px;
+    width: 70px;
+    height: 28px;
+    text-align: center;
+    padding: 0;
+}
+
+.search_button{
+    display: inline-block;
+    vertical-align: middle;
+    text-align: center;
+}
+
+.number_add,
+.number_sub{
+    width: 25px;
+    height: 25px;
+    padding: 3px 5px 3px 5px;
+    margin-bottom: 1px;
+}
+
+.number{
+    width: 50px;
+    text-align: center;
+}
+
+.number_add,
+.number_sub,
+.number{
+    display: inline-block;
+}

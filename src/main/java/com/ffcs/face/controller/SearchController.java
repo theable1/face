@@ -38,12 +38,9 @@ public class SearchController {
     private UploadImageInfoService uploadImageInfoService;
     @Autowired
     private Sender sender;
-//    @Autowired
-//    private StorageClient storageClient;
 
     @RequestMapping("list")
-    public ModelAndView visit() {
-        ModelAndView modelAndView = new ModelAndView();
+    public Object list() {
         List<Map<String, Object>> groupList = new ArrayList();
         //查询所有人脸库
         String groups = faissService.viewGroupByGet(null);
@@ -56,9 +53,7 @@ public class SearchController {
                 groupList.add(groupMap);
             }
         }
-        modelAndView.addObject("groupList", groupList);
-        modelAndView.setViewName("search");
-        return modelAndView;
+        return groupList;
     }
 
     @RequestMapping("process")

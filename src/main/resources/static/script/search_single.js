@@ -1,5 +1,7 @@
 var searchAgainClick;
 $(document).ready(function () {
+    listGroup();//查询人脸库
+
     //loading
     function loading() {
         $("#imageBox").mLoading({
@@ -95,12 +97,13 @@ $(document).ready(function () {
                     //将查询结果图片放入div
                     var box = $("#showBox");
                     box.css('display', 'block');
-                    for (var i = 0; i < data.length; i++) {
+                    var upNumber = data.length;
+                    for (var i = 0; i < upNumber.length; i++) {
                         box.append(
                             '<li>' +
-                            '<img src="' + data[i].imageShowPath + '" id="image' + i + '">' +
+                            '<img src="' + upNumber[i].imageShowPath + '" id="image' + i + '">' +
                             '<div class="image_info clearfix">' +
-                            '<div class="fl similarity">' + '相似度：' + (data[i].distance.toFixed(2)) * 100 + '%' + '</div>' +
+                            '<div class="fl similarity">' + '相似度：' + (upNumber[i].distance.toFixed(2)) * 100 + '%' + '</div>' +
                             '<div class="search_again_button"><button class="btn btn-primary" onclick="searchAgainClick(this)">继续搜索</button></div>' +
                             '</div>' +
                             '</li>'
@@ -185,6 +188,47 @@ $(document).ready(function () {
         };
         //发送
         sendData(imageInfo);
+    };
+
+    $('#addButton').on('click', function () {
+        var number = $('#number').val();
+        $('#number').val(Number(number) + 1);
+    });
+
+    $('#subButton').on('click', function () {
+        var number = $('#number').val();
+        if (Number(number) > 10) {
+            $('#number').val(Number(number) - 1);
+        }
+    });
+
+    $('#number').on('change', function () {
+        var number = $('#number').val();
+        if (Number(number) < 10) {
+            swal.fire("返回结果不可低于10张！", "", "warning");
+            $('#number').val(10);
+        }
+    });
+
+    //查询可选择的人脸库
+    function listGroup() {
+        $.ajax({
+            type: 'post',
+            dataType: 'json',
+            contentType: "application/json;charset=utf-8",
+            url: '/search/list',
+            success: function (data) {
+                var group = $('#group');
+                for (var i = 0; i < data.length; i++) {
+                    group.append(
+                        '<option>' + data[i].name + '</option>'
+                    );
+                }
+            },
+            error: function () {
+                swal.fire("人脸库查询失败！", "", "error");
+            }
+        });
     }
 
 });

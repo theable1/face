@@ -233,3 +233,22 @@ input[type=file]{
     vertical-align: middle;
     text-align: center;
 }
+
+.number_add,
+.number_sub{
+    width: 25px;
+    height: 25px;
+    padding: 3px 5px 3px 5px;
+    margin-bottom: 1px;
+}
+
+.number{
+    width: 50px;
+    text-align: center;
+}
+
+.number_add,
+.number_sub,
+.number{
+    display: inline-block;
+}
