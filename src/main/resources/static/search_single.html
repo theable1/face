@@ -2,19 +2,19 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>搜索页面</title>
-    <link rel="stylesheet" th:href="@{'/css/third/viewer.min.css'}">
-    <link rel="stylesheet" th:href="@{'/css/third/font-awesome-4.7.0/css/font-awesome.min.css'}">
-    <link rel="stylesheet" th:href="@{'/css/third/bootstrap.min.css'}">
-    <link rel="stylesheet" th:href="@{'/css/third/jquery.mloading.css'}">
-    <link rel="stylesheet" th:href="@{'/css/search.css'}">
-    <script th:src="@{'/script/third/jquery-3.2.0.min.js'}"></script>
-    <script th:src="@{'/script/third/MD5.js'}"></script>
-    <script th:src="@{'/script/third/viewer.min.js'}"></script>
-    <script th:src="@{'/script/third/jquery.mloading.js'}"></script>
+    <title>单张图片识别页面</title>
+    <link rel="stylesheet" href="css/third/viewer.min.css">
+    <link rel="stylesheet" href="css/third/font-awesome-4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/third/bootstrap.min.css">
+    <link rel="stylesheet" href="css/third/jquery.mloading.css">
+    <link rel="stylesheet" href="css/search_single.css">
+    <script src="script/third/jquery-3.2.0.min.js"></script>
+    <script src="script/third/MD5.js"></script>
+    <script src="script/third/viewer.min.js"></script>
+    <script src="script/third/jquery.mloading.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/8.11.8/sweetalert2.all.js"></script>
-    <script th:src="@{'/script/third/bootstrap.min.js'}"></script>
-    <script th:src="@{'/script/search.js'}"></script>
+    <script src="script/third/bootstrap.min.js"></script>
+    <script src="script/search_single.js"></script>
 </head>
 <body>
 <div class="search_wrap">
@@ -24,17 +24,12 @@
     <div class="select_name">人脸库：</div>
     <div class="select">
         <select id="group">
-            <option th:each="group:${groupList}" th:value="${group['gid']}" th:text="${group['name']}" selected="selected"></option>
         </select>
     </div>
     <div class="select_name">返回结果数：</div>
-    <div class="select number_select">
-        <select id="number">
-            <option selected="selected">10</option>
-            <option>50</option>
-            <option>100</option>
-        </select>
-    </div>
+    <button id="subButton" class="fa fa-minus number_sub btn btn-primary"></button>
+    <input id="number" class="number" value="10">
+    <button id="addButton" class="fa fa-plus number_add btn btn-primary"></button>
 </div>
 <div class="info">
     <div id="origin" class="origin">

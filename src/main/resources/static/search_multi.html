@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>多张图片识别页面</title>
+    <link rel="stylesheet" href="css/third/viewer.min.css">
+    <link rel="stylesheet" href="css/third/font-awesome-4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/third/bootstrap.min.css">
+    <link rel="stylesheet" href="css/third/jquery.mloading.css">
+    <link rel="stylesheet" href="css/search_single.css">
+    <script src="script/third/jquery-3.2.0.min.js"></script>
+    <script src="script/third/MD5.js"></script>
+    <script src="script/third/viewer.min.js"></script>
+    <script src="script/third/jquery.mloading.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/8.11.8/sweetalert2.all.js"></script>
+    <script src="script/third/bootstrap.min.js"></script>
+    <script src="script/search_single.js"></script>
+</head>
+<body>
+<div class="search_wrap">
+    <div class="search">
+        <input type="file" id="upload" accept="image/*" >
+    </div>
+    <div class="select_name">人脸库：</div>
+    <div class="select">
+        <select id="group">
+        </select>
+    </div>
+    <div class="select_name">返回结果数：</div>
+    <button id="subButton" class="fa fa-minus number_sub btn btn-primary"></button>
+    <input id="number" class="number" value="10">
+    <button id="addButton" class="fa fa-plus number_add btn btn-primary"></button>
+</div>
+<div class="info">
+    <div id="origin" class="origin">
+        <h4>上传图片</h4>
+        <div id="upImageBox" class="image_box up_image_box">
+            <i id="closeIcon" class="close_icon"></i>
+            <img id="imageOrigin" class="up_image">
+            <i id="addIcon" class="fa fa-plus-circle fa-5x add_icon"></i>
+        </div>
+    </div>
+    <div class="search_button">
+        <button id="onSearch" class="btn btn-primary btn-lg">搜索</button>
+    </div>
+    <div id="result" class="result">
+        <h4>搜索结果</h4>
+        <div id="imageBox" class="image_box">
+            <ul id="showBox" class="show_box">
+<!--                <li>-->
+<!--                    <img src="/image/2016_08_13_15_53_IMG_2958.JPG">-->
+<!--                    <div class="image_info">-->
+<!--                        <div class="similarity">相似度：100%</div>-->
+<!--                        <div class="search_again_button"><button class="btn btn-primary" onclick="searchAgainClick(this)">继续搜索</button></div>-->
+<!--                    </div>-->
+<!--                </li>-->
+<!--                <li>-->
+<!--                    <img src="/image/2016_08_13_15_53_IMG_2958.JPG">-->
+<!--                    <div class="image_info">-->
+<!--                        <div class="similarity">相似度：100%</div>-->
+<!--                        <div class="search_again_button"><button onclick="searchAgainClick(this)">继续搜索</button></div>-->
+<!--                    </div>-->
+<!--                </li>-->
+<!--                <li>-->
+<!--                    <img src="/image/2016_08_13_15_53_IMG_2958.JPG">-->
+<!--                    <div class="image_info">-->
+<!--                        <div class="similarity">相似度：100%</div>-->
+<!--                        <div class="search_again_button"><button onclick="searchAgainClick(this)">继续搜索</button></div>-->
+<!--                    </div>-->
+<!--                </li>-->
+            </ul>
+            <div id="noResult" class="no_result">空空如也</div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
