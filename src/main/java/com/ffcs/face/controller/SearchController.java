@@ -127,9 +127,7 @@ public class SearchController {
                     simple.setImageTime(new Date());
                     sender.apply(simple);
                     if (maxFlag == false) {
-                        JSONObject resultJson2 = new JSONObject();
-                        resultJson2.put("message", "找不到相似图片，此图片已保存到当前库中！");
-                        return resultJson2;
+                        imageMessageListMax.add(imageMessageList);
                     } else {
                         System.out.println(imageMessageList);
                         imageMessageListMax.add(imageMessageList);
