@@ -22,7 +22,7 @@ $(document).ready(function () {
             //要传递的数据
             var imageVOList = [];
             var imageBox = $('#upImageBox').children();
-            for (var i = 1; i < imageBox.length ; i++) {
+            for (var i = 1; i < imageBox.length; i++) {
                 var src = imageBox[i].children[1].children[0].src;
                 var b64 = src.split(",")[1];
                 // var groupId = groupSelector.options[groupSelector.selectedIndex].value;
@@ -58,7 +58,7 @@ $(document).ready(function () {
                     clearResultBox();
                 };
                 reader.readAsDataURL(imgs[i]);
-                $('#upImage'+i).parent().parent().append('<span style="none">'+imgs[i].name+'</span>');
+                $('#upImage' + i).parent().parent().append('<span style="none">' + imgs[i].name + '</span>');
             }
 
         } else {
@@ -70,9 +70,11 @@ $(document).ready(function () {
     deleteImageClick = function (e) {
         //移除上传图片
         e.parentElement.remove();
+        //清空input选择的图片
+        $('#upload').val("");
         //如果是最后一张图片就显示addicon
         var count = $('#upImageBox')[0].childElementCount;
-        if (count==1){
+        if (count == 1) {
             $('#addIcon').css('display', 'block');
         }
     };
@@ -81,23 +83,41 @@ $(document).ready(function () {
     function showUpImage(url) {
         //icon去掉
         $('#addIcon').css('display', 'none');
-        //显示图片
-        var upImageBox = $('#upImageBox');
-        //计算已有几张图片
-        var count = upImageBox[0].childElementCount;
-        upImageBox.append(
-            '<div class="up_image">' +
-            '<div class="up_image_title">Image' + count + '</div>' +
-            '<div class="up_image_img">'+
-            '<img id="upImage' + count + '" src="' + url + '">' +
-            '</div>'+
-            '<i class="fa fa-close" onclick="deleteImageClick(this);"></i>' +
-            '<input type="hidden" value="'+count+'">'+
-            '</div>');
-        new Viewer(document.getElementById('upImage' + count));
+        //判断图片是否已存在
+        var flag = true;
+        var imageBoxes = $('#upImageBox').children();
+        for (var i = 1; i < imageBoxes.length ; i++) {
+            var src = imageBoxes[i].children[1].children[0].src;
+            if (src==url){
+                swal.fire("该图片已添加，请重新选择！", "", "warning");
+                flag = false;
+                break;
+            }
+        }
+        if (flag){
+            //显示图片
+            var upImageBox = $('#upImageBox');
+            //计算已有几张图片
+            var count = upImageBox[0].childElementCount;
+            upImageBox.append(
+                '<div class="up_image">' +
+                '<div class="up_image_title">Image' + count + '</div>' +
+                '<div class="up_image_img">' +
+                '<img id="upImage' + count + '" src="' + url + '">' +
+                '</div>' +
+                '<i class="fa fa-close" onclick="deleteImageClick(this);"></i>' +
+                '<input type="hidden" value="' + count + '">' +
+                '</div>');
+            new Viewer(document.getElementById('upImage' + count));
+        }
+
     }
 
     $('#addIcon').on('click', function () {
+        $('#upload').trigger('click');
+    });
+
+    $('#addImageButton').on('click', function () {
         $('#upload').trigger('click');
     });
 
@@ -115,7 +135,7 @@ $(document).ready(function () {
                     swal.fire(data.message, "", "warning");
                 } else {
                     //隐藏空空如也的div
-                    document.getElementById("noResult").style.display = "none";
+                    $("#noResult").css('display','none');
                     //将查询结果图片放入div
                     var box = $("#showBox");
                     box.css('display', 'block');
@@ -152,7 +172,7 @@ $(document).ready(function () {
         }
     }
 
-//清除检索结果，显示空空如也
+    //清除检索结果，显示空空如也
     function clearResultBox() {
         document.getElementById("noResult").style.display = "block";
         var showBox = document.getElementById("showBox");

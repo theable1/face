@@ -30,7 +30,6 @@ input[type=file]:active{
 .search{
     display: inline-block;
     margin-right: 50px;
-    border: 1px solid #869791;
     text-align: center;
     white-space: nowrap;
 }
@@ -278,4 +277,13 @@ input[type=file]{
 .number_sub,
 .number{
     display: inline-block;
+}
+
+.upload{
+    display: none;
+}
+
+.add_img_button{
+    border: 0;
+    outline: none;
 }
