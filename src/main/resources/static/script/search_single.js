@@ -1,6 +1,17 @@
 var searchAgainClick;
 $(document).ready(function () {
+    $.fn.datetimepicker.dates['zh-CN'] = {
+        days: ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日"],
+        daysShort: ["周日", "周一", "周二", "周三", "周四", "周五", "周六", "周日"],
+        daysMin:  ["日", "一", "二", "三", "四", "五", "六", "日"],
+        months: ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"],
+        monthsShort: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
+        today: "今天",
+        suffix: [],
+        meridiem: ["上午", "下午"]
+    };
     listGroup();//查询人脸库
+    date();
 
     //loading
     function loading() {
@@ -33,14 +44,23 @@ $(document).ready(function () {
                 // var groupId = groupSelector.options[groupSelector.selectedIndex].value;
                 var groupName = groupSelector.options[groupSelector.selectedIndex].text;
                 var number = $('#number').val();
-                var imageInfo = {};
-                imageInfo.imageId = hex_md5(b64);
-                imageInfo.imageB64 = b64;
-                // imageInfo.groupId = groupId;
-                imageInfo.groupName = groupName;
-                imageInfo.imageNum = number;
-                //发送
-                sendData(imageInfo);
+                var startTime = $('#starttime').data("datetimepicker").getDate();
+                var endTime = $('#endtime').data("datetimepicker").getDate();
+                if(startTime > endTime){
+                    swal.fire("结束时间小于开始时间！","","warning");
+                }else{
+                    var imageInfo = {};
+                    imageInfo.imageId = hex_md5(b64);
+                    imageInfo.imageB64 = b64;
+                    // imageInfo.groupId = groupId;
+                    imageInfo.groupName = groupName;
+                    imageInfo.imageNum = number;
+                    imageInfo.startTime = startTime;
+                    imageInfo.endTime = endTime;
+                    //发送
+                    sendData(imageInfo);
+                }
+
             };
             reader.readAsDataURL(img);
         } else {
@@ -235,9 +255,28 @@ $(document).ready(function () {
         });
     }
 
-})
-;
 
+    function date() {
+        var picker1 = $('#starttime').datetimepicker({
+            autoclose: true,
+            pickerPosition: "bottom-left",
+            todayBtn:true,
+            language:'zh-CN',
+            format:'yyyy-MM-dd',
+            minView: 2
+        });
+        var picker2 = $('#endtime').datetimepicker({
+            autoclose: true,
+            pickerPosition: "bottom-left",
+            todayBtn:true,
+            language:'zh-CN',
+            format:'yyyy-MM-dd',
+            minView: 2
+        });
+    }
+
+
+});
 
 
 

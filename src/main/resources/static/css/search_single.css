@@ -252,3 +252,8 @@ input[type=file]{
 .number{
     display: inline-block;
 }
+.date_wrap{
+    display: inline-block;
+    width: 400px;
+    height: 60px;
+}
