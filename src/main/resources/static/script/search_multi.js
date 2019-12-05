@@ -133,6 +133,7 @@ $(document).ready(function () {
                 url: '/search/process',
                 data: JSON.stringify(imageVOList),
                 success: function (data) {
+
                     if (data.code != null && data.message != null) {
                         swal.fire(data.message, "", "warning");
                     } else {

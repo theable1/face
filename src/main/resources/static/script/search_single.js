@@ -35,7 +35,7 @@ $(document).ready(function () {
                 var number = $('#number').val();
                 var imageInfo = {};
                 imageInfo.imageId = hex_md5(b64);
-                imageInfo.imageB64 = b64;search_single.html
+                imageInfo.imageB64 = b64;
                 // imageInfo.groupId = groupId;
                 imageInfo.groupName = groupName;
                 imageInfo.imageNum = number;

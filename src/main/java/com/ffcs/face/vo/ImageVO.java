@@ -2,6 +2,7 @@ package com.ffcs.face.vo;
 
 import java.io.File;
 import java.io.Serializable;
+import java.util.Date;
 
 public class ImageVO implements Serializable {
     private String imageId;
@@ -10,6 +11,24 @@ public class ImageVO implements Serializable {
     private String groupName;
     private String imageUrl;
     private Integer imageNum;
+    private Date startTime;
+    private Date endTime;
+
+    public Date getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
+    }
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
+    }
 
     public Integer getImageNum() {
         return imageNum;
@@ -68,6 +87,8 @@ public class ImageVO implements Serializable {
                 ", groupName='" + groupName + '\'' +
                 ", imageUrl='" + imageUrl + '\'' +
                 ", imageNum=" + imageNum +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
                 '}';
     }
 }

@@ -15,7 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.ModelAndView;
+
 
 import java.util.*;
 
@@ -69,7 +69,6 @@ public class SearchController {
             System.out.println("获取特征值结果：:" + getFeatureResult);
             JSONObject jsonObject = JSON.parseObject(getFeatureResult);
             String featureB64 = jsonObject.getString("feature_b64");
-            System.out.println("featureB64"+featureB64);
             if (featureB64 != null) {
                 List<String> features = new ArrayList<>();
                 features.add(featureB64);
