@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="css/third/font-awesome-4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="css/third/bootstrap.min.css">
     <link rel="stylesheet" href="css/third/jquery.mloading.css">
+    <link rel="stylesheet" href="css/third/bootstrap-datetimepicker.min.css">
     <link rel="stylesheet" href="css/search_single.css">
     <script src="script/third/jquery-3.2.0.min.js"></script>
     <script src="script/third/MD5.js"></script>
@@ -14,7 +15,10 @@
     <script src="script/third/jquery.mloading.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/8.11.8/sweetalert2.all.js"></script>
     <script src="script/third/bootstrap.min.js"></script>
+    <script src="script/third/bootstrap-datetimepicker.min.js"></script>
+    <script src="script/third/moment-with-locales.min.js"></script>
     <script src="script/search_single.js"></script>
+
 </head>
 <body>
 <div class="search_wrap">
@@ -30,7 +34,36 @@
     <button id="subButton" class="fa fa-minus number_sub btn btn-primary"></button>
     <input id="number" class="number" value="10">
     <button id="addButton" class="fa fa-plus number_add btn btn-primary"></button>
+
+
+    <div>
+        <div class="date_wrap">
+            <div class="form-group">
+                <label>选择开始时间：</label>
+                <!--指定 date标记-->
+                <div class='input-group date' id='starttime'>
+                    <input type='text' class="form-control" />
+                    <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+                </div>
+            </div>
+        </div>
+        <div class="date_wrap">
+            <div class="form-group">
+                <label>选择结束时间：</label>
+                <!--指定 date标记-->
+                <div class='input-group date' id='endtime'>
+                    <input type='text' class="form-control" />
+                    <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
 <div class="info">
     <div id="origin" class="origin">
         <h4>上传图片</h4>
