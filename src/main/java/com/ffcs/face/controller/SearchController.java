@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @RestController
@@ -101,9 +102,13 @@ public class SearchController {
                     System.out.println("featureIdLong:" + featureIdLong);
                     if (featureIdLong.size() != 0) {
                         Long[] a1 = new Long[featureIdLong.size()];
-                        
+                        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                        String startTime = formatter.format(imageVOList.get(k).getStartTime());
+                        String endTime = formatter.format(imageVOList.get(k).getEndTime());
+                        System.out.println(startTime);
+                        System.out.println(endTime);
                         //yyyy-MM-dd
-                        List<UploadImageInfo> images = this.uploadImageInfoService.getImages(null,null,featureIdLong.toArray(a1));
+                        List<UploadImageInfo> images = this.uploadImageInfoService.getImages(null,null,featureIdLong.toArray(a1),startTime,endTime);
                         System.out.println("images:" + JSON.toJSONString(images));
                         if (images != null && images.size() > 0) {
                             for (int i = 0; i < data.size(); i++) {
