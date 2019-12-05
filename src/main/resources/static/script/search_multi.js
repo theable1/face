@@ -10,7 +10,7 @@ $(document).ready(function () {
             icon: "",//加载图标，默认值：一个小型的base64的gif图片
             html: false,//设置加载内容是否是html格式，默认值是false
             content: "",//忽略icon和text的值，直接在加载框中显示此值
-            mask: true //是否显示遮罩效果，默认显示
+            mask: false //是否显示遮罩效果，默认显示
         });
     }
 
@@ -38,7 +38,7 @@ $(document).ready(function () {
                 imageVOList.push(imageInfo);
             }
             //发送
-            sendData(imageVOList);
+            sendData(imageVOList,false,null);
         } else {
             swal.fire("未选择图片！", "", "warning");
         }
@@ -80,7 +80,7 @@ $(document).ready(function () {
             var upImages = $('#upImageBox')[0].children;
             for (var i = 1; i < upImages.length; i++) {
                 var number = upImages[i].firstElementChild;
-                number.innerHTML = "img"+i;
+                number.innerHTML = "img" + i;
             }
         }
     };
@@ -129,66 +129,89 @@ $(document).ready(function () {
 
     $('#clearAllButton').on('click', function () {
         $('#upImageBox').find('.up_image').remove();
+        $('#upload').val("");
         $('#addIcon').css('display', 'block');
     });
 
-    function sendData(imageVOList) {
+    //imageVOList为发送数据 , flag为是否为继续搜索, number为继续搜索的图片所在列数
+    function sendData(imageVOList,flag,number) {
+        console.log(imageVOList);
+        console.log(flag);
+        console.log(number);
+
         loading();
         //数据放入数组
         $.ajax({
-                type: 'post',
-                dataType: 'json',
-                contentType: "application/json;charset=utf-8",
-                url: '/search/process',
-                data: JSON.stringify(imageVOList),
-                success: function (data) {
-                    var count = 0;
-                    for (var i = 0; i < data.length; i++) {
-                        var imgResult = data[i];
-                        if (imgResult instanceof Array) {
-                            if (imgResult.length != 0) {
-                                //隐藏空空如也的div
-                                $("#noResult").css('display', 'none');
-                                //将一列查询结果图片放入div
-                                var box = $("#showBox");
-                                box.css('display', 'flex');
-                                box.append('<div class="image_wrap">' +
-                                    '<div class="result_title">img' + (Number(i) + 1) + '查询结果</div>' +
-                                    '<ul id="result' + (Number(i) + 1) + '"></ul>' +
-                                    '</div>'
+            type: 'post',
+            dataType: 'json',
+            contentType: "application/json;charset=utf-8",
+            url: '/search/process',
+            data: JSON.stringify(imageVOList),
+            success: function (data) {
+                for (var i = 0; i < data.length; i++) {
+                    var imgResult = data[i];
+                    var ul;
+                    var num;
+                    if (flag){//是继续搜索
+                        num = number;
+                        //删除原本那一列的li
+                        ul = $('#result'+number);
+                    }else {//不是继续搜索
+                        //隐藏空空如也的div
+                        $("#noResult").css('display', 'none');
+                        //将一列查询结果图片放入div
+                        var box = $("#showBox");
+                        box.css('display', 'flex');
+                        box.append(
+                            '<div class="image_wrap">' +
+                            '<div class="result_title">img' + (Number(i) + 1) + '查询结果</div>' +
+                            '<ul id="result' + (Number(i) + 1) + '"></ul>' +
+                            '</div>'
+                        );
+                        num = (Number(i) + 1);
+                        ul = $('#result' + (Number(i) + 1));
+                    }
+                    if (imgResult instanceof Array) {
+                        if (imgResult.length != 0) {
+                            //添加图片
+                            for (var j = 0; j < imgResult.length; j++) {
+                                ul.append(
+                                    '<li>' +
+                                    '<img src="' + imgResult[j].imageShowPath + '" id="image' + num + j + '">' +
+                                    '<div class="image_info clearfix">' +
+                                    '<div class="fl similarity">' + '相似度：' + (Number(imgResult[j].distance).toFixed(2)) * 100 + '%' + '</div>' +
+                                    '<div class="search_again_button"><button class="btn btn-primary" onclick="searchAgainClick(this)">继续搜索</button></div>' +
+                                    '</div>' +
+                                    '</li>'
                                 );
-                                for (var j = 0; j < imgResult.length; j++) {
-                                    var ul = $('#result' + (Number(i) + 1));
-                                    ul.append(
-                                        '<li>' +
-                                        '<img src="' + imgResult[j].imageShowPath + '" id="image' + i + j + '">' +
-                                        '<div class="image_info clearfix">' +
-                                        '<div class="fl similarity">' + '相似度：' + (Number(imgResult[j].distance).toFixed(2)) * 100 + '%' + '</div>' +
-                                        '<div class="search_again_button"><button class="btn btn-primary" onclick="searchAgainClick(this)">继续搜索</button></div>' +
-                                        '</div>' +
-                                        '</li>'
-                                    );
-                                    new Viewer(document.getElementById("image" + i + j));
-                                }
-                            } else {
-                                count++;
+                                new Viewer(document.getElementById("image" + num + j));
                             }
                         } else {
-                            count++;
+                            //找不到相似结果
+                            ul.append(
+                                '<div class="error">' +
+                                '<i class="fa fa-bitbucket fa-4x"></i>' +
+                                '<span>找不到相似图片</span>' +
+                                '</div>'
+                            );
                         }
+                    } else {
+                        //错误：识别不到人脸
+                        ul.append(
+                            '<div class="error">' +
+                            '<i class="fa fa-eye-slash fa-4x"></i>' +
+                            '<span>未识别出人脸</span>' +
+                            '</div>'
+                        );
                     }
-                    if (count == data.length) {
-                        swal.fire("查询不到相似结果！", "", "warning");
-                    }
-                    //结束loading
-                    $("#imageBox").mLoading("hide");
                 }
-                ,
-                error: function () {
-                    swal.fire("检索失败！", "", "error");
-                }
+                //结束loading
+                $("#imageBox").mLoading("hide");
+            },
+            error: function () {
+                swal.fire("检索失败！", "", "error");
             }
-        );
+        });
     }
 
 //判断用户是否上传图片
@@ -209,24 +232,25 @@ $(document).ready(function () {
         showBox.innerHTML = "";
     }
 
-//再次搜索按钮
+    //再次搜索按钮
     searchAgainClick = function (e) {
-        //检索图片放到上传图片框，搜索结果清空
-        var url = e.parentElement.parentElement.previousElementSibling.getAttribute("src");
-        showUpImage(url);
-        clearResultBox();
         //ajax发送图片数据到后台
-        var groupSelector = document.getElementById("group");
-        var groupName = groupSelector.options[groupSelector.selectedIndex].text;
+        var groupName = $("#group option:selected").text();
         var number = $('#number').val();
+        var url = $(e).parents("li")[0].children[0].src;
         var imageInfo = {};
         imageInfo.imageUrl = url;
         imageInfo.groupName = groupName;
         imageInfo.imageNum = number;
-        //发送
         var imageVOList = [];
         imageVOList.push(imageInfo);
-        sendData(imageVOList);
+        //再次搜索的图片所在列
+        var col = $(e).parents("ul")[0].id;
+        col = col.split("result")[1];
+        //删除原本数据
+        $(e).parents("ul").find("li").remove();
+        //发送获取新数据
+        sendData(imageVOList,true,col);
     };
 
     $('#addButton').on('click', function () {
@@ -264,7 +288,7 @@ $(document).ready(function () {
                 var group = $('#group');
                 for (var i = 0; i < data.length; i++) {
                     group.append(
-                        '<option>' + data[i].name + '</option>'
+                        '<option selected="selected">' + data[i].name + '</option>'
                     );
                 }
             },

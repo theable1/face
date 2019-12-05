@@ -130,9 +130,9 @@ input[type=file]:active{
 }
 
 .no_result{
-    color: darkgrey;
+    color: #777777;
     font-size: 40px;
-    margin-top: 150px;
+    margin-top: 130px;
 }
 
 h4{
@@ -154,52 +154,12 @@ input[type=file]{
 
 .select {
     display: inline-block;
-    width: 110px;
-    height: 25px;
-    position: relative;
-    vertical-align: middle;
-    padding: 2px 0 0 0;
-    background-color: #fff;
-    color: #555;
-    border: 1px solid #aaa;
-    text-shadow: none;
-    border-radius: 4px;
-    transition: box-shadow 0.25s ease;
-    z-index: 2;
-    margin-top: 0;
-    font-size: 15px;
     margin-right: 50px;
-}
-
-.select:hover {
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
-}
-
-.select:before {
-    content: "";
-    position: absolute;
-    width: 0;
-    height: 0;
-    border: 10px solid transparent;
-    border-top-color: #ccc;
-    top: 7px;
-    right: 7px;
-    cursor: pointer;
-    z-index: -2;
 }
 .select select {
     cursor: pointer;
-    padding-left: 10px;
-    width: 100%;
-    border: none;
-    background: transparent;
-    background-image: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-}
-
-.select select:focus {
-    outline: none;
+    height: 32px;
+    width: 100px;
 }
 
 .show_box{
@@ -315,10 +275,23 @@ input[type=file]{
 .clear_all_img_button{
     border: 0;
     outline: none;
+}
+
+.add_img_button{
     margin-left: 50px;
 }
 
 .info_icon{
     color: #337ab7;
     cursor: pointer;
+}
+
+.error_li{
+    border: 0;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.error{
+    margin: 54px auto 80px auto;
 }
