@@ -6,11 +6,11 @@ $(document).ready(function () {
     //loading
     function loading() {
         $("#imageBox").mLoading({
-            text: "加载中...",//加载文字，默认值：加载中...
+            text: "查询中...",//加载文字，默认值：加载中...
             icon: "",//加载图标，默认值：一个小型的base64的gif图片
             html: false,//设置加载内容是否是html格式，默认值是false
             content: "",//忽略icon和text的值，直接在加载框中显示此值
-            mask: false//是否显示遮罩效果，默认显示
+            mask: true //是否显示遮罩效果，默认显示
         });
     }
 
@@ -72,12 +72,16 @@ $(document).ready(function () {
         e.parentElement.remove();
         //清空input选择的图片
         $('#upload').val("");
-        //更新imageid
-
-        //如果是最后一张图片就显示addicon
+        //如果是最后一张图片就显示addicon,不是则更新序号
         var count = $('#upImageBox')[0].childElementCount;
         if (count == 1) {
             $('#addIcon').css('display', 'block');
+        } else {
+            var upImages = $('#upImageBox')[0].children;
+            for (var i = 1; i < upImages.length; i++) {
+                var number = upImages[i].firstElementChild;
+                number.innerHTML = "img"+i;
+            }
         }
     };
 
@@ -103,7 +107,7 @@ $(document).ready(function () {
             var count = upImageBox[0].childElementCount;
             upImageBox.append(
                 '<div class="up_image">' +
-                '<div class="up_image_title">' + count + '</div>' +
+                '<div class="up_image_title">img' + count + '</div>' +
                 '<div class="up_image_img">' +
                 '<img id="upImage' + count + '" src="' + url + '">' +
                 '</div>' +
@@ -123,6 +127,11 @@ $(document).ready(function () {
         $('#upload').trigger('click');
     });
 
+    $('#clearAllButton').on('click', function () {
+        $('#upImageBox').find('.up_image').remove();
+        $('#addIcon').css('display', 'block');
+    });
+
     function sendData(imageVOList) {
         loading();
         //数据放入数组
@@ -133,31 +142,28 @@ $(document).ready(function () {
                 url: '/search/process',
                 data: JSON.stringify(imageVOList),
                 success: function (data) {
-
-                    if (data.code != null && data.message != null) {
-                        swal.fire(data.message, "", "warning");
-                    } else {
-                        var count = 0;
-                        for (var i = 0; i < data.length; i++) {
-                            var imgResult = data[i];
+                    var count = 0;
+                    for (var i = 0; i < data.length; i++) {
+                        var imgResult = data[i];
+                        if (imgResult instanceof Array) {
                             if (imgResult.length != 0) {
                                 //隐藏空空如也的div
                                 $("#noResult").css('display', 'none');
                                 //将一列查询结果图片放入div
                                 var box = $("#showBox");
-                                box.css('display', 'block');
+                                box.css('display', 'flex');
                                 box.append('<div class="image_wrap">' +
-                                    '<div class="result_title">' + (Number(i)+1) + '</div>' +
-                                    '<ul id="result' + (Number(i)+1) + '"></ul>' +
+                                    '<div class="result_title">img' + (Number(i) + 1) + '查询结果</div>' +
+                                    '<ul id="result' + (Number(i) + 1) + '"></ul>' +
                                     '</div>'
                                 );
                                 for (var j = 0; j < imgResult.length; j++) {
-                                    var ul = $('#result' + (Number(i)+1));
+                                    var ul = $('#result' + (Number(i) + 1));
                                     ul.append(
                                         '<li>' +
                                         '<img src="' + imgResult[j].imageShowPath + '" id="image' + i + j + '">' +
                                         '<div class="image_info clearfix">' +
-                                        '<div class="fl similarity">' + '相似度：' + (imgResult[j].distance.toFixed(2)) * 100 + '%' + '</div>' +
+                                        '<div class="fl similarity">' + '相似度：' + (Number(imgResult[j].distance).toFixed(2)) * 100 + '%' + '</div>' +
                                         '<div class="search_again_button"><button class="btn btn-primary" onclick="searchAgainClick(this)">继续搜索</button></div>' +
                                         '</div>' +
                                         '</li>'
@@ -167,14 +173,17 @@ $(document).ready(function () {
                             } else {
                                 count++;
                             }
+                        } else {
+                            count++;
                         }
-                        if (count == data.length) {
-                            swal.fire("查询不到相似结果！", "", "warning");
-                        }
-                        //结束loading
-                        $("#imageBox").mLoading("hide");
                     }
-                },
+                    if (count == data.length) {
+                        swal.fire("查询不到相似结果！", "", "warning");
+                    }
+                    //结束loading
+                    $("#imageBox").mLoading("hide");
+                }
+                ,
                 error: function () {
                     swal.fire("检索失败！", "", "error");
                 }

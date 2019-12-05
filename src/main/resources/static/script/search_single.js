@@ -5,11 +5,11 @@ $(document).ready(function () {
     //loading
     function loading() {
         $("#imageBox").mLoading({
-            text: "加载中...",//加载文字，默认值：加载中...
+            text: "查询中...",//加载文字，默认值：加载中...
             icon: "",//加载图标，默认值：一个小型的base64的gif图片
             html: false,//设置加载内容是否是html格式，默认值是false
             content: "",//忽略icon和text的值，直接在加载框中显示此值
-            mask: false//是否显示遮罩效果，默认显示
+            mask: true//是否显示遮罩效果，默认显示
         });
     }
 
@@ -91,29 +91,33 @@ $(document).ready(function () {
             url: '/search/process',
             data: JSON.stringify(imageVOList),
             success: function (data) {
-                if (data.code != null || data.message != null) {
-                    swal.fire(data.message, "", "warning");
-                } else {
-                    //隐藏空空如也的div
-                    document.getElementById("noResult").style.display = "none";
-                    //将查询结果图片放入div
-                    var box = $("#showBox");
-                    box.css('display', 'block');
-                    var upNumber = data.length;
-                    for (var i = 0; i < upNumber.length; i++) {
-                        box.append(
-                            '<li>' +
-                            '<img src="' + upNumber[i].imageShowPath + '" id="image' + i + '">' +
-                            '<div class="image_info clearfix">' +
-                            '<div class="fl similarity">' + '相似度：' + (upNumber[i].distance.toFixed(2)) * 100 + '%' + '</div>' +
-                            '<div class="search_again_button"><button class="btn btn-primary" onclick="searchAgainClick(this)">继续搜索</button></div>' +
-                            '</div>' +
-                            '</li>'
-                        );
-                        new Viewer(document.getElementById("image" + i));
+                var imgs = data[0];
+                if (imgs instanceof Array) {
+                    if (imgs.length != 0) {
+                        //隐藏空空如也的div
+                        $("#noResult").css('display', 'none');
+                        //将查询结果图片放入div
+                        var box = $("#showBox");
+                        box.css('display', 'block');
+                        for (var i = 0; i < imgs.length; i++) {
+                            box.append(
+                                '<li>' +
+                                '<img src="' + imgs[i].imageShowPath + '" id="image' + i + '">' +
+                                '<div class="image_info clearfix">' +
+                                '<div class="fl similarity">' + '相似度：' + (Number(imgs[i].distance).toFixed(2)) * 100 + '%' + '</div>' +
+                                '<div class="search_again_button"><button class="btn btn-primary" onclick="searchAgainClick(this)">继续搜索</button></div>' +
+                                '</div>' +
+                                '</li>'
+                            );
+                            new Viewer(document.getElementById("image" + i));
+                        }
+                        //结束loading
+                        $("#imageBox").mLoading("hide");
+                    } else {
+                        swal.fire("找不到相似图片！", "", "warning");
                     }
-                    //结束loading
-                    $("#imageBox").mLoading("hide");
+                } else {
+                    swal.fire(imgs.get("message"), "", "warning");
                 }
             },
             error: function () {
@@ -221,7 +225,7 @@ $(document).ready(function () {
                 var group = $('#group');
                 for (var i = 0; i < data.length; i++) {
                     group.append(
-                        '<option>' + data[i].name + '</option>'
+                        '<option selected="selected">' + data[i].name + '</option>'
                     );
                 }
             },
