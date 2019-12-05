@@ -288,7 +288,7 @@ $(document).ready(function () {
                 var group = $('#group');
                 for (var i = 0; i < data.length; i++) {
                     group.append(
-                        '<option selected="selected">' + data[i].name + '</option>'
+                        '<option>' + data[i].name + '</option>'
                     );
                 }
             },
@@ -296,9 +296,10 @@ $(document).ready(function () {
                 swal.fire("人脸库查询失败！", "", "error");
             }
         });
-    }
+    };
 
-});
+})
+;
 
 
 

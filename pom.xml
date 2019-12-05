@@ -35,7 +35,7 @@
         <dependency>
             <groupId>com.ffcs</groupId>
             <artifactId>vision-bigdata-message-mysql</artifactId>
-            <version>0.0.1-SHAPSHOT</version>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.ffcs</groupId>

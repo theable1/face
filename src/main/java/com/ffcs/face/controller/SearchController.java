@@ -54,7 +54,8 @@ public class SearchController {
         String imageB64;
         double similarity = 0.6;
         List<Object> imageMessageListMax = new ArrayList<>();
-        for (int k = 0; k < imageVOList.size(); k++) {
+        for(int k = 0; k<imageVOList.size() ; k++)
+        {
             //再次搜索前端只传groupName、url,本地上传图片搜索url为null
             if (imageVOList.get(k).getImageUrl() != null) {
                 imageId = "";
@@ -68,7 +69,7 @@ public class SearchController {
             System.out.println("获取特征值结果：:" + getFeatureResult);
             JSONObject jsonObject = JSON.parseObject(getFeatureResult);
             String featureB64 = jsonObject.getString("feature_b64");
-            System.out.println("featureB64" + featureB64);
+            System.out.println("featureB64"+featureB64);
             if (featureB64 != null) {
                 List<String> features = new ArrayList<>();
                 features.add(featureB64);
@@ -87,7 +88,7 @@ public class SearchController {
                     maxFlag = maxDistance > 0.6 ? true : false;
                     System.out.println("是否保存" + saveImage);
                     List<Long> featureIdLong = new ArrayList<>();
-                    int[] flag = new int[imageVOList.get(k).getImageNum()];
+                    int[] flag = new int[10];
                     int num = 0;
                     for (int i = 0; i < size; i++) {
                         if (data.getJSONObject(i).getDouble("distance") < similarity) {
