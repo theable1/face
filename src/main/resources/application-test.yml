@@ -4,13 +4,13 @@ spring:
       enabled: true
       additional-paths: src/main/java
   rabbitmq:
-    host: 192.168.50.10
+    host: localhost
     username: guest
     password: guest
   datasource:
-    url: jdbc:mysql://192.168.50.10:3307/vision_bigdata_v1
-    username: ivm
-    password: ivm@ffcs123#
+    url: jdbc:mysql://localhost:3307/vision_bigdata
+    username: root
+    password: vision@bigdata
 
   jackson:
     serialization:
