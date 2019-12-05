@@ -255,9 +255,8 @@ $(document).ready(function () {
         });
     }
 
-
     function date() {
-        var picker1 = $('#starttime').datetimepicker({
+        $('#starttime').datetimepicker({
             autoclose: true,
             pickerPosition: "bottom-left",
             todayBtn:true,
@@ -265,7 +264,7 @@ $(document).ready(function () {
             format:'yyyy-MM-dd',
             minView: 2
         });
-        var picker2 = $('#endtime').datetimepicker({
+        $('#endtime').datetimepicker({
             autoclose: true,
             pickerPosition: "bottom-left",
             todayBtn:true,
