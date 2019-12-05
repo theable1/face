@@ -19,7 +19,7 @@ input[type=file]:active{
 
 .search_wrap{
     display: inline-block;
-    margin: 50px auto;
+    margin: 40px auto;
 }
 
 .select_name{
@@ -133,7 +133,6 @@ input[type=file]:active{
     color: darkgrey;
     font-size: 40px;
     margin-top: 150px;
-    display: none;
 }
 
 h4{
@@ -208,7 +207,6 @@ input[type=file]{
     margin: 0 auto;
     white-space: nowrap;
     display: none;
-    display: flex;
 }
 
 .image_wrap{
@@ -313,7 +311,14 @@ input[type=file]{
     display: none;
 }
 
-.add_img_button{
+.add_img_button,
+.clear_all_img_button{
     border: 0;
     outline: none;
+    margin-left: 50px;
+}
+
+.info_icon{
+    color: #337ab7;
+    cursor: pointer;
 }
