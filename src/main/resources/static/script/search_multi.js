@@ -1,7 +1,18 @@
 var searchAgainClick;
 var deleteImageClick;
 $(document).ready(function () {
+    $.fn.datetimepicker.dates['zh-CN'] = {
+        days: ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日"],
+        daysShort: ["周日", "周一", "周二", "周三", "周四", "周五", "周六", "周日"],
+        daysMin:  ["日", "一", "二", "三", "四", "五", "六", "日"],
+        months: ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"],
+        monthsShort: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
+        today: "今天",
+        suffix: [],
+        meridiem: ["上午", "下午"]
+    };
     listGroup();//查询人脸库
+    date();
 
     //loading
     function loading() {
@@ -29,12 +40,15 @@ $(document).ready(function () {
                 var groupSelector = document.getElementById("group");
                 var groupName = groupSelector.options[groupSelector.selectedIndex].text;
                 var number = $('#number').val();
+                var startTime = $('#starttime').data("datetimepicker").getDate();
+                var endTime = $('#endtime').data("datetimepicker").getDate();
                 var imageInfo = {};
                 imageInfo.imageId = hex_md5(b64);
                 imageInfo.imageB64 = b64;
-                // imageInfo.groupId = groupId;
                 imageInfo.groupName = groupName;
                 imageInfo.imageNum = number;
+                imageInfo.startTime = startTime;
+                imageInfo.endTime = endTime;
                 imageVOList.push(imageInfo);
             }
             //发送
@@ -210,6 +224,8 @@ $(document).ready(function () {
             },
             error: function () {
                 swal.fire("检索失败！", "", "error");
+                //结束loading
+                $("#imageBox").mLoading("hide");
             }
         });
     }
@@ -238,10 +254,14 @@ $(document).ready(function () {
         var groupName = $("#group option:selected").text();
         var number = $('#number').val();
         var url = $(e).parents("li")[0].children[0].src;
+        var startTime = $('#starttime').data("datetimepicker").getDate();
+        var endTime = $('#endtime').data("datetimepicker").getDate();
         var imageInfo = {};
         imageInfo.imageUrl = url;
         imageInfo.groupName = groupName;
         imageInfo.imageNum = number;
+        imageInfo.startTime = startTime;
+        imageInfo.endTime = endTime;
         var imageVOList = [];
         imageVOList.push(imageInfo);
         //再次搜索的图片所在列
@@ -298,8 +318,47 @@ $(document).ready(function () {
         });
     };
 
-})
-;
+    function date() {
+        $('#starttime').datetimepicker({
+            autoclose: true,
+            pickerPosition: "bottom-left",
+            todayBtn:true,
+            language:'zh-CN',
+            format:'yyyy-MM-dd',
+            minView: 2
+        });
+        $('#endtime').datetimepicker({
+            autoclose: true,
+            pickerPosition: "bottom-left",
+            todayBtn:true,
+            language:'zh-CN',
+            format:'yyyy-MM-dd',
+            minView: 2
+        });
+    }
+
+    $('#startDate').on('change', function () {
+        if (!judgeDate()) {
+            swal.fire("开始时间大于结束时间！", "", "warning");
+        }
+    });
+
+    $('#endDate').on('change', function () {
+        if (!judgeDate()) {
+            swal.fire("结束时间小于开始时间！", "", "warning");
+        }
+    });
+
+    function judgeDate() {
+        var startTime = $('#starttime').data("datetimepicker").getDate();
+        var endTime = $('#endtime').data("datetimepicker").getDate();
+        if (startTime > endTime) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+});
 
 
 

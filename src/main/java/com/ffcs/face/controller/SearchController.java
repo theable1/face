@@ -3,6 +3,7 @@ package com.ffcs.face.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.ffcs.common.tools.MD5Util;
 import com.ffcs.face.service.IFaissService;
 import com.ffcs.face.service.IFrsService;
 import com.ffcs.face.util.JsonUtils;
@@ -11,15 +12,19 @@ import com.ffcs.image.Simple;
 import com.ffcs.visionbigdata.mysql.bean.UploadImageInfo;
 import com.ffcs.visionbigdata.mysql.service.UploadImageInfoService;
 import com.ffcs.visionbigdata.rabbitmq.Sender;
+import org.csource.fastdfs.StorageClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.ModelAndView;
+import sun.misc.BASE64Encoder;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
-
+/**
+ * @author liuxin
+ * @date 2019/11/25
+ */
 @RestController
 @RequestMapping("/search/")
 public class SearchController {
@@ -31,7 +36,8 @@ public class SearchController {
     private UploadImageInfoService uploadImageInfoService;
     @Autowired
     private Sender sender;
-
+    @Autowired
+    private StorageClient storageClient;
     @RequestMapping("list")
     public Object list() {
         List<Map<String, Object>> groupList = new ArrayList();
@@ -57,17 +63,20 @@ public class SearchController {
         List<Object> imageMessageListMax = new ArrayList<>();
         for(int k = 0; k<imageVOList.size() ; k++)
         {
+
             //再次搜索前端只传groupName、url,本地上传图片搜索url为null
             if (imageVOList.get(k).getImageUrl() != null) {
-                imageId = "";
-                imageB64 = "";
+                byte[] bytes = storageClient.download_file(imageVOList.get(k).getGroupName(), imageVOList.get(k).getImageUrl());
+                BASE64Encoder base64Encoder = new BASE64Encoder();
+                imageB64 = base64Encoder.encode(bytes);
+                imageId = MD5Util.getStringMD5(imageB64);
             } else {
                 imageId = imageVOList.get(k).getImageId();
                 imageB64 = imageVOList.get(k).getImageB64();
             }
             //获取特征值
             String getFeatureResult = frsService.getFeatureByPost(imageId, imageB64);
-            System.out.println("获取特征值结果：:" + getFeatureResult);
+//            System.out.println("获取特征值结果：:" + getFeatureResult);
             JSONObject jsonObject = JSON.parseObject(getFeatureResult);
             String featureB64 = jsonObject.getString("feature_b64");
             System.out.println("featureB64"+featureB64);
@@ -109,7 +118,8 @@ public class SearchController {
                         System.out.println(startTime);
                         System.out.println(endTime);
                         //yyyy-MM-dd
-                        List<UploadImageInfo> images = this.uploadImageInfoService.getImages(null,null,featureIdLong.toArray(a1),startTime,endTime);
+                        List<UploadImageInfo> images = this.uploadImageInfoService
+                                .getImages(null,imageVOList.get(k).getGroupName(),featureIdLong.toArray(a1),startTime,endTime);
                         System.out.println("images:" + JSON.toJSONString(images));
                         if (images != null && images.size() > 0) {
                             for (int i = 0; i < data.size(); i++) {
@@ -132,6 +142,7 @@ public class SearchController {
                     simple.setBase64(imageB64);
                     simple.setHashCode(imageId);
                     simple.setImageTime(new Date());
+                    System.out.println("保存的图片信息："+simple);
                     sender.apply(simple);
                     if (maxFlag == false) {
                         imageMessageListMax.add(imageMessageList);

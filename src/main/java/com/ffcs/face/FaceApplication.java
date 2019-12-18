@@ -35,17 +35,14 @@ public class FaceApplication {
     public Sender getSender(){
         return  new Sender();
     }
-//    @Bean
-//    public IFaissService getService(){
-//        return  new FaissServiceImpl();
-//    }
-//    @Bean
-//    public StorageClient getStorageClient() throws IOException, MyException {
-//        ClientGlobal.init(CONF_NAME);
-//        TrackerClient tracker = new TrackerClient();
-//        TrackerServer trackerServer = tracker.getConnection();
-//        StorageServer storageServer = null;
-//        return new StorageClient(trackerServer, storageServer);
-//    }
+
+    @Bean
+    public StorageClient getStorageClient() throws IOException, MyException {
+        ClientGlobal.init(CONF_NAME);
+        TrackerClient tracker = new TrackerClient();
+        TrackerServer trackerServer = tracker.getConnection();
+        StorageServer storageServer = null;
+        return new StorageClient(trackerServer, storageServer);
+    }
 }
 

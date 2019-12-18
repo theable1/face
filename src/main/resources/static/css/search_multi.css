@@ -29,7 +29,7 @@ input[type=file]:active{
 
 .search{
     display: inline-block;
-    margin-right: 50px;
+    margin-right: 40px;
     text-align: center;
     white-space: nowrap;
 }
@@ -132,7 +132,7 @@ input[type=file]:active{
 .no_result{
     color: #777777;
     font-size: 40px;
-    margin-top: 130px;
+    margin-top: 150px;
 }
 
 h4{
@@ -154,7 +154,7 @@ input[type=file]{
 
 .select {
     display: inline-block;
-    margin-right: 50px;
+    margin-right: 40px;
 }
 .select select {
     cursor: pointer;
@@ -278,7 +278,7 @@ input[type=file]{
 }
 
 .add_img_button{
-    margin-left: 50px;
+    margin-left: 40px;
 }
 
 .info_icon{
@@ -294,4 +294,18 @@ input[type=file]{
 
 .error{
     margin: 54px auto 80px auto;
+}
+
+.start_date_wrap,
+.end_date_wrap{
+    display: inline-block;
+    width: 140px;
+    height: 32px;
+    padding-top: 10px;
+}
+
+.start_date_name,
+.end_date_name{
+    display: inline-block;
+    margin-left: 40px;
 }
