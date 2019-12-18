@@ -3,6 +3,7 @@ package com.ffcs.face.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.ffcs.common.tools.MD5Util;
 import com.ffcs.face.service.IFaissService;
 import com.ffcs.face.service.IFrsService;
 import com.ffcs.face.util.JsonUtils;
@@ -11,11 +12,12 @@ import com.ffcs.image.Simple;
 import com.ffcs.visionbigdata.mysql.bean.UploadImageInfo;
 import com.ffcs.visionbigdata.mysql.service.UploadImageInfoService;
 import com.ffcs.visionbigdata.rabbitmq.Sender;
+import org.csource.fastdfs.StorageClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.ModelAndView;
+import sun.misc.BASE64Encoder;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -24,13 +26,15 @@ import java.util.*;
 @RequestMapping("/search/")
 public class SearchController {
     @Autowired
-    IFrsService frsService;
+    private IFrsService frsService;
     @Autowired
-    IFaissService faissService;
+    private IFaissService faissService;
     @Autowired
     private UploadImageInfoService uploadImageInfoService;
     @Autowired
     private Sender sender;
+    @Autowired
+    private StorageClient storageClient;
 
     @RequestMapping("list")
     public Object list() {
@@ -59,18 +63,21 @@ public class SearchController {
         {
             //再次搜索前端只传groupName、url,本地上传图片搜索url为null
             if (imageVOList.get(k).getImageUrl() != null) {
-                imageId = "";
-                imageB64 = "";
+                ImageVO imageVO = imageVOList.get(k);
+                byte[] bytes = storageClient.download_file(imageVO.getGroupName(), imageVO.getImageUrl());
+                BASE64Encoder encoder = new BASE64Encoder();
+                imageB64 = encoder.encode(bytes);
+                imageId = MD5Util.getStringMD5(imageB64);
             } else {
                 imageId = imageVOList.get(k).getImageId();
                 imageB64 = imageVOList.get(k).getImageB64();
             }
             //获取特征值
             String getFeatureResult = frsService.getFeatureByPost(imageId, imageB64);
-            System.out.println("获取特征值结果：:" + getFeatureResult);
+//            System.out.println("获取特征值结果：:" + getFeatureResult);
             JSONObject jsonObject = JSON.parseObject(getFeatureResult);
             String featureB64 = jsonObject.getString("feature_b64");
-            System.out.println("featureB64"+featureB64);
+//            System.out.println("featureB64"+featureB64);
             if (featureB64 != null) {
                 List<String> features = new ArrayList<>();
                 features.add(featureB64);

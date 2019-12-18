@@ -7,12 +7,14 @@
     <link rel="stylesheet" href="css/third/font-awesome-4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="css/third/bootstrap.min.css">
     <link rel="stylesheet" href="css/third/jquery.mloading.css">
+    <link rel="stylesheet" href="css/third/bootstrap-datetimepicker.min.css">
     <link rel="stylesheet" href="css/search_multi.css">
     <script src="script/third/jquery-3.2.0.min.js"></script>
     <script src="script/third/MD5.js"></script>
     <script src="script/third/viewer.min.js"></script>
     <script src="script/third/jquery.mloading.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/8.11.8/sweetalert2.all.js"></script>
+    <script src="script/third/bootstrap-datetimepicker.min.js"></script>
     <script src="script/third/bootstrap.min.js"></script>
     <script src="script/search_multi.js"></script>
 </head>
@@ -34,6 +36,32 @@
     <button id="subButton" class="fa fa-minus number_sub btn btn-primary"></button>
     <input id="number" class="number" value="10">
     <button id="addButton" class="fa fa-plus number_add btn btn-primary"></button>
+    <div class="start_date_name">选择开始时间：</div>
+    <div class="start_date_wrap">
+        <div class="form-group">
+            <!--指定 date标记-->
+            <div class='input-group date' id='starttime'>
+                <input id="startDate" type='text' class="form-control"/>
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="end_date_name">选择结束时间：</div>
+    <div class="end_date_wrap">
+        <div class="date_wrap">
+            <div class="form-group">
+                <!--指定 date标记-->
+                <div class='input-group date' id='endtime'>
+                    <input id="endDate" type='text' class="form-control"/>
+                    <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <div class="info">
     <div id="origin" class="origin">
@@ -51,7 +79,7 @@
             <div id="showBox" class="show_box">
             </div>
             <div id="noResult" class="no_result">
-                <i class="fa fa-bitbucket fa-3x"></i>
+<!--                <i class="fa fa-bitbucket fa-2x"></i>-->
                 暂无结果
             </div>
         </div>

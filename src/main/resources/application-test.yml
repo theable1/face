@@ -11,13 +11,11 @@ spring:
     url: jdbc:mysql://localhost:3307/vision_bigdata
     username: root
     password: vision@bigdata
-
   jackson:
     serialization:
       #保证@ResponseBody时，Date会自动转化为timeStamp的数值(毫秒数)
       WRITE_DATES_AS_TIMESTAMPS : true
     time-zone: GMT+8
-
 
   thymeleaf:
     cache: false
@@ -26,13 +24,6 @@ spring:
     prefix: classpath:/templates/
     suffix: .html
 
-
-
-mybatis:
-  mapper-locations: classpath:com/ffcs/face/*/dao/**/*Dao.xml
-#  configuration:
-#    log-impl: org.apache.ibatis.logging.log4j2.Log4j2Impl
-    #org.apache.ibatis.logging.stdout.StdOutImpl
 
 
 baseUri: http://localhost:10004/bvs/api/v1/

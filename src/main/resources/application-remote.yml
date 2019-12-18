@@ -27,14 +27,6 @@ spring:
     suffix: .html
 
 
-
-mybatis:
-  mapper-locations: classpath:com/ffcs/face/*/dao/**/*Dao.xml
-#  configuration:
-#    log-impl: org.apache.ibatis.logging.log4j2.Log4j2Impl
-    #org.apache.ibatis.logging.stdout.StdOutImpl
-
-
 baseUri: http://172.16.6.123:10004/bvs/api/v1/
 frsBaseUri: http://172.16.6.128:5001/frs/api/v1/
 rabbitmq:

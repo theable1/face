@@ -23,41 +23,42 @@
 <body>
 <div class="search_wrap">
     <div class="search">
-        <input type="file" id="upload" accept="image/*" >
+        <button id="addImageButton" class="btn btn-primary add_img_button">添加图片</button>
+        <div class="upload">
+            <input type="file" id="upload" accept="image/*">
+        </div>
     </div>
     <div class="select_name">人脸库：</div>
     <div class="select">
-        <select id="group">
+        <select id="group" class="form-control">
         </select>
     </div>
     <div class="select_name">返回结果数：</div>
     <button id="subButton" class="fa fa-minus number_sub btn btn-primary"></button>
     <input id="number" class="number" value="10">
     <button id="addButton" class="fa fa-plus number_add btn btn-primary"></button>
-
-
-    <div>
-        <div class="date_wrap">
-            <div class="form-group">
-                <label>选择开始时间：</label>
-                <!--指定 date标记-->
-                <div class='input-group date' id='starttime'>
-                    <input type='text' class="form-control" />
-                    <span class="input-group-addon">
+    <div class="start_date_name">选择开始时间：</div>
+    <div class="start_date_wrap">
+        <div class="form-group">
+            <!--指定 date标记-->
+            <div class='input-group date' id='starttime'>
+                <input id="startDate" type='text' class="form-control"/>
+                <span class="input-group-addon">
                     <span class="glyphicon glyphicon-calendar"></span>
                 </span>
-                </div>
             </div>
         </div>
+    </div>
+    <div class="end_date_name">选择结束时间：</div>
+    <div class="end_date_wrap">
         <div class="date_wrap">
             <div class="form-group">
-                <label>选择结束时间：</label>
                 <!--指定 date标记-->
                 <div class='input-group date' id='endtime'>
-                    <input type='text' class="form-control" />
+                    <input id="endDate" type='text' class="form-control"/>
                     <span class="input-group-addon">
                     <span class="glyphicon glyphicon-calendar"></span>
-                </span>
+                    </span>
                 </div>
             </div>
         </div>
@@ -80,30 +81,30 @@
         <h4>搜索结果</h4>
         <div id="imageBox" class="image_box">
             <ul id="showBox" class="show_box">
-<!--                <li>-->
-<!--                    <img src="/image/2016_08_13_15_53_IMG_2958.JPG">-->
-<!--                    <div class="image_info">-->
-<!--                        <div class="similarity">相似度：100%</div>-->
-<!--                        <div class="search_again_button"><button class="btn btn-primary" onclick="searchAgainClick(this)">继续搜索</button></div>-->
-<!--                    </div>-->
-<!--                </li>-->
-<!--                <li>-->
-<!--                    <img src="/image/2016_08_13_15_53_IMG_2958.JPG">-->
-<!--                    <div class="image_info">-->
-<!--                        <div class="similarity">相似度：100%</div>-->
-<!--                        <div class="search_again_button"><button onclick="searchAgainClick(this)">继续搜索</button></div>-->
-<!--                    </div>-->
-<!--                </li>-->
-<!--                <li>-->
-<!--                    <img src="/image/2016_08_13_15_53_IMG_2958.JPG">-->
-<!--                    <div class="image_info">-->
-<!--                        <div class="similarity">相似度：100%</div>-->
-<!--                        <div class="search_again_button"><button onclick="searchAgainClick(this)">继续搜索</button></div>-->
-<!--                    </div>-->
-<!--                </li>-->
+                <!--                <li>-->
+                <!--                    <img src="/image/2016_08_13_15_53_IMG_2958.JPG">-->
+                <!--                    <div class="image_info">-->
+                <!--                        <div class="similarity">相似度：100%</div>-->
+                <!--                        <div class="search_again_button"><button class="btn btn-primary" onclick="searchAgainClick(this)">继续搜索</button></div>-->
+                <!--                    </div>-->
+                <!--                </li>-->
+                <!--                <li>-->
+                <!--                    <img src="/image/2016_08_13_15_53_IMG_2958.JPG">-->
+                <!--                    <div class="image_info">-->
+                <!--                        <div class="similarity">相似度：100%</div>-->
+                <!--                        <div class="search_again_button"><button onclick="searchAgainClick(this)">继续搜索</button></div>-->
+                <!--                    </div>-->
+                <!--                </li>-->
+                <!--                <li>-->
+                <!--                    <img src="/image/2016_08_13_15_53_IMG_2958.JPG">-->
+                <!--                    <div class="image_info">-->
+                <!--                        <div class="similarity">相似度：100%</div>-->
+                <!--                        <div class="search_again_button"><button onclick="searchAgainClick(this)">继续搜索</button></div>-->
+                <!--                    </div>-->
+                <!--                </li>-->
             </ul>
             <div id="noResult" class="no_result">
-                <i class="fa fa-bitbucket fa-3x"></i>
+<!--                <i class="fa fa-bitbucket fa-2x"></i>-->
                 暂无结果
             </div>
         </div>
