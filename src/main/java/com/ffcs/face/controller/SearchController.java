@@ -7,6 +7,7 @@ import com.ffcs.common.tools.MD5Util;
 import com.ffcs.face.service.IFaissService;
 import com.ffcs.face.service.IFrsService;
 import com.ffcs.face.util.JsonUtils;
+import com.ffcs.face.vo.ImageConditionVO;
 import com.ffcs.face.vo.ImageVO;
 import com.ffcs.image.Simple;
 import com.ffcs.visionbigdata.mysql.bean.UploadImageInfo;
@@ -54,17 +55,21 @@ public class SearchController {
     }
 
     @RequestMapping("process")
-    public Object process(@RequestBody List<ImageVO> imageVOList) throws Exception {
+    public Object process(@RequestBody List<ImageVO> imageVOList, ImageConditionVO imageConditionVO) throws Exception {
         String imageId;
         String imageB64;
         double similarity = 0.6;
         List<Object> imageMessageListMax = new ArrayList<>();
+        String groupName = imageConditionVO.getGroupName();
+        Integer imageNum = imageConditionVO.getImageNum();
+        Date startTime= imageConditionVO.getStartTime();
+        Date endTime = imageConditionVO.getEndTime();
         for(int k = 0; k<imageVOList.size() ; k++)
         {
             //再次搜索前端只传groupName、url,本地上传图片搜索url为null
             if (imageVOList.get(k).getImageUrl() != null) {
                 ImageVO imageVO = imageVOList.get(k);
-                byte[] bytes = storageClient.download_file(imageVO.getGroupName(), imageVO.getImageUrl());
+                byte[] bytes = storageClient.download_file(groupName, imageVO.getImageUrl());
                 BASE64Encoder encoder = new BASE64Encoder();
                 imageB64 = encoder.encode(bytes);
                 imageId = MD5Util.getStringMD5(imageB64);
@@ -82,7 +87,7 @@ public class SearchController {
                 List<String> features = new ArrayList<>();
                 features.add(featureB64);
                 //搜索相似图片
-                String searchFeaturesResult = faissService.searchFeaturesByPost(imageVOList.get(k).getGroupName(), features, imageVOList.get(k).getImageNum());
+                String searchFeaturesResult = faissService.searchFeaturesByPost(groupName, features, imageNum);
                 System.out.println("搜索相似图片结果：" + searchFeaturesResult);
                 JSONArray data = JsonUtils.getJsonValueArray(searchFeaturesResult, "data");
                 //distance最大值小于0.6,把图片增加到group中
@@ -111,12 +116,12 @@ public class SearchController {
                     if (featureIdLong.size() != 0) {
                         Long[] a1 = new Long[featureIdLong.size()];
                         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-                        String startTime = formatter.format(imageVOList.get(k).getStartTime());
-                        String endTime = formatter.format(imageVOList.get(k).getEndTime());
+                        String startTimeStr = formatter.format(startTime);
+                        String endTimeStr = formatter.format(endTime);
                         System.out.println(startTime);
                         System.out.println(endTime);
                         //yyyy-MM-dd
-                        List<UploadImageInfo> images = this.uploadImageInfoService.getImages(null,null,featureIdLong.toArray(a1),startTime,endTime);
+                        List<UploadImageInfo> images = this.uploadImageInfoService.getImages(null,null,featureIdLong.toArray(a1),startTimeStr,endTimeStr);
                         System.out.println("images:" + JSON.toJSONString(images));
                         if (images != null && images.size() > 0) {
                             for (int i = 0; i < data.size(); i++) {
