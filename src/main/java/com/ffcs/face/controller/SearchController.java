@@ -101,7 +101,7 @@ public class SearchController {
                     maxFlag = maxDistance > 0.6 ? true : false;
                     System.out.println("是否保存" + saveImage);
                     List<Long> featureIdLong = new ArrayList<>();
-                    int[] flag = new int[imageVOList.get(k).getImageNum()];
+                    int[] flag = new int[imageNum];
                     int num = 0;
                     for (int i = 0; i < size; i++) {
                         if (data.getJSONObject(i).getDouble("distance") < similarity) {
