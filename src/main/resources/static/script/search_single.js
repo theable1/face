@@ -287,8 +287,12 @@ $(document).ready(function () {
 
     $('#number').on('change', function () {
         var number = $('#number').val();
-        if (Number(number) < 10) {
-            swal.fire("返回结果不可低于10张！", "", "warning");
+        if (Number(number) < 0) {
+            swal.fire("返回结果不可小于1张！", "", "warning");
+            $('#number').val(10);
+        }
+        if (Number(number) > 1000) {
+            swal.fire("返回结果不可大于1000张！", "", "warning");
             $('#number').val(10);
         }
     });
