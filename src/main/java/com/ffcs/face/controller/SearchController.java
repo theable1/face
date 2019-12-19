@@ -9,6 +9,7 @@ import com.ffcs.face.service.IFrsService;
 import com.ffcs.face.util.JsonUtils;
 import com.ffcs.face.vo.ImageConditionVO;
 import com.ffcs.face.vo.ImageVO;
+import com.ffcs.face.vo.ViewVO;
 import com.ffcs.image.Simple;
 import com.ffcs.visionbigdata.mysql.bean.UploadImageInfo;
 import com.ffcs.visionbigdata.mysql.service.UploadImageInfoService;
@@ -55,17 +56,18 @@ public class SearchController {
     }
 
     @RequestMapping("process")
-    public Object process(@RequestBody List<ImageVO> imageVOList, ImageConditionVO imageConditionVO) throws Exception {
+    public Object process(@RequestBody ViewVO viewVO) throws Exception {
+        List<ImageVO> imageVOList = viewVO.getImageVOList();
+        ImageConditionVO imageConditionVO = viewVO.getImageConditionVO();
         String imageId;
         String imageB64;
         double similarity = 0.6;
         List<Object> imageMessageListMax = new ArrayList<>();
         String groupName = imageConditionVO.getGroupName();
         Integer imageNum = imageConditionVO.getImageNum();
-        Date startTime= imageConditionVO.getStartTime();
+        Date startTime = imageConditionVO.getStartTime();
         Date endTime = imageConditionVO.getEndTime();
-        for(int k = 0; k<imageVOList.size() ; k++)
-        {
+        for (int k = 0; k < imageVOList.size(); k++) {
             //再次搜索前端只传groupName、url,本地上传图片搜索url为null
             if (imageVOList.get(k).getImageUrl() != null) {
                 ImageVO imageVO = imageVOList.get(k);
@@ -121,7 +123,7 @@ public class SearchController {
                         System.out.println(startTime);
                         System.out.println(endTime);
                         //yyyy-MM-dd
-                        List<UploadImageInfo> images = this.uploadImageInfoService.getImages(null,null,featureIdLong.toArray(a1),startTimeStr,endTimeStr);
+                        List<UploadImageInfo> images = this.uploadImageInfoService.getImages(null, null, featureIdLong.toArray(a1), startTimeStr, endTimeStr);
                         System.out.println("images:" + JSON.toJSONString(images));
                         if (images != null && images.size() > 0) {
                             for (int i = 0; i < data.size(); i++) {

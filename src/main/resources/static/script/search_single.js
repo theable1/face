@@ -36,37 +36,35 @@ $(document).ready(function () {
             reader.onload = function (e) {
                 //获取base64编码
                 var dataUrl = e.target.result;
-                var fileName = img.name;
                 var b64 = dataUrl.split(",")[1];
                 //要传递的数据
-                var groupName = $('#group option:selected').text();
-                var number = $('#number').val();
                 var imageInfo = {};
                 imageInfo.imageId = hex_md5(b64);
                 imageInfo.imageB64 = b64;
-                // imageInfo.groupId = groupId;
-                imageInfo.groupName = groupName;
-                imageInfo.imageNum = number;
 
+                var groupName = $('#group option:selected').text();
+                var number = $('#number').val();
+                var imageConditionVO = {};
+                imageConditionVO.groupName = groupName;
+                imageConditionVO.imageNum = number;
                 var startDate = $('#startDate').val();
                 var endDate = $('#endDate').val();
                 if (startDate == "" && endDate == "") {
-                    imageInfo.startTime = new Date(2001, 1 - 1, 1);
-                    imageInfo.endTime = $('#endtime').data("datetimepicker").getDate();
+                    imageConditionVO.startTime = new Date(2001, 1 - 1, 1);
+                    imageConditionVO.endTime = $('#endtime').data("datetimepicker").getDate();
                 } else if (startDate == "" && endDate != "") {
-                    imageInfo.startTime = new Date(2001, 1 - 1, 1);
-                    imageInfo.endTime = $('#endtime').data("datetimepicker").getDate();
+                    imageConditionVO.startTime = new Date(2001, 1 - 1, 1);
+                    imageConditionVO.endTime = $('#endtime').data("datetimepicker").getDate();
                 } else if (startDate == endDate || (startDate != "" && endDate == "")) {
-                    imageInfo.endTime = $('#endtime').data("datetimepicker").getDate();
+                    imageConditionVO.endTime = $('#endtime').data("datetimepicker").getDate();
                     var date = $('#starttime').data("datetimepicker").getDate();
-                    imageInfo.startTime = new Date(date.getFullYear(), date.getMonth(), date.getDate()-1);
+                    imageConditionVO.startTime = new Date(date.getFullYear(), date.getMonth(), date.getDate()-1);
                 } else {
-                    imageInfo.startTime = $('#starttime').data("datetimepicker").getDate();
-                    imageInfo.endTime = $('#endtime').data("datetimepicker").getDate();
+                    imageConditionVO.startTime = $('#starttime').data("datetimepicker").getDate();
+                    imageConditionVO.endTime = $('#endtime').data("datetimepicker").getDate();
                 }
-
                 //发送
-                sendData(imageInfo);
+                sendData(imageInfo,imageConditionVO);
             };
             reader.readAsDataURL(img);
         } else {
@@ -135,18 +133,22 @@ $(document).ready(function () {
         clearResultBox();
     });
 
-    function sendData(imageInfo) {
+    function sendData(imageInfo,imageConditionVO) {
         loading();
         //数据放入数组
-        var imageVOList = [];
+        imageVOList = [];
         imageVOList.push(imageInfo);
+        var parm = {
+            'imageVOList': imageVOList,
+            'imageConditionVO': imageConditionVO
+        };
 
         $.ajax({
             type: 'post',
             dataType: 'json',
             contentType: "application/json;charset=utf-8",
             url: '/search/process',
-            data: JSON.stringify(imageVOList),
+            data: JSON.stringify(parm),
             success: function (data) {
                 var imgs = data[0];
                 if (imgs instanceof Array) {
@@ -243,33 +245,32 @@ $(document).ready(function () {
         showUpImage(url);
         clearResultBox();
         //ajax发送图片数据到后台
-        var groupName = $('#group option:selected').text();
-        var number = $('#number').val();
-
         var imageInfo = {};
-        imageInfo.groupName = groupName;
-        imageInfo.imageNum = number;
         imageInfo.imageUrl = url;
 
-
+        var groupName = $('#group option:selected').text();
+        var number = $('#number').val();
+        var imageConditionVO = {};
+        imageConditionVO.groupName = groupName;
+        imageConditionVO.imageNum = number;
         var startDate = $('#startDate').val();
         var endDate = $('#endDate').val();
         if (startDate == "" && endDate == "") {
-            imageInfo.startTime = new Date(2001, 1 - 1, 1);
-            imageInfo.endTime = $('#endtime').data("datetimepicker").getDate();
+            imageConditionVO.startTime = new Date(2001, 1 - 1, 1);
+            imageConditionVO.endTime = $('#endtime').data("datetimepicker").getDate();
         } else if (startDate == "" && endDate != "") {
-            imageInfo.startTime = new Date(2001, 1 - 1, 1);
-            imageInfo.endTime = $('#endtime').data("datetimepicker").getDate();
+            imageConditionVO.startTime = new Date(2001, 1 - 1, 1);
+            imageConditionVO.endTime = $('#endtime').data("datetimepicker").getDate();
         } else if (startDate == endDate || (startDate != "" && endDate == "")) {
-            imageInfo.endTime = $('#endtime').data("datetimepicker").getDate();
+            imageConditionVO.endTime = $('#endtime').data("datetimepicker").getDate();
             var date = $('#starttime').data("datetimepicker").getDate();
-            imageInfo.startTime = new Date(date.getFullYear(), date.getMonth(), date.getDate()-1);
+            imageConditionVO.startTime = new Date(date.getFullYear(), date.getMonth(), date.getDate()-1);
         } else {
-            imageInfo.startTime = $('#starttime').data("datetimepicker").getDate();
-            imageInfo.endTime = $('#endtime').data("datetimepicker").getDate();
+            imageConditionVO.startTime = $('#starttime').data("datetimepicker").getDate();
+            imageConditionVO.endTime = $('#endtime').data("datetimepicker").getDate();
         }
         //发送
-        sendData(imageInfo);
+        sendData(imageInfo,imageConditionVO);
     };
 
     $('#addButton').on('click', function () {

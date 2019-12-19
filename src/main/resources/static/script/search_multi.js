@@ -43,6 +43,7 @@ $(document).ready(function () {
                 imageVOList.push(imageInfo);
 
             }
+
             var groupName = $('#group option:selected').text();
             var number = $('#number').val();
             var imageConditionVO ={};
