@@ -37,35 +37,36 @@ $(document).ready(function () {
                 var src = imageBox[i].children[1].children[0].src;
                 var b64 = src.split(",")[1];
 
-                var groupName = $('#group option:selected').text();
-                var number = $('#number').val();
                 var imageInfo = {};
                 imageInfo.imageId = hex_md5(b64);
                 imageInfo.imageB64 = b64;
-                imageInfo.groupName = groupName;
-                imageInfo.imageNum = number;
-
-                var startDate = $('#startDate').val();
-                var endDate = $('#endDate').val();
-                if (startDate == "" && endDate == "") {
-                    imageInfo.startTime = new Date(2001, 1 - 1, 1);
-                    imageInfo.endTime = $('#endtime').data("datetimepicker").getDate();
-                } else if (startDate == "" && endDate != "") {
-                    imageInfo.startTime = new Date(2001, 1 - 1, 1);
-                    imageInfo.endTime = $('#endtime').data("datetimepicker").getDate();
-                } else if (startDate == endDate || (startDate != "" && endDate == "")) {
-                    imageInfo.endTime = $('#endtime').data("datetimepicker").getDate();
-                    var date = $('#starttime').data("datetimepicker").getDate();
-                    imageInfo.startTime = new Date(date.getFullYear(), date.getMonth(), date.getDate()-1);
-                } else {
-                    imageInfo.startTime = $('#starttime').data("datetimepicker").getDate();
-                    imageInfo.endTime = $('#endtime').data("datetimepicker").getDate();
-                }
-
                 imageVOList.push(imageInfo);
+
+            }
+            var groupName = $('#group option:selected').text();
+            var number = $('#number').val();
+            var imageConditionVO ={};
+            imageConditionVO.groupName = groupName;
+            imageConditionVO.imageNum = number;
+
+            var startDate = $('#startDate').val();
+            var endDate = $('#endDate').val();
+            if (startDate == "" && endDate == "") {
+                imageConditionVO.startTime = new Date(2001, 1 - 1, 1);
+                imageConditionVO.endTime = $('#endtime').data("datetimepicker").getDate();
+            } else if (startDate == "" && endDate != "") {
+                imageConditionVO.startTime = new Date(2001, 1 - 1, 1);
+                imageConditionVO.endTime = $('#endtime').data("datetimepicker").getDate();
+            } else if (startDate == endDate || (startDate != "" && endDate == "")) {
+                imageConditionVO.endTime = $('#endtime').data("datetimepicker").getDate();
+                var date = $('#starttime').data("datetimepicker").getDate();
+                imageConditionVO.startTime = new Date(date.getFullYear(), date.getMonth(), date.getDate()-1);
+            } else {
+                imageConditionVO.startTime = $('#starttime').data("datetimepicker").getDate();
+                imageConditionVO.endTime = $('#endtime').data("datetimepicker").getDate();
             }
             //发送
-            sendData(imageVOList,false,null);
+            sendData(imageVOList,imageConditionVO,false,null);
         } else {
             swal.fire("未选择图片！", "", "warning");
         }
@@ -161,15 +162,20 @@ $(document).ready(function () {
     });
 
     //imageVOList为发送数据 , flag为是否为继续搜索, number为继续搜索的图片所在列数
-    function sendData(imageVOList,flag,number) {
+    function sendData(imageVOList,imageConditionVO,flag,number) {
         loading();
+
+        var parm = {
+            'imageVOList': imageVOList,
+            'imageConditionVO': imageConditionVO
+        };
         //数据放入数组
         $.ajax({
             type: 'post',
             dataType: 'json',
             contentType: "application/json;charset=utf-8",
             url: '/search/process',
-            data: JSON.stringify(imageVOList),
+            data: JSON.stringify(parm),
             success: function (data) {
                 for (var i = 0; i < data.length; i++) {
                     var imgResult = data[i];
@@ -260,41 +266,44 @@ $(document).ready(function () {
     //再次搜索按钮
     searchAgainClick = function (e) {
         //ajax发送图片数据到后台
-        var groupName = $("#group option:selected").text();
-        var number = $('#number').val();
         var url = $(e).parents("li")[0].children[0].src;
 
         var imageInfo = {};
         imageInfo.imageUrl = url;
-        imageInfo.groupName = groupName;
-        imageInfo.imageNum = number;
+        var imageVOList = [];
+        imageVOList.push(imageInfo);
+
+        var groupName = $("#group option:selected").text();
+        var number = $('#number').val();
+        var imageConditionVO = {};
+        imageConditionVO.groupName = groupName;
+        imageConditionVO.imageNum = number;
 
         var startDate = $('#startDate').val();
         var endDate = $('#endDate').val();
         if (startDate == "" && endDate == "") {
-            imageInfo.startTime = new Date(2001, 1 - 1, 1);
-            imageInfo.endTime = $('#endtime').data("datetimepicker").getDate();
+            imageConditionVO.startTime = new Date(2001, 1 - 1, 1);
+            imageConditionVO.endTime = $('#endtime').data("datetimepicker").getDate();
         } else if (startDate == "" && endDate != "") {
-            imageInfo.startTime = new Date(2001, 1 - 1, 1);
-            imageInfo.endTime = $('#endtime').data("datetimepicker").getDate();
+            imageConditionVO.startTime = new Date(2001, 1 - 1, 1);
+            imageConditionVO.endTime = $('#endtime').data("datetimepicker").getDate();
         } else if (startDate == endDate || (startDate != "" && endDate == "")) {
-            imageInfo.endTime = $('#endtime').data("datetimepicker").getDate();
+            imageConditionVO.endTime = $('#endtime').data("datetimepicker").getDate();
             var date = $('#starttime').data("datetimepicker").getDate();
-            imageInfo.startTime = new Date(date.getFullYear(), date.getMonth(), date.getDate()-1);
+            imageConditionVO.startTime = new Date(date.getFullYear(), date.getMonth(), date.getDate()-1);
         } else {
-            imageInfo.startTime = $('#starttime').data("datetimepicker").getDate();
-            imageInfo.endTime = $('#endtime').data("datetimepicker").getDate();
+            imageConditionVO.startTime = $('#starttime').data("datetimepicker").getDate();
+            imageConditionVO.endTime = $('#endtime').data("datetimepicker").getDate();
         }
 
-        var imageVOList = [];
-        imageVOList.push(imageInfo);
+
         //再次搜索的图片所在列
         var col = $(e).parents("ul")[0].id;
         col = col.split("result")[1];
         //删除原本数据
         $(e).parents("ul").find("li").remove();
         //发送获取新数据
-        sendData(imageVOList,true,col);
+        sendData(imageVOList,imageConditionVO,true,col);
     };
 
     $('#addButton').on('click', function () {

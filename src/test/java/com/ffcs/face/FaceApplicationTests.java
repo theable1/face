@@ -84,4 +84,9 @@ public class FaceApplicationTests {
         System.out.println(res);
     }
 
+    @Test
+    void add(){
+
+    }
+
 }
