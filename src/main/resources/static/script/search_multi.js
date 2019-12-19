@@ -325,8 +325,8 @@ $(document).ready(function () {
             swal.fire("返回结果不可小于1张！", "", "warning");
             $('#number').val(10);
         }
-        if (Number(number) > 100) {
-            swal.fire("返回结果不可大于100张！", "", "warning");
+        if (Number(number) > 1000) {
+            swal.fire("返回结果不可大于1000张！", "", "warning");
             $('#number').val(10);
         }
     });
