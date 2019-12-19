@@ -20,7 +20,7 @@ $(document).ready(function () {
             icon: "",//加载图标，默认值：一个小型的base64的gif图片
             html: false,//设置加载内容是否是html格式，默认值是false
             content: "",//忽略icon和text的值，直接在加载框中显示此值
-            mask: false//是否显示遮罩效果，默认显示
+            mask: true//是否显示遮罩效果，默认显示
         });
     }
 
@@ -41,20 +41,32 @@ $(document).ready(function () {
                 //要传递的数据
                 var groupName = $('#group option:selected').text();
                 var number = $('#number').val();
-
-                var startTime = $('#starttime').data("datetimepicker").getDate();
-                var endTime = $('#endtime').data("datetimepicker").getDate();
                 var imageInfo = {};
                 imageInfo.imageId = hex_md5(b64);
                 imageInfo.imageB64 = b64;
                 // imageInfo.groupId = groupId;
                 imageInfo.groupName = groupName;
                 imageInfo.imageNum = number;
-                imageInfo.startTime = startTime;
-                imageInfo.endTime = endTime;
+
+                var startDate = $('#startDate').val();
+                var endDate = $('#endDate').val();
+                if (startDate == "" && endDate == "") {
+                    imageInfo.startTime = new Date(2001, 1 - 1, 1);
+                    imageInfo.endTime = $('#endtime').data("datetimepicker").getDate();
+                } else if (startDate == "" && endDate != "") {
+                    imageInfo.startTime = new Date(2001, 1 - 1, 1);
+                    imageInfo.endTime = $('#endtime').data("datetimepicker").getDate();
+                } else if (startDate == endDate || (startDate != "" && endDate == "")) {
+                    imageInfo.endTime = $('#endtime').data("datetimepicker").getDate();
+                    var date = $('#starttime').data("datetimepicker").getDate();
+                    imageInfo.startTime = new Date(date.getFullYear(), date.getMonth(), date.getDate()-1);
+                } else {
+                    imageInfo.startTime = $('#starttime').data("datetimepicker").getDate();
+                    imageInfo.endTime = $('#endtime').data("datetimepicker").getDate();
+                }
+
                 //发送
                 sendData(imageInfo);
-
             };
             reader.readAsDataURL(img);
         } else {
@@ -64,20 +76,29 @@ $(document).ready(function () {
 
     $('#startDate').on('change', function () {
         if (!judgeDate()) {
-            swal.fire("开始时间大于结束时间！", "", "warning");
+            $('#starttime').data("datetimepicker").setDate(new Date());
+            $('#startDate').val("");
         }
     });
 
     $('#endDate').on('change', function () {
         if (!judgeDate()) {
-            swal.fire("结束时间小于开始时间！", "", "warning");
+            $('#endtime').data("datetimepicker").setDate(new Date());
+            $('#endDate').val("");
         }
     });
 
     function judgeDate() {
         var startTime = $('#starttime').data("datetimepicker").getDate();
         var endTime = $('#endtime').data("datetimepicker").getDate();
-        if (startTime > endTime) {
+        var startDate = $('#startDate').val();
+        var endDate = $('#endDate').val();
+
+        if (startTime > new Date() || endTime > new Date()) {
+            swal.fire("不能选择大于当前日期的时间！", "", "warning");
+            return false;
+        } else if (startDate != "" && endDate != "" && startDate > endDate) {
+            swal.fire("开始时间必须要小于结束时间！", "", "warning");
             return false;
         } else {
             return true;
@@ -151,7 +172,7 @@ $(document).ready(function () {
                         swal.fire("找不到相似图片！", "", "warning");
                     }
                 } else {
-                    var dataObj=eval("("+imgs+")");//转换为json对象
+                    var dataObj = eval("(" + imgs + ")");//转换为json对象
                     swal.fire(dataObj.message, "", "warning");
                 }
                 //结束loading
@@ -224,14 +245,29 @@ $(document).ready(function () {
         //ajax发送图片数据到后台
         var groupName = $('#group option:selected').text();
         var number = $('#number').val();
-        var startTime = $('#starttime').data("datetimepicker").getDate();
-        var endTime = $('#endtime').data("datetimepicker").getDate();
+
         var imageInfo = {};
-        imageInfo.imageUrl = url;
         imageInfo.groupName = groupName;
         imageInfo.imageNum = number;
-        imageInfo.startTime = startTime;
-        imageInfo.endTime = endTime;
+        imageInfo.imageUrl = url;
+
+
+        var startDate = $('#startDate').val();
+        var endDate = $('#endDate').val();
+        if (startDate == "" && endDate == "") {
+            imageInfo.startTime = new Date(2001, 1 - 1, 1);
+            imageInfo.endTime = $('#endtime').data("datetimepicker").getDate();
+        } else if (startDate == "" && endDate != "") {
+            imageInfo.startTime = new Date(2001, 1 - 1, 1);
+            imageInfo.endTime = $('#endtime').data("datetimepicker").getDate();
+        } else if (startDate == endDate || (startDate != "" && endDate == "")) {
+            imageInfo.endTime = $('#endtime').data("datetimepicker").getDate();
+            var date = $('#starttime').data("datetimepicker").getDate();
+            imageInfo.startTime = new Date(date.getFullYear(), date.getMonth(), date.getDate()-1);
+        } else {
+            imageInfo.startTime = $('#starttime').data("datetimepicker").getDate();
+            imageInfo.endTime = $('#endtime').data("datetimepicker").getDate();
+        }
         //发送
         sendData(imageInfo);
     };

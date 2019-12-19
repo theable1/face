@@ -50,7 +50,7 @@ input[type=file]:active{
     text-align: center;
     margin: 0 50px;
     padding: 20px 20px 30px 20px;
-    width: 520px;
+    width: 35%;
     height: 540px;
     border: 3px solid #869791;
     color: dimgray;
@@ -67,8 +67,8 @@ input[type=file]:active{
     position: relative;
     border: 2px solid #869791;
     margin: 20px 20px;
-    width: 435px;
-    height: 410px;
+    width: 91.6%;
+    height: 85%;
     overflow: auto;
     padding: 20px;
     border-radius: 10px;
@@ -77,8 +77,8 @@ input[type=file]:active{
 
 .up_image{
     margin: auto auto;
-    max-width: 350px;
-    max-height: 365px;
+    max-width: 80%;
+    max-height: 80%;
     display: none;
 }
 
@@ -104,7 +104,7 @@ input[type=file]:active{
 .no_result{
     color: #777777;
     font-size: 40px;
-    margin-top: 130px;
+    margin-top: 37%;
 }
 
 h4{
@@ -142,16 +142,18 @@ input[type=file]{
 
 .show_box li{
     position: relative;
-    width: 175px;
+    width: 45%;
     height: 175px;
     margin: 5px 7px 20px 5px;
     border: 1px solid #869791;
     float: left;
+    display: flex;
+    justify-content: center;
 }
 
 .show_box img{
-    max-width: 170px;
-    max-height: 170px;
+    max-width: 95%;
+    max-height: 95%;
     margin: auto auto;
 }
 

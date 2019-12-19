@@ -12,11 +12,16 @@ import org.csource.fastdfs.*;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.neo4j.repository.config.EnableNeo4jRepositories;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 
+
 @SpringBootApplication
+@EnableNeo4jRepositories(basePackages = "com.ffcs.face.repository")
+@EnableTransactionManagement
 public class FaceApplication {
     private static final String CONF_NAME = "fdfs_client.conf";
     public static void main(String[] args) {
@@ -35,7 +40,6 @@ public class FaceApplication {
     public Sender getSender(){
         return  new Sender();
     }
-
     @Bean
     public StorageClient getStorageClient() throws IOException, MyException {
         ClientGlobal.init(CONF_NAME);

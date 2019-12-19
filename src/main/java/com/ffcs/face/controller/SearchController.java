@@ -21,23 +21,21 @@ import sun.misc.BASE64Encoder;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
-/**
- * @author liuxin
- * @date 2019/11/25
- */
+
 @RestController
 @RequestMapping("/search/")
 public class SearchController {
     @Autowired
-    IFrsService frsService;
+    private IFrsService frsService;
     @Autowired
-    IFaissService faissService;
+    private IFaissService faissService;
     @Autowired
     private UploadImageInfoService uploadImageInfoService;
     @Autowired
     private Sender sender;
     @Autowired
     private StorageClient storageClient;
+
     @RequestMapping("list")
     public Object list() {
         List<Map<String, Object>> groupList = new ArrayList();
@@ -63,12 +61,12 @@ public class SearchController {
         List<Object> imageMessageListMax = new ArrayList<>();
         for(int k = 0; k<imageVOList.size() ; k++)
         {
-
             //再次搜索前端只传groupName、url,本地上传图片搜索url为null
             if (imageVOList.get(k).getImageUrl() != null) {
-                byte[] bytes = storageClient.download_file(imageVOList.get(k).getGroupName(), imageVOList.get(k).getImageUrl());
-                BASE64Encoder base64Encoder = new BASE64Encoder();
-                imageB64 = base64Encoder.encode(bytes);
+                ImageVO imageVO = imageVOList.get(k);
+                byte[] bytes = storageClient.download_file(imageVO.getGroupName(), imageVO.getImageUrl());
+                BASE64Encoder encoder = new BASE64Encoder();
+                imageB64 = encoder.encode(bytes);
                 imageId = MD5Util.getStringMD5(imageB64);
             } else {
                 imageId = imageVOList.get(k).getImageId();
@@ -79,7 +77,7 @@ public class SearchController {
 //            System.out.println("获取特征值结果：:" + getFeatureResult);
             JSONObject jsonObject = JSON.parseObject(getFeatureResult);
             String featureB64 = jsonObject.getString("feature_b64");
-            System.out.println("featureB64"+featureB64);
+//            System.out.println("featureB64"+featureB64);
             if (featureB64 != null) {
                 List<String> features = new ArrayList<>();
                 features.add(featureB64);
@@ -118,8 +116,7 @@ public class SearchController {
                         System.out.println(startTime);
                         System.out.println(endTime);
                         //yyyy-MM-dd
-                        List<UploadImageInfo> images = this.uploadImageInfoService
-                                .getImages(null,imageVOList.get(k).getGroupName(),featureIdLong.toArray(a1),startTime,endTime);
+                        List<UploadImageInfo> images = this.uploadImageInfoService.getImages(null,null,featureIdLong.toArray(a1),startTime,endTime);
                         System.out.println("images:" + JSON.toJSONString(images));
                         if (images != null && images.size() > 0) {
                             for (int i = 0; i < data.size(); i++) {
@@ -142,7 +139,6 @@ public class SearchController {
                     simple.setBase64(imageB64);
                     simple.setHashCode(imageId);
                     simple.setImageTime(new Date());
-                    System.out.println("保存的图片信息："+simple);
                     sender.apply(simple);
                     if (maxFlag == false) {
                         imageMessageListMax.add(imageMessageList);

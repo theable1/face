@@ -14,8 +14,8 @@
     <script src="script/third/viewer.min.js"></script>
     <script src="script/third/jquery.mloading.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/8.11.8/sweetalert2.all.js"></script>
-    <script src="script/third/bootstrap.min.js"></script>
     <script src="script/third/bootstrap-datetimepicker.min.js"></script>
+    <script src="script/third/bootstrap.min.js"></script>
     <script src="script/search_multi.js"></script>
 </head>
 <body>
@@ -41,7 +41,7 @@
         <div class="form-group">
             <!--指定 date标记-->
             <div class='input-group date' id='starttime'>
-                <input type='text' class="form-control"/>
+                <input id="startDate" type='text' class="form-control"/>
                 <span class="input-group-addon">
                     <span class="glyphicon glyphicon-calendar"></span>
                 </span>
@@ -54,7 +54,7 @@
             <div class="form-group">
                 <!--指定 date标记-->
                 <div class='input-group date' id='endtime'>
-                    <input type='text' class="form-control"/>
+                    <input id="endDate" type='text' class="form-control"/>
                     <span class="input-group-addon">
                     <span class="glyphicon glyphicon-calendar"></span>
                     </span>
@@ -79,7 +79,7 @@
             <div id="showBox" class="show_box">
             </div>
             <div id="noResult" class="no_result">
-                <i class="fa fa-bitbucket fa-2x"></i>
+<!--                <i class="fa fa-bitbucket fa-2x"></i>-->
                 暂无结果
             </div>
         </div>
